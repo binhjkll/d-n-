@@ -71,7 +71,7 @@
 
 .btn.border-secondary:hover {
     background: var(--bs-secondary) !important;
-    color: var(--bs-white) !important;
+    color: var(--bs-) !important;
 }
 
 /*** Topbar Start ***/

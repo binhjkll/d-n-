@@ -40,6 +40,14 @@
         .table td {
             text-align: center;
         }
+        .variant .card {
+            border: 1px solid #007bff;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .variant .btn-danger {
+            margin-top: 10px;
+        } 
     </style>
 </head>
 
@@ -161,100 +169,88 @@
             <!-- /#header -->
             <!-- Breadcrumbs-->
             <div class="breadcrumbs">
-                <div class="breadcrumbs-inner">
-                    <div class="row m-0">
-                        <div class="col-sm-4">
-                            <div class="page-header float-left">
-                                <div class="page-title">
-                                    <h1>Bảng điều khiển</h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="page-header float-right">
-                                <div class="page-title">
-                                    <ol class="breadcrumb text-right">
-                                        <li><a href="?act=listbook">Bảng điều khiển</a></li>
-                                        <li><a href="order-management.html">Sản phẩm</a></li>
-                                        <li class="active">Thêm sản phẩm</li>
-                                    </ol>
-                                </div>
-                            </div>
-                        </div>
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Bảng điều khiển</h1>
                     </div>
                 </div>
             </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="?act=listbook">Bảng điều khiển</a></li>
+                            <li><a href="order-management.html">Sản phẩm</a></li>
+                            <li class="active">Thêm sản phẩm</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-            <!-- Nội dung -->
-            <div class="content mt-3">
-                <div class="animated fadeIn">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-header"><strong>Thêm sản phẩm mới</strong></div>
-                                <div class="card-body card-block">
-                                    <form method="POST" enctype="multipart/form-data" class="form-horizontal">
-
-                                        <!-- Thông tin sản phẩm chính -->
-                                        <div class="form-group">
-                                            <label class="form-control-label">Tên sản phẩm</label>
-                                            <input type="text" id="name" name="name" required class="form-control" placeholder="Nhập tên sản phẩm">
-                                        </div>
-                                        <!-- <div class="form-group">
-                                            <label class="form-control-label">Tên sản phẩm</label>
-                                            <input type="text" id="description" name="description" required class="form-control" placeholder="Nhập tên sản phẩm">
-                                        </div> -->
-                                        <div class="form-group">
-                                            <label class="form-control-label">Mô tả</label>
-                                            <textarea name="description" id="description" placeholder="Nhập mô tả sản phẩm" class="form-control"></textarea>
-                                        </div>
-
-
-
-
-                                        <label for="category_id" class="form-control-label">Danh mục:</label>
-                                        <select name="category_id" class="form-control">
-                                            <?php foreach ($ccc as $value) { ?>
-
-                                                <option value="<?php echo $value->category_id ?>">
-                                                    <?php echo $value->name ?>
-                                                </option>
-
-                                            <?php } ?>
-                                        </select>
-
-
-
-                                        <div id="variants">
-                                            <!-- Mẫu biến thể -->
-                                            <div class="variant">
-                                                <div class="form-group">
-                                                    <!-- <label class="form-control-label">Giá sản phẩm</label> -->
-                                                    <!-- <input type="text" name="price" placeholder="Nhập giá sản phẩm" class="form-control"> -->
-                                                </div>
-                                                <div class="form-group">
-                                                    <!-- <label class="form-control-label">Số lượng</label> -->
-                                                    <!-- <input type="text" name="stock_quantity" placeholder="Nhập số lượng" class="form-control"> -->
-                                                </div>
-                                                <div class="form-group">
-                                                    <!-- <label class="form-control-label">Tải lên hình ảnh</label> -->
-                                                    <!-- <input type="file" name="product_img" class="form-control-file"> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <button type="button" onclick="addVariant()" class="btn btn-primary btn-sm">Thêm biến thể</button>
-
-                                        <button type="submit" name="btn_submit" class="btn btn-primary btn-sm">Lưu sản phẩm</button>
-
-                                    </form>
+<!-- Nội dung -->
+<div class="content mt-3">
+    <div class="animated fadeIn">
+        <div class="container-fluid">
+            <!-- Thẻ container-fluid giúp nội dung chiếm toàn bộ chiều ngang màn hình -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header"><strong>Thêm sản phẩm mới</strong></div>
+                        <div class="card-body card-block">
+                            <form method="POST" enctype="multipart/form-data" class="form-horizontal">
+                                <!-- Thông tin sản phẩm chính -->
+                                <div class="form-group">
+                                    <label class="form-control-label">Tên sản phẩm</label>
+                                    <input type="text" id="name" name="name" required class="form-control" placeholder="Nhập tên sản phẩm">
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Mô tả</label>
+                                    <textarea name="description" id="description" placeholder="Nhập mô tả sản phẩm" class="form-control"></textarea>
+                                </div>
+
+                                <label for="category_id" class="form-control-label">Danh mục:</label>
+                                <select name="category_id" class="form-control">
+                                    <?php foreach ($ccc as $value) { ?>
+                                        <option value="<?php echo $value->category_id ?>">
+                                            <?php echo $value->name ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+
+                                <div id="variants">
+                                    <!-- Mẫu biến thể -->
+                                    <div class="variant">
+                                        <div class="form-group">
+                                            <label class="form-control-label">Giá sản phẩm</label>
+                                            <input type="text" name="price" placeholder="Nhập giá sản phẩm" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-control-label">Số lượng</label>
+                                            <input type="text" name="stock_quantity" placeholder="Nhập số lượng" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-control-label">Tải lên hình ảnh</label>
+                                            <input type="file" name="product_img" class="form-control-file">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <button type="button" onclick="addVariant()" class="btn btn-primary btn-sm">Thêm biến thể</button>
+                                <button type="submit" name="btn_submit" class="btn btn-primary btn-sm">Lưu sản phẩm</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
         <!-- /.content -->
         <div class="clearfix"></div>
@@ -306,28 +302,52 @@
         let r = (Math.random() + 1).toString(36).substring(7);
 
         // HTML cho mỗi biến thể mới, với các input được gán tên hợp lệ cho mảng
-        let html = `
-            <div class="variant" id="variant-${r}" >
+        // let html = `
+        //     <div class="variant" id="variant-${r}" >
            
-        <h4><strong>Biến thể </strong></h4>
-                <label class="form-control-label">Loại ${aa}:</label>
+        // <h4><strong>Biến thể </strong></h4>
+        //         <label class="form-control-label">Loại ${aa}:</label>
 
-                <div class="form-group">
-                                            <label class="form-control-label">Giá</label>
-                                                <br>
-                    <input type="text" name="variant[${r}][price]" placeholder="Nhập giá sản phẩm" required ><br>
-                                            <label class="form-control-label">Số lượng</label><br>
+        //         <div class="form-group">
+        //                                     <label class="form-control-label">Giá</label>
+        //                                         <br>
+        //             <input type="text" name="variant[${r}][price]" placeholder="Nhập giá sản phẩm" required ><br>
+        //                                     <label class="form-control-label">Số lượng</label><br>
 
-                    <input type="text" name="variant[${r}][stock_quantity]" placeholder="Nhập số lượng" required ><br>
-                                            <label class="form-control-label">Hình ảnh</label>
+        //             <input type="text" name="variant[${r}][stock_quantity]" placeholder="Nhập số lượng" required ><br>
+        //                                     <label class="form-control-label">Hình ảnh</label>
 
-                    <input type="file" name="variant[${r}][product_img]" placeholder="Ảnh sản phẩm" required class="form-control-file">
+        //             <input type="file" name="variant[${r}][product_img]" placeholder="Ảnh sản phẩm" required class="form-control-file">
                                              
                            
+        //         </div>
+        //         <button type="button" onclick="removeVariant('variant-${r}')" class="btn btn-primary btn-sm" >Xóa biến thể</button> 
+        //     </div>
+        // `;
+
+
+        let html = `
+                <div class="card mb-3 variant" id="variant-${r}">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Biến thể ${aa}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-control-label">Giá</label>
+                            <input type="text" class="form-control" name="variant[${r}][price]" placeholder="Nhập giá sản phẩm" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label">Số lượng</label>
+                            <input type="text" class="form-control" name="variant[${r}][stock_quantity]" placeholder="Nhập số lượng" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label">Hình ảnh</label>
+                            <input type="file" class="form-control-file" name="variant[${r}][product_img]" required>
+                        </div>
+                        <button type="button" onclick="removeVariant('variant-${r}')" class="btn btn-danger btn-sm">Xóa biến thể</button>
+                    </div>
                 </div>
-                <button type="button" onclick="removeVariant('variant-${r}')" class="btn btn-primary btn-sm" >Xóa biến thể</button> 
-            </div>
-        `;
+            `;
 
         // Thêm phần HTML vào phần 'variants'
         variants.innerHTML += html;
@@ -339,4 +359,6 @@
         const variant = document.getElementById(id);
         variant.remove();
     }
+
+
 </script>
