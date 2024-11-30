@@ -57,11 +57,15 @@ if (isset($_SESSION['username'])) {
                 </div>
                 <div class="d-flex m-3 me-0">
                     <!-- Tìm kiếm -->
-                    <form action="index.php" method="GET" class="w-100 mx-auto d-flex">
-                        <input type="hidden" name="act" value="shophtml">
-                        <input type="search" name="keyword" placeholder="Tìm kiếm sản phẩm...">
-                        <button type="submit" class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                    </form>
+                    <form action="index.php" method="GET" class="d-flex justify-content-center me-4">
+                                <div class="input-group" style="max-width: 500px;">
+                                    <input type="hidden" name="act" value="shophtml">
+                                    <input type="search" class="form-control search-input" name="keyword" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
+                                    <button type="submit" class="btn btn-primary search-button" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
                     <!-- end tìm kiếm -->
                     <?php
 

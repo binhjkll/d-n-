@@ -190,16 +190,29 @@
                                    <?php include_once "product.php"; ?>
  
                                     <div class="col-12">
-                                        <div class="pagination d-flex justify-content-center mt-5">
-                                            <a href="#" class="rounded">&laquo;</a>
-                                            <a href="#" class="active rounded">1</a>
-                                            <a href="#" class="rounded">2</a>
-                                            <a href="#" class="rounded">3</a>
-                                            <a href="#" class="rounded">4</a>
-                                            <a href="#" class="rounded">5</a>
-                                            <a href="#" class="rounded">6</a>
-                                            <a href="#" class="rounded">&raquo;</a>
-                                        </div>
+                                    <div class="pagination d-flex justify-content-center mt-5">                                           
+                                                <?php
+                                                
+                                                function buildPaginationUrl($page, $keyword = null, $category_id = null) {
+                                                    $url = "index.php?act=shophtml&page=$page";
+                                                    if (!empty($keyword)) {
+                                                        $url .= "&keyword=" . urlencode($keyword);
+                                                    }
+                                                    if (!empty($category_id)) {
+                                                        $url .= "&category_id=" . intval($category_id);
+                                                    }
+                                                    return $url;
+                                                }
+
+                                                if ($totalPages > 1) {
+                                                    for ($i = 1; $i <= $totalPages; $i++) {
+                                                        $active = ($i === $currentPage) ? "active" : "";
+                                                        $paginationUrl = buildPaginationUrl($i, $_GET['keyword'] ?? null, $_GET['category_id'] ?? null);
+                                                        echo "<li class='page-item $active'><a class='page-link' href='$paginationUrl'>$i</a></li>";
+                                                    }
+                                                }
+                                                ?>                                                                           
+                                    </div>
                                     </div>
                                 </div>
                                    

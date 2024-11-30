@@ -18,28 +18,36 @@ class Bookcc
         $mBook = new Book();
         $shophtml = $mBook->getDM();
 
+        $currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $itemsPerPage = 9; // Số sản phẩm trên mỗi trang
+        $start = ($currentPage - 1) * $itemsPerPage;
+
         if (isset($_GET['keyword']) && !empty(trim($_GET['keyword']))) {
             // Kiểm tra từ khóa tìm kiếm
-            $keyword = trim($_GET['keyword']); // Lấy từ khóa tìm kiếm
-            $listpro = $mBook->searchProducts($keyword); // Gọi hàm tìm kiếm sản phẩm
+            $keyword = trim($_GET['keyword']);
+            $listpro = $mBook->searchProductsPaginated($keyword, $start, $itemsPerPage); // Lấy từ khóa tìm kiếm
+            $totalProducts = $mBook->countSearchResults($keyword);
         } elseif (isset($_GET['category_id'])) {
             // Lấy sản phẩm theo danh mục
             $category_id = intval($_GET['category_id']); // Lấy ID danh mục
-            $listpro = $mBook->getProductsByCategory($category_id); // Gọi hàm lấy sản phẩm theo danh mục
+            $listpro = $mBook->getProductsByCategoryPaginated($category_id, $start, $itemsPerPage);
+            $totalProducts = $mBook->countProductsByCategory($category_id);
         } else {
             // Nếu không có tìm kiếm hoặc danh mục, lấy tất cả sản phẩm
-            $listpro = $mBook->getall();
+            $listpro = $mBook->getProductsPaginated($start, $itemsPerPage);
+            $totalProducts = $mBook->countProducts();
         }
-        // Loại bỏ các sản phẩm trùng product_id
-        $uniqueProducts = [];
-        foreach ($listpro as $product) {
-            if (!isset($uniqueProducts[$product->product_id])) {
-                $uniqueProducts[$product->product_id] = $product;
+        $listpro = array_filter($listpro, function ($product) use (&$uniqueProducts) {
+            static $seen = [];
+            if (in_array($product->product_id, $seen)) {
+                return false;
             }
-        }
+            $seen[] = $product->product_id;
+            return true;
+        });
+        
+        $totalPages = ceil($totalProducts / $itemsPerPage);
 
-        // Truyền danh sách sản phẩm không trùng lặp sang view
-        $listpro = array_values($uniqueProducts);
 
         // Load view hiển thị sản phẩm
         require_once "views/fruitables/shop/shop.php";
