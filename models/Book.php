@@ -569,4 +569,125 @@ class Book
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
+    public function getProductsPaginated($start, $limit)
+{
+    $start = intval($start);
+    $limit = intval($limit);
+
+    $sql = "SELECT 
+                p.product_id,
+                p.name AS name,
+                p.description,
+                c.name AS category_name,
+                pv.variant_id,
+                pv.price,
+                pv.stock_quantity,
+                pv.product_img
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            JOIN product_variants AS pv ON p.product_id = pv.product_id
+            WHERE pv.variant_id = (
+                SELECT MIN(variant_id) 
+                FROM product_variants 
+                WHERE product_id = p.product_id
+            )
+            LIMIT $start, $limit";
+
+    $this->connect->setQuery($sql);
+    return $this->connect->loadData();
+}
+
+public function countProducts()
+{
+    $sql = "SELECT COUNT(DISTINCT product_id) AS total_products FROM products";
+    $this->connect->setQuery($sql);
+    $result = $this->connect->loadData();
+    return $result[0]->total_products ?? 0;
+}
+
+public function searchProductsPaginated($keyword, $start, $limit)
+{
+    $keyword = "%" . $keyword . "%";
+    $start = intval($start);
+    $limit = intval($limit);
+
+    $sql = "SELECT 
+                p.product_id,
+                p.name AS name,
+                p.description,
+                c.name AS category_name,
+                pv.variant_id,
+                pv.price,
+                pv.stock_quantity,
+                pv.product_img
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            JOIN product_variants AS pv ON p.product_id = pv.product_id
+            WHERE (p.name LIKE '$keyword' OR p.description LIKE '$keyword') 
+            AND pv.variant_id = (
+                SELECT MIN(variant_id) 
+                FROM product_variants 
+                WHERE product_id = p.product_id
+            )
+            LIMIT $start, $limit";
+
+    $this->connect->setQuery($sql);
+    return $this->connect->loadData();
+}
+
+public function countSearchResults($keyword)
+{
+    $keyword = "%" . $keyword . "%";
+
+    $sql = "SELECT COUNT(DISTINCT p.product_id) AS total_products
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            WHERE p.name LIKE '$keyword' OR p.description LIKE '$keyword'";
+
+    $this->connect->setQuery($sql);
+    $result = $this->connect->loadData();
+    return $result[0]->total_products ?? 0;
+}
+
+public function getProductsByCategoryPaginated($category_id, $start, $limit)
+{
+    $start = intval($start);
+    $limit = intval($limit);
+
+    $sql = "SELECT 
+                p.product_id,
+                p.name AS name,
+                p.description,
+                c.name AS category_name,
+                pv.variant_id,
+                pv.price,
+                pv.stock_quantity,
+                pv.product_img
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            JOIN product_variants AS pv ON p.product_id = pv.product_id
+            WHERE c.category_id = $category_id
+            AND pv.variant_id = (
+                SELECT MIN(variant_id) 
+                FROM product_variants 
+                WHERE product_id = p.product_id
+            )
+            LIMIT $start, $limit";
+
+    $this->connect->setQuery($sql);
+    return $this->connect->loadData();
+}
+
+public function countProductsByCategory($category_id)
+{
+    $sql = "SELECT COUNT(DISTINCT p.product_id) AS total_products
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            WHERE c.category_id = $category_id";
+
+    $this->connect->setQuery($sql);
+    $result = $this->connect->loadData();
+    return $result[0]->total_products ?? 0;
+}
+
 }
