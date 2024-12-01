@@ -3,7 +3,7 @@ session_start(); // Bắt đầu session để kiểm tra thông tin đăng nh�
 
 class Bookcc
 {
-    
+
 
     public function danhmuc()
     {
@@ -561,7 +561,6 @@ class Bookcc
         $cc = $mBook->getcid($cart_item_id);
 
         if (isset($_POST['btn_submit'])) {
-            session_start();
             if (isset($_SESSION['user_id'])) {  // Kiểm tra xem user_id có tồn tại trong session không
 
                 // Lấy dữ liệu từ form và session
@@ -575,6 +574,7 @@ class Bookcc
                 $price = $_POST['price'];
                 $phone = $_POST['phone'];
                 $address = $_POST['address'];
+                $size = $_POST['size'];
 
                 // Tạo một đối tượng của lớp Book
                 $mBook = new Book();
@@ -588,10 +588,11 @@ class Bookcc
                     $created_at,
                     $phone,
                     $address
+                   
                 );
 
                 // Thêm các mục trong đơn hàng (order items)
-                $mBook->addOrderItems($order_id, $variant_id, $quantity, $price);
+                $mBook->addOrderItems($order_id, $variant_id, $quantity, $price,$size);
 
                 $cartItemId = isset($_GET['cart_item_id']) ? intval($_GET['cart_item_id']) : 0;
                 if ($cartItemId > 0) {
@@ -610,52 +611,56 @@ class Bookcc
         // Hiển thị view (nếu cần)
         include_once "views/fruitables/shop/order.php";
     }
-   
+
     public function quanlyorder()
     {
         $mBook = new Book();
         $listbook = $mBook->getorder();
         include_once "views/admin/quanlyorder.php";
     }
-    // public function updateorder(){
-    //     if (isset($_GET['oid'])) {
-    //         $oid = $_GET['oid'];
-    //         $mBook = new Book();
-    //         $idBook = $mBook->getid($oid);
 
-    //     $listbook = $mBook->updateorder($delivery_status);
-    //     include_once "views/admin/quanlyorder.php";
-    //     }
-    // }
-    public function user()
+    public function userpro()
     {
+        $user_id = $_SESSION['user_id'];
         $mBook = new Book();
-        $listbook = $mBook->getuser();
+        $listbook = $mBook->getorders($user_id);
+
+        // $listbook = $mBook->getOrdersWithItems($userId);
         include_once "views/fruitables/user.php";
     }
+    public function chitietpro()
+    {
+        $orderId = $_GET['pid'];
+        $mBook = new Book(); // Giả sử "Book" là model bạn đã định nghĩa
+        $listbook = $mBook->getOrderItemsWithVariants($orderId); // Gọi hàm model mới
+        include_once "views/fruitables/chitietpro.php"; // Gửi dữ liệu sang view
+    }
+
     public function ordersall()
     {
-
         $userId = $_SESSION['user_id']; // Lấy user_id từ session
         $mBook = new Book();
         $cartItems = $mBook->getCartItems($userId);
+
         if (isset($_POST['btn_submit'])) {
-            session_start();
             if (isset($_SESSION['user_id'])) {
+                // echo '<pre>';
+                // print_r($_POST);
+                // echo '</pre>';
+                // die();
+
                 // Lấy dữ liệu từ form
                 $user_id = $_SESSION['user_id'];
                 $total_amount = $_POST['total_amount'];
-                $payment_status = $_POST['payment_status'];
+                $payment_status = $_POST['payment_status'] ?? 'thanh toán khi nhận hàng';
                 $delivery_status = $_POST['delivery_status'];
                 $created_at = date('Y-m-d H:i:s');
-                $variant_ids = $_POST['variant_id']; // Lấy mảng variant_id
-                $quantities = $_POST['quantity'];   // Lấy mảng quantity
-                $prices = $_POST['price'];          // Lấy mảng price
+                $variant_ids = $_POST['variant_id'];
+                $quantities = $_POST['quantity'];
+                $prices = $_POST['price'];
                 $phone = $_POST['phone'];
                 $address = $_POST['address'];
-
-                // Tạo đối tượng Book
-                $mBook = new Book();
+                $sizes = $_POST['size']; // Mảng size theo variant_id
 
                 // Thêm đơn hàng và lấy order_id
                 $order_id = $mBook->addOrder(
@@ -670,16 +675,19 @@ class Bookcc
 
                 // Thêm từng sản phẩm vào bảng order_items
                 for ($i = 0; $i < count($variant_ids); $i++) {
+                    $variant_id = $variant_ids[$i];
+                    $selected_size = isset($sizes[$variant_id]) ? $sizes[$variant_id] : 'S'; // Mặc định 'S'
+
                     $mBook->addOrderItems(
                         $order_id,
-                        $variant_ids[$i], // Lấy từng variant_id
-                        $quantities[$i],  // Lấy từng quantity
-                        $prices[$i]       // Lấy từng price
+                        $variant_id,
+                        $quantities[$i],
+                        $prices[$i],
+                        $selected_size
                     );
                 }
 
                 // Xóa giỏ hàng
-                $userId = $_SESSION['user_id'];
                 $mBook->clearCart($userId);
 
                 // Chuyển hướng về trang chủ
@@ -689,9 +697,6 @@ class Bookcc
             }
         }
 
-
-
-        // include_once __DIR__ . "/../views/fruitables/shop/cart.php";
         include_once __DIR__ . "/../views/fruitables/shop/orderall.php";
     }
 

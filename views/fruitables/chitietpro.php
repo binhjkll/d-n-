@@ -67,11 +67,12 @@
 
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Checkout</h1>
+        <h1 class="text-center text-white display-6">Order details</h1>
         <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="?act=trangchu">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Checkout</li>
+            <li class="breadcrumb-item"><a href="?act=userpro">Purchased order</a></li>
+            <li class="breadcrumb-item active text-white">Order details</li>
         </ol>
     </div>
     <!-- Single Page Header End -->
@@ -80,134 +81,44 @@
     <!-- Checkout Page Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
-            <h1 class="mb-4">Billing details</h1>
+            <h1 class="mb-4">Order details</h1>
             <form action="" method="post">
-                <div class="row g-5">
-                    <div class="col-md-12 col-lg-6 col-xl-7">
+                <table class="table table-striped table-bordered text-center rounded" style="overflow: hidden;">
+                    <thead class="thead-dark" style="background-color: #f8f9fa; color: #333; border-radius: 12px;">
+                        <tr>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Order Item ID</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Quantity</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Price</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Total Price</th>
+                            <th class="text-center" style="width: 10%; font-weight: bold;">Size</th>
+                            <th class="text-center" style="width: 20%; font-weight: bold;">Image</th>
+                        </tr>
+                    </thead>
 
-                        <div class="form-item">
-                            <label class="form-label my-3">Số điện thoại<sup>*</sup></label>
-                            <input type="text" name="phone" class="form-control" value="<?php echo $phone ?>">
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Địa chỉ <sup>*</sup></label>
-                            <input type="text" name="address" class="form-control" value="<?php echo $address ?>">
-                        </div>
-
-
-                    </div>
-                    <div class="col-md-12 col-lg-6 col-xl-5">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Products</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Total</th>
-                                        <th></th>
-                                        <th scope="col">Size</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="d-flex align-items-center mt-2">
-                                                <img src="<?php echo $bb['product_img']; ?>" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                            </div>
-                                        </th>
-                                        <td class="py-5">
-                                            <?php echo $aa['name'] ?>
-
-                                        </td>
-                                        <td class="py-5">
-                                            $<?php echo $bb['price'] ?>
-
-                                        </td>
-                                        <td class="py-5">
-                                            <?php echo $cc['quantity'] ?>
-
-                                        </td>
-                                        <td class="py-5">
-                                            $<?php echo $bb['price'] * $cc['quantity']; ?>
-
-                                        </td>
-                                        <td></td>
-                                        <td colspan="2">
-                                            <!-- Radio button 1 -->
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="size" id="size1" value="S">
-                                                <label class="form-check-label" for="size1">
-                                                    S
-                                                </label>
-                                            </div>
-
-                                            <!-- Radio button 2 -->
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="size" id="size2" value="M">
-                                                <label class="form-check-label" for="size2">
-                                                    M
-                                                </label>
-                                            </div>
-
-                                            <!-- Radio button 3 -->
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="size" id="size3" value="XL">
-                                                <label class="form-check-label" for="size3">
-                                                    XL
-                                                </label>
-                                            </div>
-
-                                            <!-- Radio button 4 -->
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="size" id="size4" value="XXL">
-                                                <label class="form-check-label" for="size4">
-                                                    XXL
-                                                </label>
-                                            </div>
-                                        </td>
+                    <tbody>
+                        <?php if (!empty($listbook)): ?>
+                            <?php foreach ($listbook as $item): ?>
+                                <tr>
+                                    <td class="text-center align-middle"><?php echo $item->order_item_id; ?></td>
+                                    <td class="text-center align-middle"><?php echo $item->quantity; ?></td>
+                                    <td class="text-center align-middle">$<?php echo number_format($item->order_item_price, 2); ?></td>
+                                    <td class="text-center align-middle">$<?php echo number_format($item->total_item_price, 2); ?></td>
+                                    <td class="text-center align-middle"><?php echo $item->size; ?></td>
+                                    <td class="text-center align-middle">
+                                        <img src="<?php echo $item->product_img; ?>" alt="Product Image" style="width: 50px; height: 50px; border-radius: 8px; border: 1px solid #ccc;">
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td class="text-center align-middle" colspan="6">No items found for this order.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
 
 
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="payment_status" id="payment1" value="thanh toán khi nhận hàng">
-                                                <label class="form-check-label" for="payment1">
-                                                    Thanh toán khi nhận hàng
-                                                </label>
-                                            </div>
 
-                                            <!-- Radio button 2 -->
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="payment_status" id="payment2" value="thanh toán trực tiếp">
-                                                <label class="form-check-label" for="payment2">
-                                                    Thanh toán trực tiếp
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <input type="hidden" name="total_amount" placeholder="total_amount" value="<?php echo $bb['price'] * $cc['quantity']; ?>">
-                                    <input type="hidden" name="delivery_status" placeholder="delivery_status" value="Đang chuẩn bị">
-                                    <input type="hidden" name="variant_id" placeholder="variant_id" value="<?php echo $bb['variant_id'] ?>">
-                                    <input type="hidden" name="quantity" placeholder="quantity" value="<?php echo $cc['quantity'] ?>">
-                                    <input type="hidden" name="price" placeholder="price" value="<?php echo $bb['price'] ?>">
-
-                                </tbody>
-                            </table>
-                        </div>
-
-
-                        <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                            <a href="?act=removeFromCart">
-                                <button name="btn_submit" class="btn btn-dark btn-lg rounded-pill px-4">Mua</button>
-
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </form>
         </div>
     </div>

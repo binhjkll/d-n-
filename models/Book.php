@@ -457,7 +457,7 @@ class Book
     public function addOrder($user_id, $total_amount, $payment_status, $delivery_status, $created_at, $phone, $address)
     {
         $sql = "INSERT INTO `orders` (user_id, total_amount, payment_status, delivery_status, created_at,phone, address)
-            VALUES (?, ?, ?, ?, ?,?,?)";
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $this->connect->setQuery($sql);
         $this->connect->loadData([$user_id, $total_amount, $payment_status, $delivery_status, $created_at, $phone, $address]);
@@ -467,15 +467,15 @@ class Book
     }
 
     // Thêm chi tiết đơn hàng vào bảng `order_items`
-    public function addOrderItems($order_id, $variant_id, $quantity, $price)
+    public function addOrderItems($order_id, $variant_id, $quantity,$price, $size)
     {
         // SQL để chèn dữ liệu vào bảng `order_items`
-        $sql = "INSERT INTO `order_items` (order_id, variant_id, quantity, price)
-        VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO `order_items` (order_id, variant_id, quantity, price,size)
+        VALUES (?, ?, ?, ?, ?)";
 
         // Thực thi câu truy vấn chèn dữ liệu
         $this->connect->setQuery($sql);
-        $this->connect->loadData([$order_id, $variant_id, $quantity, $price]);
+        $this->connect->loadData([$order_id, $variant_id, $quantity, $price, $size]);
 
         return true;
     }
@@ -485,6 +485,78 @@ class Book
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
+    public function getorders($user_id)
+    {
+        $sql = "SELECT * FROM `orders` WHERE `user_id` = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$user_id]);
+    }
+    public function getOrderItemsWithVariants($orderId)
+    {
+        $sql = "
+        SELECT 
+            order_items.order_item_id,
+            order_items.order_id,
+            order_items.size,
+            order_items.variant_id,
+            order_items.quantity,
+            order_items.price AS order_item_price,
+            (order_items.quantity * order_items.price) AS total_item_price,
+            product_variants.product_id,
+            product_variants.price AS variant_price,
+            product_variants.stock_quantity,
+            product_variants.product_img
+        FROM 
+            order_items
+        JOIN 
+            product_variants 
+        ON 
+            order_items.variant_id = product_variants.variant_id
+        WHERE 
+            order_items.order_id = ?
+    ";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$orderId]); // Trả về danh sách các mục hàng kèm thông tin biến thể
+    }
+
+
+        // public function getOrdersWithItems($userId)
+    // {
+    //     $sql = "
+    //     SELECT 
+    //         orders.order_id,
+    //         orders.user_id,
+    //         orders.total_amount,
+    //         orders.payment_status,
+    //         orders.delivery_status,
+    //         orders.created_at,
+    //         orders.address,
+    //         orders.phone,
+    //         order_items.order_item_id,
+    //         order_items.variant_id,
+    //         order_items.quantity,
+    //         order_items.price,
+    //         (order_items.quantity * order_items.price) AS total_item_price
+    //     FROM 
+    //         orders
+    //     LEFT JOIN 
+    //         order_items 
+    //     ON 
+    //         orders.order_id = order_items.order_id
+    //     WHERE 
+    //         orders.user_id = ?
+    // ";
+    //     $this->connect->setQuery($sql);
+    //     return $this->connect->loadData([$userId]); // Load toàn bộ dữ liệu
+    // }
+    public function getordersitem($order_id)
+    {
+        $sql = "SELECT * FROM `order_items` WHERE `order_id ` = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$order_id]);
+    }
+
+
     // public function updateorder($delivery_status)
     // {
     //     $sql = "UPDATE `orders` SET `delivery_status`=? WHERE `order_id`=?";

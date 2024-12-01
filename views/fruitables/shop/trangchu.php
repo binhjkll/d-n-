@@ -258,7 +258,7 @@
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="fruite-img">
                                 <a href="index.php?act=productDetail&id=<?php echo $value->product_id; ?>">
-                                    <img src="<?php echo $value->product_img; ?>" class="img-fluid w-100 rounded-top" alt="#">
+                                    <img src="<?php echo $value->product_img; ?>" class="img-fluid w-100 rounded-top" alt="#" >
                                 </a>
                             </div>
                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">

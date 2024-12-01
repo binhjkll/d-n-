@@ -3,7 +3,7 @@ session_start();
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
     $phone = $_SESSION['phone'];  // Lấy thông tin người dùng từ session
-    $address = $_SESSION['address']; 
+    $address = $_SESSION['address'];
     // $ngaymua= $_SESSION['ngaymua']; // Lấy thông tin người dùng từ session
 }
 ?>
@@ -49,8 +49,7 @@ if (isset($_SESSION['username'])) {
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
                             <a href="?act=cart" class="dropdown-item" style="color:#c18a75 !important">Cart</a>
-                            <a href="checkout.php" class="dropdown-item" style="color:#c18a75 !important">Checkout</a>
-                            <a href="testimonial.php" class="dropdown-item" style="color:#c18a75 !important">Testimonial</a>
+                            <a href="?act=userpro" class="dropdown-item" style="color:#c18a75 !important">Purchased order</a>
                         </div>
                     </div>
                     <a href="contact.php" class="nav-item nav-link">Contact</a>
@@ -64,14 +63,13 @@ if (isset($_SESSION['username'])) {
                     </form>
                     <!-- end tìm kiếm -->
                     <?php
-
                     $cartCount = isset($_SESSION['cart']) ? array_sum(array_column($_SESSION['cart'], 'quantity')) : 0;
                     ?>
                     <a href="index.php?act=cart" class="position-relative me-4 my-auto">
                         <i class="fa fa-shopping-bag fa-2x"></i>
 
                     </a>
-                    <a href="#" class="my-auto">
+                    <a href="?act=userpro" class="my-auto">
                         <i class="fas fa-user fa-2x"></i>
                     </a>
                 </div>

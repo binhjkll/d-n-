@@ -84,7 +84,6 @@
             <form action="" method="post">
                 <div class="row g-5">
                     <div class="col-md-12 col-lg-6 col-xl-7">
-
                         <div class="form-item">
                             <label class="form-label my-3">Số điện thoại<sup>*</sup></label>
                             <input type="text" name="phone" class="form-control" value="<?php echo $phone ?>">
@@ -93,8 +92,6 @@
                             <label class="form-label my-3">Địa chỉ <sup>*</sup></label>
                             <input type="text" name="address" class="form-control" value="<?php echo $address ?>">
                         </div>
-
-
                     </div>
                     <div class="col-md-12 col-lg-6 col-xl-5">
                         <div class="table-responsive">
@@ -106,76 +103,74 @@
                                         <th scope="col">Price</th>
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Total</th>
+                                        <th></th>
+                                        <th scope="col">Size</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($cartItems as $item) {
-
-
+                                    <?php
+                                    $orderTotal = 0; // Biến lưu tổng tiền đơn hàng
+                                    foreach ($cartItems as $item):
+                                        $itemTotal = $item->quantity * $item->price; // Tính tổng tiền mỗi sản phẩm
+                                        $orderTotal += $itemTotal; // Cộng vào tổng tiền đơn hàng
                                     ?>
-
                                         <tr>
-                                            <td><img src="<?php echo ($item->product_img); ?>" alt="Product" style="width: 100px;"> </td>
-                                            <td>
-                                                <?php echo ($item->product_name); ?>
-                                            </td>
-                                            <td>
-                                                $<?php echo number_format((float)$item->price); ?>
-                                            </td>
-                                            <td>
-                                                <?php echo ($item->quantity); ?>
-
-                                            </td>
-
-
-                                            <td>
-                                                <?php echo ($item->quantity) * ($item->price) ?>
+                                            <td><img src="<?php echo ($item->product_img); ?>" alt="Product" style="width: 80px;"></td>
+                                            <td><?php echo ($item->product_name); ?></td>
+                                            <td>$<?php echo number_format((float)$item->price); ?></td>
+                                            <td><?php echo ($item->quantity); ?></td>
+                                            <td>$<?php echo number_format($itemTotal); ?></td>
+                                            <td></td>
+                                            <td colspan="2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="size[<?php echo $item->variant_id; ?>]" id="size1_<?php echo $item->variant_id; ?>" value="S">
+                                                    <label class="form-check-label" for="size1_<?php echo $item->variant_id; ?>">S</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="size[<?php echo $item->variant_id; ?>]" id="size2_<?php echo $item->variant_id; ?>" value="M">
+                                                    <label class="form-check-label" for="size2_<?php echo $item->variant_id; ?>">M</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="size[<?php echo $item->variant_id; ?>]" id="size3_<?php echo $item->variant_id; ?>" value="XL">
+                                                    <label class="form-check-label" for="size3_<?php echo $item->variant_id; ?>">XL</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="size[<?php echo $item->variant_id; ?>]" id="size4_<?php echo $item->variant_id; ?>" value="XXL">
+                                                    <label class="form-check-label" for="size4_<?php echo $item->variant_id; ?>">XXL</label>
+                                                </div>
                                             </td>
                                         </tr>
-
-
-                                        <tr>
-
-                                        </tr>
-
-
-                                        <input type="hidden" name="total_amount" placeholder="total_amount" value="<?php echo ($item->quantity) * ($item->price) ?>">
-                                        <input type="hidden" name="delivery_status" placeholder="delivery_status" value="Đang chuẩn bị">
-                                        <input type="hidden" name="variant_id[]" placeholder="variant_id" value="<?php echo ($item->variant_id); ?>">
-                                        <input type="hidden" name="quantity[]" placeholder="quantity" value="<?php echo ($item->quantity); ?>">
-                                        <input type="hidden" name="price[]" placeholder="price" value="<?php echo ($item->price); ?>">
-
-
-                                    <?php } ?>
-
-
+                                        <input type="hidden" name="delivery_status[]" value="Đang chuẩn bị">
+                                        <input type="hidden" name="variant_id[]" value="<?php echo ($item->variant_id); ?>">
+                                        <input type="hidden" name="quantity[]" value="<?php echo ($item->quantity); ?>">
+                                        <input type="hidden" name="price[]" value="<?php echo ($item->price); ?>">
+                                    <?php endforeach; ?>
+                                    <tr>
+                                        <td colspan="4" class="text-end"><strong>Tổng tiền đơn hàng:</strong></td>
+                                        <td colspan="3">$<?php echo number_format($orderTotal); ?></td>
+                                    </tr>
+                                    <!-- Chỉ gửi một giá trị tổng tiền đơn hàng -->
+                                    <input type="hidden" name="total_amount" value="<?php echo $orderTotal; ?>">
                                 </tbody>
+
+
                             </table>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="payment_status" id="payment1" value="thanh toán khi nhận hàng">
-                                <label class="form-check-label" for="payment1">
-                                    Thanh toán khi nhận hàng
-                                </label>
+                                <label class="form-check-label" for="payment1">Thanh toán khi nhận hàng</label>
                             </div>
-
-                            <!-- Radio button 2 -->
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="payment_status" id="payment2" value="thanh toán trực tiếp">
-                                <label class="form-check-label" for="payment2">
-                                    Thanh toán trực tiếp
-                                </label>
+                                <label class="form-check-label" for="payment2">Thanh toán trực tiếp</label>
                             </div>
                         </div>
-
-
                         <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                            <a href="?act=clearCart">
-                                <button name="btn_submit">gui</button>
-                            </a>
+                            <button type="submit" name="btn_submit" class="btn btn-primary">Mua</button>
                         </div>
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
     <!-- Checkout Page End -->

@@ -13,7 +13,7 @@ switch ($bb) {
     case 'list':
         $aa->listbook();
         break;
-    
+
     case 'edit':
         $aa->editbook();
         break;
@@ -57,9 +57,9 @@ switch ($bb) {
     case 'productDetail':
         $aa->productDetail();
         break;
-        case 'checkout':
-            $aa->checkout();
-            break;           
+    case 'checkout':
+        $aa->checkout();
+        break;
     case 'addToCart':
         $aa->addToCart();
         break;
@@ -84,11 +84,14 @@ switch ($bb) {
     case 'quanlyorder':
         $aa->quanlyorder();
         break;
-    case 'user':
-        $aa->user();
+    case 'userpro':
+        $aa->userpro();
         break;
-    
-        
+    case 'chitietpro':
+        $aa->chitietpro();
+        break;
+
+
     default:
         $aa->listbook();
         break;
