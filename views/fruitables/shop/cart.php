@@ -28,7 +28,13 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
+<style>
+    table td, table th {
+    text-align: center;
+    vertical-align: middle;  /* Đảm bảo nội dung được căn giữa theo chiều dọc */
+}
 
+</style>
 <body>
 
     <!-- Spinner Start -->

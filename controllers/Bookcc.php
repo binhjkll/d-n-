@@ -45,7 +45,7 @@ class Bookcc
             $seen[] = $product->product_id;
             return true;
         });
-        
+
         $totalPages = ceil($totalProducts / $itemsPerPage);
 
 
@@ -596,11 +596,11 @@ class Bookcc
                     $created_at,
                     $phone,
                     $address
-                   
+
                 );
 
                 // Thêm các mục trong đơn hàng (order items)
-                $mBook->addOrderItems($order_id, $variant_id, $quantity, $price,$size);
+                $mBook->addOrderItems($order_id, $variant_id, $quantity, $price, $size);
 
                 $cartItemId = isset($_GET['cart_item_id']) ? intval($_GET['cart_item_id']) : 0;
                 if ($cartItemId > 0) {
@@ -649,6 +649,7 @@ class Bookcc
         $userId = $_SESSION['user_id']; // Lấy user_id từ session
         $mBook = new Book();
         $cartItems = $mBook->getCartItems($userId);
+        date_default_timezone_set('Asia/Bangkok');
 
         if (isset($_POST['btn_submit'])) {
             if (isset($_SESSION['user_id'])) {
@@ -707,5 +708,4 @@ class Bookcc
 
         include_once __DIR__ . "/../views/fruitables/shop/orderall.php";
     }
-
 }

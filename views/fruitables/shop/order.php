@@ -28,6 +28,54 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
+<style>
+    /* Sử dụng Bootstrap để thay đổi màu nền và chữ khi hover */
+    /* Nút chính */
+    .btn-aa {
+        background-color: #28a745;
+        /* Màu nền xanh lá */
+        color: white;
+        /* Màu chữ trắng */
+        border: none;
+        /* Không có viền */
+        padding: 12px 24px;
+        /* Khoảng cách bên trong */
+        font-size: 16px;
+        /* Cỡ chữ */
+        font-weight: bold;
+        /* Làm đậm chữ */
+        border-radius: 8px;
+        /* Bo góc */
+        cursor: pointer;
+        /* Đổi con trỏ thành hình tay */
+        transition: all 0.3s ease;
+        /* Hiệu ứng khi di chuột */
+    }
+
+    /* Hiệu ứng khi di chuột vào nút */
+    .btn-aa:hover {
+        background-color: #218838;
+        /* Màu khi di chuột vào */
+        transform: translateY(-3px);
+        /* Đẩy nút lên một chút */
+    }
+
+    /* Hiệu ứng khi nhấn nút */
+    .btn-aa:active {
+        background-color: #1e7e34;
+        /* Màu khi nhấn */
+        transform: translateY(0);
+        /* Về vị trí ban đầu khi nhấn */
+    }
+
+    /* Hiệu ứng focus khi tab vào nút */
+    .btn-aa:focus {
+        outline: none;
+        /* Xóa đường viền focus */
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5);
+        /* Tạo hiệu ứng viền xanh khi focus */
+    }
+</style>
 
 <body>
 
@@ -81,134 +129,141 @@
     <div class="container-fluid py-5">
         <div class="container py-5">
             <h1 class="mb-4">Billing details</h1>
-            <form action="" method="post">
+            <form action="" method="post" onsubmit="return validateForm()">
                 <div class="row g-5">
-                    <div class="col-md-12 col-lg-6 col-xl-7">
-
+                    <div class="col-md-12 col-lg-8 col-xl-5">
+                        <!-- Số điện thoại -->
                         <div class="form-item">
                             <label class="form-label my-3">Số điện thoại<sup>*</sup></label>
-                            <input type="text" name="phone" class="form-control" value="<?php echo $phone ?>">
+                            <input type="text" name="phone" class="form-control" id="phone" value="<?php echo $phone ?>">
+                            <span id="phone-error" style="color: red;"></span> <!-- Hiển thị lỗi số điện thoại -->
                         </div>
+
+                        <!-- Địa chỉ -->
                         <div class="form-item">
                             <label class="form-label my-3">Địa chỉ <sup>*</sup></label>
-                            <input type="text" name="address" class="form-control" value="<?php echo $address ?>">
+                            <input type="text" name="address" class="form-control" id="address" value="<?php echo $address ?>">
+                            <span id="address-error" style="color: red;"></span> <!-- Hiển thị lỗi địa chỉ -->
                         </div>
-
-
                     </div>
-                    <div class="col-md-12 col-lg-6 col-xl-5">
+
+                    <div class="col-md-12 col-lg-4 col-xl-7">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Products</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Total</th>
+                                        <th scope="col">Sản phẩm</th>
+                                        <th scope="col">Tên</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">Tổng cộng</th>
                                         <th></th>
                                         <th scope="col">Size</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">
-                                            <div class="d-flex align-items-center mt-2">
-                                                <img src="<?php echo $bb['product_img']; ?>" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+                                        <td scope="row">
+                                            <div class=" align-items-center mt-1">
+                                                <img src="<?php echo $bb['product_img']; ?>" style="width: 90px; height: 90px;" alt="">
                                             </div>
-                                        </th>
-                                        <td class="py-5">
-                                            <?php echo $aa['name'] ?>
-
                                         </td>
-                                        <td class="py-5">
-                                            $<?php echo $bb['price'] ?>
-
-                                        </td>
-                                        <td class="py-5">
-                                            <?php echo $cc['quantity'] ?>
-
-                                        </td>
-                                        <td class="py-5">
-                                            $<?php echo $bb['price'] * $cc['quantity']; ?>
-
-                                        </td>
+                                        <td class="py-5"><?php echo $aa['name'] ?></td>
+                                        <td class="py-5">$<?php echo $bb['price'] ?></td>
+                                        <td class="py-5"><?php echo $cc['quantity'] ?></td>
+                                        <td class="py-5">$<?php echo $bb['price'] * $cc['quantity']; ?></td>
                                         <td></td>
                                         <td colspan="2">
-                                            <!-- Radio button 1 -->
+                                            <!-- Radio button for sizes -->
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="size" id="size1" value="S">
-                                                <label class="form-check-label" for="size1">
-                                                    S
-                                                </label>
+                                                <label class="form-check-label" for="size1">S</label>
                                             </div>
-
-                                            <!-- Radio button 2 -->
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="size" id="size2" value="M">
-                                                <label class="form-check-label" for="size2">
-                                                    M
-                                                </label>
+                                                <label class="form-check-label" for="size2">M</label>
                                             </div>
-
-                                            <!-- Radio button 3 -->
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="size" id="size3" value="XL">
-                                                <label class="form-check-label" for="size3">
-                                                    XL
-                                                </label>
+                                                <label class="form-check-label" for="size3">XL</label>
                                             </div>
-
-                                            <!-- Radio button 4 -->
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="size" id="size4" value="XXL">
-                                                <label class="form-check-label" for="size4">
-                                                    XXL
-                                                </label>
+                                                <label class="form-check-label" for="size4">XXL</label>
                                             </div>
+                                            <span id="size-error" style="color: red;"></span> <!-- Hiển thị lỗi size -->
                                         </td>
-
-
                                     </tr>
                                     <tr>
-                                        <td colspan="2">
+                                        <td colspan="7">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="payment_status" id="payment1" value="thanh toán khi nhận hàng">
-                                                <label class="form-check-label" for="payment1">
-                                                    Thanh toán khi nhận hàng
-                                                </label>
+                                                <label class="form-check-label" for="payment1">Thanh toán khi nhận hàng</label>
                                             </div>
-
-                                            <!-- Radio button 2 -->
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="payment_status" id="payment2" value="thanh toán trực tiếp">
-                                                <label class="form-check-label" for="payment2">
-                                                    Thanh toán trực tiếp
-                                                </label>
+                                                <label class="form-check-label" for="payment2">Thanh toán trực tiếp</label>
                                             </div>
+                                            <span id="payment-status-error" style="color: red;"></span> <!-- Hiển thị lỗi phương thức thanh toán -->
                                         </td>
                                     </tr>
-
-                                    <input type="hidden" name="total_amount" placeholder="total_amount" value="<?php echo $bb['price'] * $cc['quantity']; ?>">
-                                    <input type="hidden" name="delivery_status" placeholder="delivery_status" value="Đang chuẩn bị">
-                                    <input type="hidden" name="variant_id" placeholder="variant_id" value="<?php echo $bb['variant_id'] ?>">
-                                    <input type="hidden" name="quantity" placeholder="quantity" value="<?php echo $cc['quantity'] ?>">
-                                    <input type="hidden" name="price" placeholder="price" value="<?php echo $bb['price'] ?>">
-
                                 </tbody>
                             </table>
                         </div>
 
-
-                        <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                            <a href="?act=removeFromCart">
-                                <button name="btn_submit" class="btn btn-dark btn-lg rounded-pill px-4">Mua</button>
-
-                            </a>
+                        <div class=" f-4 text-center align-items-center justify-content-center pt-5">
+                            <button type="submit" name="btn_submit" class="btn-aa">Mua</button>
                         </div>
                     </div>
                 </div>
             </form>
+
+            <script>
+                function validateForm() {
+                    let isValid = true;
+
+                    // Reset previous errors
+                    document.getElementById("phone-error").innerText = "";
+                    document.getElementById("address-error").innerText = "";
+                    document.getElementById("size-error").innerText = "";
+                    document.getElementById("payment-status-error").innerText = "";
+
+                    // Validate phone
+                    let phone = document.getElementById("phone").value;
+                    let phoneRegex = /^[0-9]{10}$/; // Kiểm tra số điện thoại 10 chữ số
+                    if (!phone || !phoneRegex.test(phone)) {
+                        document.getElementById("phone-error").innerText = "Vui lòng nhập số điện thoại hợp lệ.";
+                        isValid = false;
+                    }
+
+                    // Validate address
+                    let address = document.getElementById("address").value;
+                    if (!address) {
+                        document.getElementById("address-error").innerText = "Vui lòng nhập địa chỉ.";
+                        isValid = false;
+                    }
+
+                    // Validate size selection
+                    let size = document.querySelector('input[name="size"]:checked');
+                    if (!size) {
+                        document.getElementById("size-error").innerText = "***";
+                        isValid = false;
+                    }
+
+                    // Validate payment method selection
+                    let paymentStatus = document.querySelector('input[name="payment_status"]:checked');
+                    if (!paymentStatus) {
+                        document.getElementById("payment-status-error").innerText = "Vui lòng chọn phương thức thanh toán.";
+                        isValid = false;
+                    }
+
+                    return isValid;
+                }
+            </script>
+
+
+
         </div>
     </div>
     <!-- Checkout Page End -->
