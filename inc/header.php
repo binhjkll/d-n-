@@ -1,3 +1,21 @@
+<style>
+    /* Tạo hiệu ứng hover cho các phần tử trong menu dropdown */
+    .dropdown-item {
+        color: #000000 !important;
+        /* Màu chữ mặc định */
+        transition: background-color 0.3s, color 0.3s;
+        /* Hiệu ứng chuyển màu */
+    }
+
+    /* Khi hover vào các phần tử trong dropdown */
+    .dropdown-item:hover {
+        background-color: #000;
+        /* Nền đen khi hover */
+        color: #fff !important;
+        /* Chữ trắng khi hover */
+    }
+</style>
+
 <?php
 session_start();
 if (isset($_SESSION['username'])) {
@@ -48,8 +66,8 @@ if (isset($_SESSION['username'])) {
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                            <a href="?act=cart" class="dropdown-item" style="color:#c18a75 !important">Cart</a>
-                            <a href="?act=userpro" class="dropdown-item" style="color:#c18a75 !important">Purchased order</a>
+                            <a href="?act=cart" class="dropdown-item">Cart</a>
+                            <a href="?act=userpro" class="dropdown-item">Purchased order</a>
                         </div>
                     </div>
                     <a href="contact.php" class="nav-item nav-link">Contact</a>

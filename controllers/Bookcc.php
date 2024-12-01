@@ -228,6 +228,7 @@ class Bookcc
             $password = $_POST['password'];
             $email = $_POST['email'];
             $phone = $_POST['phone'];
+            $address = $_POST['address'];
 
             $mBook = new Book();
 
@@ -283,6 +284,39 @@ class Bookcc
             unset($_SESSION["username"]);
         }
         header('location: ?act=login');
+    }
+    public function quenmk(){
+
+        $mBook = new Book();
+        $login = $mBook->login();
+        if (isset($_POST["btn_submit"])) {
+            $username = $_POST["username"];
+            $email = $_POST["email"];
+            $password = $_POST["password"];
+
+            $isUserFound = false; // Biến cờ để kiểm tra người dùng hợp lệ
+
+            // Duyệt qua danh sách người dùng (giả sử $login chứa danh sách người dùng từ database)
+            foreach ($login as $value) {
+                if ($username == $value->username && $email == $value->email) {
+                    $isUserFound = true;
+
+                    // Gọi hàm cập nhật mật khẩu
+                    $aa=$mBook->doimatkhau($username, $email, $password);
+                    break;
+                }
+            }
+
+            if ($isUserFound) {
+                echo "<script>alert('Đổi mật khẩu thành công!');</script>";
+                header('location:?act=login');
+                exit;
+            } else {
+                echo "<script>alert('Tên tài khoản hoặc email không đúng!');</script>";
+            }
+        }
+        include_once "views/admin/quenmk.php";
+
     }
 
 

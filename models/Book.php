@@ -241,6 +241,18 @@ class Book
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
+
+    public function doimatkhau($username, $email, $password)
+    {
+        // Câu lệnh SQL để cập nhật mật khẩu
+        $sql = "UPDATE `users` SET `password` = ? WHERE `username` = ? AND `email` = ?";
+
+        // Chuẩn bị và thực thi câu lệnh SQL
+        $this->connect->setQuery($sql);
+        return $this->connect->execute([$password, $username, $email]);
+    }
+
+
     // Hàm thêm sản phẩm, trả về product_id vừa tạo
     public function add($name, $description, $category_id)
     {

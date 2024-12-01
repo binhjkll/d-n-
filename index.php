@@ -29,6 +29,9 @@ switch ($bb) {
     case 'dangxuat':
         $aa->dangxuat();
         break;
+    case 'quenmk':
+        $aa->quenmk();
+        break;
 
     case 'binh':
         $aa->binh();
