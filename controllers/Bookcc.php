@@ -515,6 +515,8 @@ class Bookcc
     public function trangchu()
     {
         $mBook = new Book();
+        
+        $banners = $mBook->bannerShow();
         $shophtml = $mBook->getDM();
         $latestProducts = $mBook->getRandomProducts(6);
 
@@ -551,6 +553,22 @@ class Bookcc
             echo "Sản phẩm không tồn tại.";
             exit;
         }
+
+        if(isset($_POST["gui"])){
+            $comment = $_POST["noidung"] ;
+            $product_id = $_POST["product_id"];
+            $user_id = $_POST["user_id"];
+            $created_at = date("Y-m-d");
+            $mBook = new Book();
+            $mBook -> insert_binhluan(null, $product_id, $user_id, $comment, $created_at );
+            
+        }
+
+        $mBook = new Book();
+        $listbluan = $mBook ->  binhluan_theo_idsp($_GET['id']);
+
+        $user = $mBook -> users();
+
         // Nếu variant_id được truyền, lấy thông tin variant tương ứng
         if ($variantId > 0) {
             foreach ($product['variants'] as $variant) {
@@ -739,6 +757,7 @@ class Bookcc
 
 
 
+<<<<<<< HEAD
    
 
     public function binhluan()
@@ -749,33 +768,108 @@ class Bookcc
             return;
         }
 
+=======
+    public function editbook()
+    {
+        // Lấy product_id và variant_id từ URL
+        $product_id = $_GET['id'];
+        $variant_id = $_GET['vid'];
+
+        // Lấy thông tin sản phẩm và biến thể từ CSDL
         $mBook = new Book();
+        $idBook = $mBook->getid($product_id); // Lấy thông tin sản phẩm
+        $iddBook = $mBook->getvid($variant_id); // Lấy thông tin biến thể
+        $ccc = $mBook->categories(); // Lấy danh sách danh mục
 
-        // Nhận dữ liệu từ form
-        $product_id = (int)$_POST['product_id']; // ID sản phẩm
-        $comment_text = trim($_POST['comment_text']); // Nội dung bình luận
-        $rating = (int)$_POST['rating']; // Đánh giá (rating)
-        $user_id = (int)$_SESSION['user_id']; // Lấy user_id từ session (người dùng đã đăng nhập)
-
-        // Kiểm tra dữ liệu đầu vào
-        if (empty($comment_text) || strlen($comment_text) < 3) {
-            echo "Bình luận phải có ít nhất 3 ký tự!";
-            return;
-        }
-        if ($rating <= 0 || $rating > 5) {
-            echo "Vui lòng nhập đánh giá hợp lệ (1 đến 5 sao)!";
-            return;
+        // Kiểm tra xem thông tin sản phẩm và biến thể có hợp lệ không
+        if (!$idBook || !$iddBook) {
+            echo "Không tìm thấy sản phẩm hoặc biến thể với ID: $product_id và $variant_id.";
+            return; // Dừng thực thi nếu không có thông tin hợp lệ
         }
 
-        // Thêm bình luận vào CSDL
-        if ($mBook->addReview($product_id, $user_id, $rating, $comment_text)) {
-            header("Location: product.php?id=$product_id"); // Chuyển hướng về trang chi tiết sản phẩm
-            exit();
-        } else {
-            error_log("Lỗi khi thêm bình luận: product_id=$product_id, user_id=$user_id, rating=$rating");
-            echo "Lỗi khi thêm bình luận!";
+        if (isset($_POST['btn_submit'])) {
+            // Lấy thông tin từ form
+            $name = $_POST['name'];
+            $description = $_POST['description'];
+            $category_id = $_POST['category_id'];
+            $price = $_POST['price'];
+            $stock_quantity = $_POST['stock_quantity'];
+
+            // Xử lý ảnh sản phẩm
+            $product_img = $iddBook['product_img']; // Mặc định giữ ảnh cũ nếu không có ảnh mới
+
+            if (!empty($_FILES['product_img']['name'])) {
+                $target_dir = "images/";
+                $name_img = time() . '_' . basename($_FILES['product_img']['name']);
+                $product_img = $target_dir . $name_img;
+
+                // Kiểm tra loại file trước khi tải lên
+                $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+                if (in_array($_FILES['product_img']['type'], $allowed_types)) {
+                    move_uploaded_file($_FILES['product_img']['tmp_name'], $product_img);
+                } else {
+                    echo "Chỉ chấp nhận các định dạng ảnh JPEG, PNG, GIF.";
+                    exit;
+                }
+            }
+
+            // Cập nhật bảng product_variants
+            $updateVariant = $mBook->updatevariants(
+                $variant_id,
+                $product_id,
+                $price,
+                $stock_quantity,
+                $product_img
+            );
+
+            // Cập nhật bảng products
+            $updateProduct = $mBook->update(
+                $variant_id,
+                $name,
+                $description,
+                $category_id
+            );
+
+            // Kiểm tra kết quả cập nhật
+            if (!$updateVariant && !$updateProduct) {
+                header('Location: index.php');
+                exit;
+            } else {
+                echo "Đã xảy ra lỗi khi cập nhật sản phẩm.";
+            }
         }
-        include_once "views/admin/binhluan.php";
+
+        // Kiểm tra và truyền dữ liệu vào view
+        if (isset($idBook, $iddBook, $ccc)) {
+            $data = [
+                'idBook' => $idBook,       // Thông tin sản phẩm
+                'iddBook' => $iddBook,     // Thông tin biến thể
+                'categories' => $ccc       // Danh sách danh mục
+            ];
+            extract($data); // Tách biến để sử dụng trực tiếp trong view
+            include_once "views/admin/edit.php";
+        }
+    }
+
+    public function binhluan(){
+>>>>>>> 0eaa651cb4380c0d2a7fae9ac8a67251b663ea01
+        $mBook = new Book();
+        $list = $mBook->all_binhluan();
+        require_once "../d-n-/views/admin/binhluan.php";
+    }
+
+    public function deleteBinhluan(){
+        if(isset($_GET['review_id'])){
+            $review_id = $_GET['review_id'];
+            $mBook = new Book();
+            $deleteBL = $mBook->deleteBluan($review_id);
+
+
+
+            if(!$deleteBL){
+                header("Location: ?act=binhluan");
+            }
+        }
     }
 
 

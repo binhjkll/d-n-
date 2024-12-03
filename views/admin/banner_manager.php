@@ -40,59 +40,31 @@
         .table td {
             text-align: center;
         }
+
+        .aa {
+            border: none;
+            background-color: white;
+            height: 30px;
+
+        }
+
+        .bb {
+            color: blue;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Left Panel -->
+
     <!doctype html>
-    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-    <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-    <!--[if gt IE 8]><!-->
-    <html class="no-js" lang=""> <!--<![endif]-->
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Ela Admin - HTML5 Admin Template</title>
-        <meta name="description" content="Ela Admin - HTML5 Admin Template">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <html class="no-js" lang="">
 
-        <link rel="apple-touch-icon" href="https://i.imgur.com/QRAUqs9.png">
-        <link rel="shortcut icon" href="https://i.imgur.com/QRAUqs9.png">
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css">
-        <link rel="stylesheet" href="assets/css/cs-skin-elastic.css">
-        <link rel="stylesheet" href="assets/css/style.css">
-        <link href="https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/jqvmap@1.5.1/dist/jqvmap.min.css" rel="stylesheet">
-        <style>
-            .table {
-                text-align: center;
-                margin: auto;
-            }
-
-            .table th,
-            .table td {
-                vertical-align: middle;
-            }
-
-            .table th,
-            .table td {
-                text-align: center;
-            }
-        </style>
-    </head>
 
 
     <body>
-      <?php require "./views/component/cuthtml.php" ?>
+    <?php require "./views/component/cuthtml.php" ?>
 
         <!-- /#header -->
         <!-- Breadcrumbs-->
@@ -110,7 +82,7 @@
                         <div class="page-header float-right">
                             <div class="page-title">
                                 <ol class="breadcrumb text-right">
-                                    <li><a href="#"></a>Binh luan</li>
+                                    <li><a href="#"></a>Sản phẩm</li>
                                 </ol>
                             </div>
                         </div>
@@ -120,45 +92,49 @@
         </div>
 
         <!-- Bảng hiển thị sản phẩm -->
-        <div class="content mt-3">
-            <div class="container-fluid">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
+        <div class="container mt-4">
+    <a href="?act=add_banner">
+        <button class="btn btn-success mb-3">Thêm mới banner</button>
+    </a>
+    <form method="post" action="">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Banner ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Link</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($banner_manager as $banner_managers): ?>
+                    <tr>
+                        <td><?php echo $banner_managers->banner_id; ?></td>
+                        <td><img src="<?php echo $banner_managers->image; ?>" alt="Banner Image" style="width: 100px; height: auto;"></td>
+                        <td><?php echo $banner_managers->name; ?></td>
+                        <td><?php echo $banner_managers->link; ?></td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="?act=delete_banner&id=<?php echo $banner_managers->banner_id; ?>" class="btn btn-danger btn-sm">Xóa</a>
+                                <a href="?act=update_banner&id=<?php echo $banner_managers->banner_id; ?>" class="btn btn-primary btn-sm">Sửa</a>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="show_is_<?php echo $banner_managers->banner_id; ?>" value="1">
+                                <label class="form-check-label">Show</label>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </form>
+</div>
 
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Review_id</th>
-                                <th>Product_id</th>
-                                <th>User_id</th>
-                                <th>Comment</th>
-                                <th>Created_at</th>
-                                <th>Action</th>
 
-                            </tr>
-                        </thead>
-                        <tbody border="1">
-                           
-                                <?php foreach ($list as $value) {?>
-                                    <tr>
-                                    <td><?php echo $value->review_id?></td>
-                                    <td><?php echo $value->product_id ?></td>
-                                    <td><?php echo $value->user_id ?></td>
-                                    <td><?php echo $value->comment ?></td>
-                                    <td><?php echo $value->created_at ?></td>
-                                    <td>
-                                    <button onClick="if(confirm('Bạn có chắc muốn xóa?')) window.location.href='?act=deleteBinhluan&review_id=<?php echo $value->review_id?>'"
-                                            class="btn btn-danger btn-sm">
-                                            <i class="fa fa-trash"></i> Xóa
-                                        </button>
-                                    </td>
-                                    </tr>
-                                <?php }?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
+        
+                   
         <!-- /.content -->
         <div class="clearfix"></div>
         <!-- Footer -->
@@ -198,3 +174,11 @@
 </body>
 
 </html>
+<script>
+    function confirmDeleteBook(deleUrl) {
+        if (confirm('Are you sure you want to delete')) {
+            document.location = deleUrl;
+        }
+    }
+    document.title = 'Admin';
+</script>

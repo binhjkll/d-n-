@@ -408,16 +408,47 @@ class Book
         return $this->connect->loadData();
     }
 
-    public function addReview($product_id, $user_id, $rating, $comment_text)
-    {
-        $sql = "INSERT INTO `reviews` (product_id, user_id, rating, comment, created_at) VALUES (?, ?, ?, ?, NOW())";
-        try {
-            $this->connect->setQuery($sql);
-            return $this->connect->loadData([$product_id, $user_id, $rating, $comment_text]);
-        } catch (Exception $e) {
-            error_log("SQL Error: " . $e->getMessage());
-            return false;
-        }
+    // public function addReview($product_id, $user_id, $rating, $comment_text)
+    // {
+    //     $sql = "INSERT INTO `reviews` (product_id, user_id, rating, comment, created_at) VALUES (?, ?, ?, ?, NOW())";
+    //     try {
+    //         $this->connect->setQuery($sql);
+    //         return $this->connect->loadData([$product_id, $user_id, $rating, $comment_text]);
+    //     } catch (Exception $e) {
+    //         error_log("SQL Error: " . $e->getMessage());
+    //         return false;
+    //     }
+    // }
+
+    public function insert_binhluan($review_id, $product_id, $user_id, $comment, $created_at ){
+        $sql = "INSERT INTO `reviews` VALUES (?,?,?,?,?)";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$review_id, $product_id, $user_id, $comment, $created_at]);
+    }
+    public function binhluan_theo_idsp($product_id){
+        $sql = "SELECT * FROM `reviews` where product_id = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$product_id]);
+    }
+    public function all_binhluan(){
+        $sql = "SELECT * FROM `reviews`";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData();
+    }
+    public function getIdbl($review_id){
+        $sql = "SELECT * FROM `reviews` WHERE review_id = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$review_id],false);
+    }
+    public function users(){
+        $sql = "SELECT * FROM `users`";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData();
+    }
+    public function deleteBluan($review_id){
+        $sql = "DELETE FROM `reviews` WHERE review_id = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$review_id],false);
     }
 
     public function checkout($order_id, $user_id, $product_id, $quantity, $added_at, $discount_id)
