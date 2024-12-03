@@ -93,6 +93,7 @@ class Bookcc
             exit;
         }
 
+        // bình luận
         if(isset($_POST["gui"])){
             $comment = $_POST["noidung"] ;
             $product_id = $_POST["product_id"];

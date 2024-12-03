@@ -420,6 +420,8 @@ class Book
     //     }
     // }
 
+
+    // bình luận
     public function insert_binhluan($review_id, $product_id, $user_id, $comment, $created_at ){
         $sql = "INSERT INTO `reviews` VALUES (?,?,?,?,?)";
         $this->connect->setQuery($sql);
@@ -450,7 +452,10 @@ class Book
         $this->connect->setQuery($sql);
         return $this->connect->loadData([$review_id],false);
     }
+    // end binh luan
 
+
+    
     public function checkout($order_id, $user_id, $product_id, $quantity, $added_at, $discount_id)
     {
         $sql = "INSERT INTO `orders`(`order_id`, `user_id`, `product_id`, `quantity`, `added_at`, `discount_id`) VALUES (?,?,?,?,?,?)";
