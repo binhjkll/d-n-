@@ -152,35 +152,42 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (isset($_POST["btn_submit"])) {
-    $username = $_POST["username"];
-    $password = $_POST["password"];
+  $username = $_POST["username"];
+  $password = $_POST["password"];
 
-    $isLoginSuccessful = false; // Biến cờ để kiểm tra đăng nhập thành công
-    $userId = null; // Biến để lưu user_id khi đăng nhập thành công
+  $isLoginSuccessful = false; // Biến cờ để kiểm tra đăng nhập thành công
+  $user_id = null; // Biến để lưu user_id khi đăng nhập thành công
+  $phone = null; // Biến để lưu user_id khi đăng nhập thành công
+  $address = null; // Biến để lưu user_id khi đăng nhập thành công
 
-    foreach ($login as $value) {
-        if ($username == $value->username && $password == $value->password) {
-            $isLoginSuccessful = true;
-            $userId = $value->user_id; // Lưu user_id từ database
-            if ($value->role == "admin") {
-                $_SESSION['username'] = $username;
-                $_SESSION['user_id'] = $userId; // Lưu user_id vào session
-                header('location:?act=listbook');
-                exit;
-            }
-            break;
-        }
-    }
-
-    // Kiểm tra biến cờ sau vòng lặp
-    if ($isLoginSuccessful) {
-        $_SESSION['username'] = $username;
-        $_SESSION['user_id'] = $userId; // Lưu user_id vào session
-        header('location:?act=shophtml');
+  foreach ($login as $value) {
+    if ($username == $value->username && $password == $value->password) {
+      $isLoginSuccessful = true;
+      $userId = $value->user_id; // Lưu user_id từ database
+      $phone = $value->phone; // Lưu user_id từ database
+      $address = $value->address; // Lưu user_id từ database
+      if ($value->role == "admin") {
+        $_SESSION['username'] = $username;  // Lưu tên người dùng
+        $_SESSION['user_id'] = $user_id;     // Lưu user_id vào session
+        header('location:?act=listbook');
         exit;
-    } else {
-        echo "<script>alert('Tài khoản hoặc mật khẩu của bạn sai!')</script>";
+      }
+
+      break;
     }
+  }
+
+  // Kiểm tra biến cờ sau vòng lặp
+  if ($isLoginSuccessful) {
+    $_SESSION['username'] = $username;
+    $_SESSION['user_id'] = $userId; // Lưu user_id vào session
+    $_SESSION['phone'] = $phone; // Lưu user_id vào session
+    $_SESSION['address'] = $address; // Lưu user_id vào session
+    header('location:?act=shophtml');
+    exit;
+  } else {
+    echo "<script>alert('Tài khoản hoặc mật khẩu của bạn sai!')</script>";
+  }
 }
 ?>
 
@@ -206,18 +213,25 @@ if (isset($_POST["btn_submit"])) {
     <h2>Đăng nhập</h2>
     <form action="" method="post" id="login-form">
       <div class="form-group">
-        <label for="name">Tên tài khoản</label>
-        <input type="text" name="username">
+        <label for="username">Tên tài khoản</label>
+        <input type="text" name="username" id="username" required>
+        <div id="username-error" style="color: red;"></div> <!-- Lỗi cho username -->
       </div>
       <div class="form-group">
         <label for="password">Mật khẩu</label>
-        <input type="password" name="password">
+        <input type="password" name="password" id="password" required>
+        <div id="password-error" style="color: red;"></div> <!-- Lỗi cho password -->
       </div>
       <button type="submit" name="btn_submit">Đăng nhập</button>
     </form>
 
+
     <div class="switch">
       <p>Chưa có tài khoản? <a href="?act=register">Đăng ký</a></p>
+    </div>
+
+    <div class="switch">
+      <p><a href="?act=quenmk">Quên mật khẩu?</a></p>
     </div>
   </div>
 

@@ -125,6 +125,32 @@ class ConnectDatabase
             return false;
         }
     }
+    public function bind($params = [])
+    {
+        try {
+            // Kiểm tra nếu có câu truy vấn đã được chuẩn bị
+            if (!$this->sta) {
+                throw new Exception("Query chưa được chuẩn bị. Hãy gọi setQuery() trước.");
+            }
+
+            // Duyệt qua các tham số và bind chúng vào câu truy vấn
+            foreach ($params as $key => $value) {
+                $type = PDO::PARAM_STR; // Mặc định là chuỗi
+                if (is_int($value)) {
+                    $type = PDO::PARAM_INT;
+                } elseif (is_bool($value)) {
+                    $type = PDO::PARAM_BOOL;
+                } elseif (is_null($value)) {
+                    $type = PDO::PARAM_NULL;
+                }
+
+                // Bind giá trị theo kiểu dữ liệu xác định
+                $this->sta->bindValue($key, $value, $type);
+            }
+        } catch (PDOException $e) {
+            echo "Lỗi khi bind dữ liệu: " . $e->getMessage();
+        }
+    }
 
 
 

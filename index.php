@@ -13,7 +13,7 @@ switch ($bb) {
     case 'list':
         $aa->listbook();
         break;
-    
+
     case 'edit':
         $aa->editbook();
         break;
@@ -28,6 +28,9 @@ switch ($bb) {
         break;
     case 'dangxuat':
         $aa->dangxuat();
+        break;
+    case 'quenmk':
+        $aa->quenmk();
         break;
 
     case 'binh':
@@ -54,7 +57,9 @@ switch ($bb) {
     case 'productDetail':
         $aa->productDetail();
         break;
-               
+    case 'checkout':
+        $aa->checkout();
+        break;
     case 'addToCart':
         $aa->addToCart();
         break;
@@ -78,6 +83,23 @@ switch ($bb) {
         $aa->deleteBinhluan();
         break;
         
+    case 'orders':
+        $aa->orders();
+        break;
+    case 'ordersall':
+        $aa->ordersall();
+        break;
+    case 'quanlyorder':
+        $aa->quanlyorder();
+        break;
+    case 'userpro':
+        $aa->userpro();
+        break;
+    case 'chitietpro':
+        $aa->chitietpro();
+        break;
+
+
     default:
         $aa->listbook();
         break;

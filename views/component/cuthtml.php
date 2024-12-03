@@ -15,7 +15,7 @@
                             <a href="?act=listuser"><i class="menu-icon fa fa-users"></i>Quản lý người dùng</a>
                         </li>
                         <li>
-                            <a href="order-management.html"><i class="menu-icon fa fa-truck"></i>Quản lý đơn hàng</a>
+                            <a href="?act=quanlyorder"><i class="menu-icon fa fa-truck"></i>Quản lý đơn hàng</a>
                         </li>
                         <li>
                             <a href="?act=binhluan"><i class="menu-icon fa fa-comments"></i>Quản lý bình luận</a>

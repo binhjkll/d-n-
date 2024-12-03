@@ -28,13 +28,7 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
-<style>
-    table td, table th {
-    text-align: center;
-    vertical-align: middle;  /* Đảm bảo nội dung được căn giữa theo chiều dọc */
-}
 
-</style>
 <body>
 
     <!-- Spinner Start -->
@@ -73,96 +67,62 @@
 
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Cart</h1>
+        <h1 class="text-center text-white display-6">Order details</h1>
         <ol class="breadcrumb justify-content-center mb-0">
             <li class="breadcrumb-item"><a href="?act=trangchu">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Cart</li>
+            <li class="breadcrumb-item"><a href="?act=userpro">Purchased order</a></li>
+            <li class="breadcrumb-item active text-white">Order details</li>
         </ol>
     </div>
     <!-- Single Page Header End -->
 
 
-    <!-- Cart Page Start -->
+    <!-- Checkout Page Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
-            <div class="table-responsive">
-                <?php
-                $totalAll = 0; // Biến lưu tổng tiền tất cả sản phẩm
-                if (!empty($cartItems)) { ?>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Hình ảnh</th>
-                                <th>Sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Giá</th>
-                                <th>Tổng cộng</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($cartItems as $item) {
-                                $totalAll += $item->total_price;
+            <h1 class="mb-4">Order details</h1>
+            <form action="" method="post">
+                <table class="table table-striped table-bordered text-center rounded" style="overflow: hidden;">
+                    <thead class="thead-dark" style="background-color: #f8f9fa; color: #333; border-radius: 12px;">
+                        <tr>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Order Item ID</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Quantity</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Price</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Total Price</th>
+                            <th class="text-center" style="width: 10%; font-weight: bold;">Size</th>
+                            <th class="text-center" style="width: 20%; font-weight: bold;">Image</th>
+                        </tr>
+                    </thead>
 
-                            ?>
-
+                    <tbody>
+                        <?php if (!empty($listbook)): ?>
+                            <?php foreach ($listbook as $item): ?>
                                 <tr>
-                                    <td><img src="<?php echo htmlspecialchars($item->product_img); ?>" alt="Product" style="width: 100px;"> </td>
-                                    <td><?php echo htmlspecialchars($item->product_name); ?></td>
-                                    <td>
-                                        <a href="index.php?act=updateCartQuantity&cart_item_id=<?php echo htmlspecialchars($item->cart_item_id); ?>&quantity=<?php echo $item->quantity - 1; ?>" class="btn btn-warning btn-sm" onclick="return <?php echo $item->quantity > 1 ? 'true' : 'false'; ?>;">-</a>
-                                        <?php echo htmlspecialchars($item->quantity); ?>
-                                        <a href="index.php?act=updateCartQuantity&cart_item_id=<?php echo htmlspecialchars($item->cart_item_id); ?>&quantity=<?php echo $item->quantity + 1; ?>" class="btn btn-success btn-sm">+</a>
-                                    </td>
-                                    <td><?php echo number_format((float)$item->price); ?> VND</td>
-                                    <td><?php echo number_format((float)$item->total_price); ?> VND</td>
-                                    <td>
-                                        <a href="index.php?act=removeFromCart&cart_item_id=<?php echo htmlspecialchars($item->cart_item_id); ?>"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
-                                            Xóa
-                                        </a>
-                                        <a href="?act=orders&id=<?php echo $item->product_id ?>&vid=<?php echo $item->variant_id ?>&cid=<?php echo $item->cart_item_id ?>&cart_item_id=<?php echo htmlspecialchars($item->cart_item_id); ?>" class="btn btn-dark btn-sm">Mua</a>
+                                    <td class="text-center align-middle"><?php echo $item->order_item_id; ?></td>
+                                    <td class="text-center align-middle"><?php echo $item->quantity; ?></td>
+                                    <td class="text-center align-middle">$<?php echo number_format($item->order_item_price, 2); ?></td>
+                                    <td class="text-center align-middle">$<?php echo number_format($item->total_item_price, 2); ?></td>
+                                    <td class="text-center align-middle"><?php echo $item->size; ?></td>
+                                    <td class="text-center align-middle">
+                                        <img src="<?php echo $item->product_img; ?>" alt="Product Image" style="width: 50px; height: 50px; border-radius: 8px; border: 1px solid #ccc;">
                                     </td>
                                 </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td class="text-center align-middle" colspan="6">No items found for this order.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
 
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                    <div class="cart-actions">
-                        <a href="?act=shophtml" class="btn btn-dark">Tiếp tục mua hàng</a>
-                        <a href="index.php?act=clearCart" onclick="return confirm('Bạn có chắc là muốn xóa hết không?');" class="btn btn-danger">Xóa toàn bộ giỏ hàng</a>
 
-                    </div>
 
-            </div>
-
-            <div class="row g-4 justify-content-end">
-                <div class="col-8"></div>
-                <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                    <div class="bg-light rounded">
-                        <div class="p-4">
-                            <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
-                        </div>
-                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                            <h5 class="mb-0 ps-4 me-4">Total</h5>
-                            <p class="mb-0 pe-4"><?php echo number_format((float)$totalAll); ?> VND</p>
-                        </div>
-                        <a href="?act=ordersall">
-
-                            <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button" name="btn_submit">Proceed Checkout</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        <?php } else { ?>
-            <p>Giỏ hàng của bạn đang trống.</p>
-            <a href="?act=shophtml" class="btn border-secondary rounded-pill px-4 py-3 text-primary">Tiếp tục mua hàng</a>
-        <?php } ?>
+            </form>
         </div>
     </div>
-    <!-- Cart Page End -->
+    <!-- Checkout Page End -->
 
 
     <!-- Footer Start -->
