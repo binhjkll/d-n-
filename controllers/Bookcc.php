@@ -2,50 +2,209 @@
 
 class Bookcc
 {
+
     public function danhmuc()
     {
         $mDm = new Book();
         $danhmuc = $mDm->getDM();
-        include_once "views/danhmuc.php";
+        include_once "views/admin/danhmuc.php";
     }
     public function shophtml()
     {
         $mBook = new Book();
         $shophtml = $mBook->getDM();
-        $listpro = $mBook->getall();
+
+        if (isset($_GET['keyword']) && !empty(trim($_GET['keyword']))) {
+            // Kiểm tra từ khóa tìm kiếm
+            $keyword = trim($_GET['keyword']); // Lấy từ khóa tìm kiếm
+            $listpro = $mBook->searchProducts($keyword); // Gọi hàm tìm kiếm sản phẩm
+        } elseif (isset($_GET['category_id'])) {
+            // Lấy sản phẩm theo danh mục
+            $category_id = intval($_GET['category_id']); // Lấy ID danh mục
+            $listpro = $mBook->getProductsByCategory($category_id); // Gọi hàm lấy sản phẩm theo danh mục
+        } else {
+            // Nếu không có tìm kiếm hoặc danh mục, lấy tất cả sản phẩm
+            $listpro = $mBook->getall();
+        }
+        // Loại bỏ các sản phẩm trùng product_id
+        $uniqueProducts = [];
+        foreach ($listpro as $product) {
+            if (!isset($uniqueProducts[$product->product_id])) {
+                $uniqueProducts[$product->product_id] = $product;
+            }
+        }
+
+        // Truyền danh sách sản phẩm không trùng lặp sang view
+        $listpro = array_values($uniqueProducts);
+
+        // Load view hiển thị sản phẩm
         require_once "views/fruitables/shop/shop.php";
     }
-    public function productDetail() {
+
+    public function trangchu()
+    {
+        $mBook = new Book();
+        $shophtml = $mBook->getDM();
+        $latestProducts = $mBook->getRandomProducts(6);
+        
+        if (isset($_GET['category_id'])) {
+            $category_id = intval($_GET['category_id']); // Lấy ID danh mục
+            $listpro = $mBook->getProductsByCategory($category_id); // Lấy sản phẩm theo danh mục
+        } else {
+            $listpro = $mBook->getall(); // Nếu không có danh mục, lấy tất cả sản phẩm
+        }
+        // Loại bỏ các sản phẩm trùng product_id
+        $uniqueProducts = [];
+        foreach ($listpro as $product) {
+            if (!isset($uniqueProducts[$product->product_id])) {
+                $uniqueProducts[$product->product_id] = $product;
+            }
+        }
+        $latestProducts = array_values($uniqueProducts);
+
+        require_once "views/fruitables/shop/trangchu.php";
+    }
+    public function getProductsByCategoryAjax()
+    {
+        if (isset($_POST['category_id'])) {
+            $category_id = intval($_POST['category_id']);
+            $mBook = new Book();
+            $products = $mBook->getProductsByCategory($category_id); // Lấy sản phẩm theo danh mục
+            echo json_encode($products); // Trả về JSON
+        } else {
+            echo json_encode([]);
+        }
+    }
+    public function productDetail()
+    {
         $mBook = new Book();
         $shophtml = $mBook->getDM();
         // Lấy `product_id` từ URL
         $productId = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    
+
         // Lấy chi tiết sản phẩm từ Model
         $product = $mBook->getProductById($productId);
-    
+
         // Kiểm tra nếu sản phẩm không tồn tại
         if (!$product) {
             echo "Sản phẩm không tồn tại.";
             exit;
         }
-    
+
+        if(isset($_POST["gui"])){
+            $comment = $_POST["noidung"] ;
+            $product_id = $_POST["product_id"];
+            $user_id = $_POST["user_id"];
+            // $created_at = date("y-m-d");
+            $created_at = date("Y-m-d");
+            $mBook = new Book();
+            $mBook -> insert_binhluan(null, $product_id, $user_id, $comment, $created_at );
+            
+        }
+
+        $mBook = new Book();
+        $listbluan = $mBook ->  binhluan_theo_idsp($_GET['id']);
+
+        $user = $mBook -> users();
+
+
         // Gọi view chi tiết sản phẩm
         require_once "views/fruitables/shop/shop-detail.php";
     }
-    
+
     public function listbook()
     {
         $mBook = new Book();
         $listbook = $mBook->getall();
-        include_once "views/list.php";
+        include_once "views/admin/list.php";
     }
+    //Phần giỏ hàng
+    public function addToCart()
+    {
+        session_start();
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: ?act=login"); // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
+        exit;
+    }
+
+    $userId = $_SESSION['user_id']; // Lấy user_id từ session
+        $productId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $variantId = isset($_GET['variant_id']) ? intval($_GET['variant_id']) : 0; // Lấy variant_id từ URL (nếu cần)
+        $quantity = isset($_GET['quantity']) ? intval($_GET['quantity']) : 1;
+
+        $mBook = new Book();
+
+        $mBook->addToCart($userId, $productId, $quantity, $variantId);
+        if (isset($_GET['redirect']) && $_GET['redirect'] === 'cart') {
+            header("Location: index.php?act=cart");
+            exit;
+        } else {
+            header("Location: index.php?act=shophtml");
+            exit;
+        }
+        exit;
+    }
+
+    public function cart()
+    {
+        session_start(); // Bắt đầu session để kiểm tra thông tin đăng nhập
+
+    if (!isset($_SESSION['username'])) {
+        // Nếu người dùng chưa đăng nhập, hiển thị thông báo và chuyển hướng
+        $_SESSION['error_message'] = "Bạn cần đăng nhập để xem giỏ hàng.";
+        header("Location: ?act=login"); // Chuyển hướng đến trang đăng nhập
+        exit;
+    }
+        $userId = $_SESSION['user_id']; // Lấy user_id từ session
+        $mBook = new Book();
+        $cartItems = $mBook->getCartItems($userId);
+
+
+
+        include_once __DIR__ . "/../views/fruitables/shop/cart.php";
+    }
+
+    public function clearCart()
+    {
+        session_start(); // Bắt đầu session để kiểm tra thông tin đăng nhập
+
+        $userId = $_SESSION['user_id']; // Lấy user_id từ session
+        $mBook = new Book();
+        $mBook->clearCart($userId);
+        header("Location: index.php?act=cart");
+        exit;
+    }
+    public function removeFromCart()
+    {
+        $cartItemId = isset($_GET['cart_item_id']) ? intval($_GET['cart_item_id']) : 0;
+        if ($cartItemId > 0) {
+            $mBook = new Book();
+            $mBook->removeCartItem($cartItemId);
+        }
+        header("Location: index.php?act=cart");
+        exit;
+    }
+    public function updateCartQuantity()
+{
+    $cartItemId = isset($_GET['cart_item_id']) ? intval($_GET['cart_item_id']) : 0;
+    $quantity = isset($_GET['quantity']) ? intval($_GET['quantity']) : 0;
+
+    if ($cartItemId > 0 && $quantity > 0) {
+        $mBook = new Book();
+        $mBook->updateCartItemQuantity($cartItemId, $quantity);
+    }
+
+    header("Location: index.php?act=cart");
+    exit;
+}
+
+    //end
 
     public function listuser()
     {
         $mBook = new Book();
         $login = $mBook->login();
-        include_once "views/user.php";
+        include_once "views/admin/user.php";
     }
 
     public function deletebook()
@@ -73,15 +232,18 @@ class Bookcc
             $password = $_POST['password'];
             $email = $_POST['email'];
             $phone = $_POST['phone'];
-            $address = $_POST['address'];
-
-
-            // echo "<pre>";
-            // print_r($_POST);
-            // print_r($_FILES);
-            // die;
 
             $mBook = new Book();
+
+            // Kiểm tra xem username, email hoặc phone đã tồn tại chưa
+            if ($mBook->isExistingUser($username, $email, $phone)) {
+                $error_message = "Tài khoản, email hoặc sđt đã tồn tại";
+
+                include_once "views/admin/dangli.php";
+                die; // Dừng lại để không thực hiện đăng ký
+            }
+
+            // Thực hiện đăng ký nếu không trùng lặp
             $addBook = $mBook->register(
                 null,
                 $username,
@@ -91,29 +253,38 @@ class Bookcc
                 $address,
                 $role
             );
+
             if (!$addBook) {
-                header('location:?act=login');
+                // Nếu thêm thành công, chuyển hướng tới trang đăng nhập
+                $ddd = "Đăng ký thành công";
+                header('Location: ?act=login');
+                exit;
             }
+        } else {
+            include_once "views/admin/dangli.php";
         }
-        // include_once "views/dangli.php";
-        include_once "views/dangnhap.php";
     }
+
     public function login()
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $mBook = new Book();
         $login = $mBook->login();
 
         if (!$login) {
             header('location:index.php');
         }
-        include_once "views/dangnhap.php";
+        include_once "views/admin/dangnhap.php";
     }
     public function dangxuat()
     {
         session_start();
 
-        if (isset($_SESSION["user"])) {
-            unset($_SESSION["user"]);
+        if (isset($_SESSION["username"])) {
+            unset($_SESSION["username"]);
         }
         header('location: ?act=login');
     }
@@ -172,7 +343,7 @@ class Bookcc
         $ccc = $mBook->categories();
 
         // Gọi giao diện
-        include_once "views/binh.php";
+        include_once "views/admin/binh.php";
     }
     public function addDM()
     {
@@ -184,7 +355,7 @@ class Bookcc
             header('Location: index.php?act=danhmuc');
             exit();
         }
-        include_once "views/add-category.php";
+        include_once "views/admin/add-category.php";
     }
     public function editDM()
     {
@@ -220,7 +391,7 @@ class Bookcc
             }
 
             // Hiển thị view với thông tin danh mục
-            include_once 'views/edit-category.php';
+            include_once 'views/admin/edit-category.php';
         } else {
             echo "Thiếu ID danh mục để chỉnh sửa!";
             exit();
@@ -330,45 +501,27 @@ class Bookcc
                 'categories' => $ccc       // Danh sách danh mục
             ];
             extract($data); // Tách biến để sử dụng trực tiếp trong view
-            include_once "views/edit.php";
+            include_once "views/admin/edit.php";
         }
     }
 
-
-    public function binhluan()
-    {
-        // Kiểm tra dữ liệu từ form và session
-        if (!isset($_POST['product_id'], $_POST['comment_text'], $_POST['rating'], $_SESSION['user_id'])) {
-            echo "Dữ liệu không hợp lệ hoặc bạn chưa đăng nhập!";
-            return;
-        }
-
+    public function binhluan(){
         $mBook = new Book();
+        $list = $mBook->all_binhluan();
+        require_once "../d-n-/views/admin/binhluan.php";
+    }
 
-        // Nhận dữ liệu từ form
-        $product_id = (int)$_POST['product_id']; // ID sản phẩm
-        $comment_text = trim($_POST['comment_text']); // Nội dung bình luận
-        $rating = (int)$_POST['rating']; // Đánh giá (rating)
-        $user_id = (int)$_SESSION['user_id']; // Lấy user_id từ session (người dùng đã đăng nhập)
+    public function deleteBinhluan(){
+        if(isset($_GET['review_id'])){
+            $review_id = $_GET['review_id'];
+            $mBook = new Book();
+            $deleteBL = $mBook->deleteBluan($review_id);
 
-        // Kiểm tra dữ liệu đầu vào
-        if (empty($comment_text) || strlen($comment_text) < 3) {
-            echo "Bình luận phải có ít nhất 3 ký tự!";
-            return;
-        }
-        if ($rating <= 0 || $rating > 5) {
-            echo "Vui lòng nhập đánh giá hợp lệ (1 đến 5 sao)!";
-            return;
-        }
 
-        // Thêm bình luận vào CSDL
-        if ($mBook->addReview($product_id, $user_id, $rating, $comment_text)) {
-            header("Location: product.php?id=$product_id"); // Chuyển hướng về trang chi tiết sản phẩm
-            exit();
-        } else {
-            error_log("Lỗi khi thêm bình luận: product_id=$product_id, user_id=$user_id, rating=$rating");
-            echo "Lỗi khi thêm bình luận!";
+
+            if(!$deleteBL){
+                header("Location: ?act=binhluan");
+            }
         }
-        include_once "views/binhluan.php";
     }
 }

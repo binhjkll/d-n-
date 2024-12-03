@@ -1,6 +1,8 @@
 <?php
+
 require_once "controllers/Bookcc.php";
 require_once "models/Book.php";
+
 
 $aa = new Bookcc();
 $bb = isset($_GET['act']) ? $_GET['act'] : "/";
@@ -40,20 +42,41 @@ switch ($bb) {
     case 'deleteDM':
         $aa->deleteDM();
         break;
-    case 'binhluan':
-        $aa->binhluan();
-        break;
     case 'listuser':
         $aa->listuser();
         break;
     case 'shophtml':
         $aa->shophtml();
         break;
-        case 'productDetail':
-            $aa->productDetail();
-            break;
+    case 'trangchu':
+        $aa->trangchu();
+        break;
+    case 'productDetail':
+        $aa->productDetail();
+        break;
+               
+    case 'addToCart':
+        $aa->addToCart();
+        break;
+    case 'cart':
+        $aa->cart();
+        break;
+    case 'clearCart':
+        $aa->clearCart();
+        break;
+    case 'removeFromCart':
+        $aa->removeFromCart();
+        break;
+    case 'updateCartQuantity':
+        $aa->updateCartQuantity();
+        break;
         
-    
+    case 'binhluan':
+        $aa->binhluan();
+        break;
+    case 'deleteBinhluan':
+        $aa->deleteBinhluan();
+        break;
         
     default:
         $aa->listbook();

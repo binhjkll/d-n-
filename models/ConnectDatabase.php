@@ -108,6 +108,24 @@ class ConnectDatabase
             throw new Exception("Đã xảy ra lỗi khi truy vấn cơ sở dữ liệu."); // Ném exception để xử lý tại nơi gọi
         }
     }
+    public function loadRow($params = [])
+    {
+        try {
+            // Chuẩn bị câu lệnh truy vấn
+            $stmt = $this->pdo->prepare($this->sql);
+
+            // Gắn các tham số vào câu truy vấn
+            $stmt->execute($params);
+
+            // Lấy một dòng dữ liệu từ kết quả
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // Xử lý lỗi nếu có
+            echo "Database error: " . $e->getMessage();
+            return false;
+        }
+    }
+
 
 
 }
