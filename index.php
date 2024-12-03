@@ -93,6 +93,9 @@ switch ($bb) {
     case 'chitietpro':
         $aa->chitietpro();
         break;
+    case 'chitietorder':
+        $aa->chitietorder();
+        break;
 
 
     default:

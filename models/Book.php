@@ -479,10 +479,10 @@ class Book
     }
 
     // Thêm chi tiết đơn hàng vào bảng `order_items`
-    public function addOrderItems($order_id, $variant_id, $quantity,$price, $size)
+    public function addOrderItems($order_id, $variant_id, $quantity, $price, $size)
     {
         // SQL để chèn dữ liệu vào bảng `order_items`
-        $sql = "INSERT INTO `order_items` (order_id, variant_id, quantity, price,size)
+        $sql = "INSERT INTO `order_items` (order_id, variant_id, quantity, price, size)
         VALUES (?, ?, ?, ?, ?)";
 
         // Thực thi câu truy vấn chèn dữ liệu
@@ -497,12 +497,22 @@ class Book
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
+    public function updateDeliveryStatus($order_id, $delivery_status)
+    {
+        $sql = "UPDATE orders SET delivery_status = ? WHERE order_id = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->execute([$delivery_status, $order_id]);
+    }
     public function getorders($user_id)
     {
-        $sql = "SELECT * FROM `orders` WHERE `user_id` = ?";
+        $sql = "SELECT * FROM orders WHERE user_id = ?";
         $this->connect->setQuery($sql);
-        return $this->connect->loadData([$user_id]);
+        return $this->connect->loadData([$user_id]); // Truyền user_id để tránh SQL Injection
     }
+
+  
+
+
     public function getOrderItemsWithVariants($orderId)
     {
         $sql = "
@@ -532,7 +542,7 @@ class Book
     }
 
 
-        // public function getOrdersWithItems($userId)
+    // public function getOrdersWithItems($userId)
     // {
     //     $sql = "
     //     SELECT 
@@ -582,11 +592,11 @@ class Book
         return $this->connect->loadData();
     }
     public function getProductsPaginated($start, $limit)
-{
-    $start = intval($start);
-    $limit = intval($limit);
+    {
+        $start = intval($start);
+        $limit = intval($limit);
 
-    $sql = "SELECT 
+        $sql = "SELECT 
                 p.product_id,
                 p.name AS name,
                 p.description,
@@ -605,25 +615,25 @@ class Book
             )
             LIMIT $start, $limit";
 
-    $this->connect->setQuery($sql);
-    return $this->connect->loadData();
-}
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData();
+    }
 
-public function countProducts()
-{
-    $sql = "SELECT COUNT(DISTINCT product_id) AS total_products FROM products";
-    $this->connect->setQuery($sql);
-    $result = $this->connect->loadData();
-    return $result[0]->total_products ?? 0;
-}
+    public function countProducts()
+    {
+        $sql = "SELECT COUNT(DISTINCT product_id) AS total_products FROM products";
+        $this->connect->setQuery($sql);
+        $result = $this->connect->loadData();
+        return $result[0]->total_products ?? 0;
+    }
 
-public function searchProductsPaginated($keyword, $start, $limit)
-{
-    $keyword = "%" . $keyword . "%";
-    $start = intval($start);
-    $limit = intval($limit);
+    public function searchProductsPaginated($keyword, $start, $limit)
+    {
+        $keyword = "%" . $keyword . "%";
+        $start = intval($start);
+        $limit = intval($limit);
 
-    $sql = "SELECT 
+        $sql = "SELECT 
                 p.product_id,
                 p.name AS name,
                 p.description,
@@ -643,30 +653,30 @@ public function searchProductsPaginated($keyword, $start, $limit)
             )
             LIMIT $start, $limit";
 
-    $this->connect->setQuery($sql);
-    return $this->connect->loadData();
-}
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData();
+    }
 
-public function countSearchResults($keyword)
-{
-    $keyword = "%" . $keyword . "%";
+    public function countSearchResults($keyword)
+    {
+        $keyword = "%" . $keyword . "%";
 
-    $sql = "SELECT COUNT(DISTINCT p.product_id) AS total_products
+        $sql = "SELECT COUNT(DISTINCT p.product_id) AS total_products
             FROM products AS p
             JOIN categories AS c ON p.category_id = c.category_id
             WHERE p.name LIKE '$keyword' OR p.description LIKE '$keyword'";
 
-    $this->connect->setQuery($sql);
-    $result = $this->connect->loadData();
-    return $result[0]->total_products ?? 0;
-}
+        $this->connect->setQuery($sql);
+        $result = $this->connect->loadData();
+        return $result[0]->total_products ?? 0;
+    }
 
-public function getProductsByCategoryPaginated($category_id, $start, $limit)
-{
-    $start = intval($start);
-    $limit = intval($limit);
+    public function getProductsByCategoryPaginated($category_id, $start, $limit)
+    {
+        $start = intval($start);
+        $limit = intval($limit);
 
-    $sql = "SELECT 
+        $sql = "SELECT 
                 p.product_id,
                 p.name AS name,
                 p.description,
@@ -686,20 +696,19 @@ public function getProductsByCategoryPaginated($category_id, $start, $limit)
             )
             LIMIT $start, $limit";
 
-    $this->connect->setQuery($sql);
-    return $this->connect->loadData();
-}
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData();
+    }
 
-public function countProductsByCategory($category_id)
-{
-    $sql = "SELECT COUNT(DISTINCT p.product_id) AS total_products
+    public function countProductsByCategory($category_id)
+    {
+        $sql = "SELECT COUNT(DISTINCT p.product_id) AS total_products
             FROM products AS p
             JOIN categories AS c ON p.category_id = c.category_id
             WHERE c.category_id = $category_id";
 
-    $this->connect->setQuery($sql);
-    $result = $this->connect->loadData();
-    return $result[0]->total_products ?? 0;
-}
-
+        $this->connect->setQuery($sql);
+        $result = $this->connect->loadData();
+        return $result[0]->total_products ?? 0;
+    }
 }

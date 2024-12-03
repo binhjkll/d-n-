@@ -195,6 +195,11 @@
                                             <span id="size-error" style="color: red;"></span> <!-- Hiển thị lỗi size -->
                                         </td>
                                     </tr>
+                                    <input type="hidden" name="total_amount" placeholder="total_amount" value="<?php echo $bb['price'] * $cc['quantity']; ?>">
+                                    <input type="hidden" name="delivery_status" placeholder="delivery_status" value="Đang chuẩn bị">
+                                    <input type="hidden" name="variant_id" placeholder="variant_id" value="<?php echo $bb['variant_id'] ?>">
+                                    <input type="hidden" name="quantity" placeholder="quantity" value="<?php echo $cc['quantity'] ?>">
+                                    <input type="hidden" name="price" placeholder="price" value="<?php echo $bb['price'] ?>">
                                     <tr>
                                         <td colspan="7">
                                             <div class="form-check">

@@ -208,14 +208,14 @@
                 <label class="form-control-label">Loại ${aa}:</label>
 
                 <div class="form-group">
-                                            <label class="form-control-label">Giá</label>
-                                                <br>
+                
+                    <label class="form-control-label">Giá</label>                            <br>
                     <input type="text" name="variant[${r}][price]" placeholder="Nhập giá sản phẩm" required ><br>
-                                            <label class="form-control-label">Số lượng</label><br>
 
+                    <label class="form-control-label">Số lượng</label><br>
                     <input type="text" name="variant[${r}][stock_quantity]" placeholder="Nhập số lượng" required ><br>
-                                            <label class="form-control-label">Hình ảnh</label>
 
+                    <label class="form-control-label">Hình ảnh</label>
                     <input type="file" name="variant[${r}][product_img]" placeholder="Ảnh sản phẩm" required class="form-control-file">
                                              
                            
