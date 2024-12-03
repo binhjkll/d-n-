@@ -18,7 +18,7 @@
                             <a href="?act=quanlyorder"><i class="menu-icon fa fa-truck"></i>Quản lý đơn hàng</a>
                         </li>
                         <li>
-                            <a href="comment-management.html"><i class="menu-icon fa fa-comments"></i>Quản lý bình luận</a>
+                            <a href="?act=binhluan"><i class="menu-icon fa fa-comments"></i>Quản lý bình luận</a>
                         </li>
                         <li>
                             <a href="?act=banner_manager"><i class="menu-icon fa fa-cube"></i>Quản lý banner</a>

@@ -67,11 +67,12 @@
 
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Purchased order</h1>
+        <h1 class="text-center text-white display-6">Order details</h1>
         <ol class="breadcrumb justify-content-center mb-0">
             <li class="breadcrumb-item"><a href="?act=trangchu">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Purchased order</li>
+            <li class="breadcrumb-item"><a href="?act=userpro">Purchased order</a></li>
+            <li class="breadcrumb-item active text-white">Order details</li>
         </ol>
     </div>
     <!-- Single Page Header End -->
@@ -80,38 +81,42 @@
     <!-- Checkout Page Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
-            <h1 class="mb-4">Purchased order</h1>
+            <h1 class="mb-4">Order details</h1>
             <form action="" method="post">
-                <table class="table table-bordered table-hover table-striped table-sm rounded" style="overflow: hidden;">
-                    <thead class="thead-dark text-center" style="background-color: #f8f9fa; color: #333; border-radius: 8px;">
+                <table class="table table-striped table-bordered text-center rounded" style="overflow: hidden;">
+                    <thead class="thead-dark" style="background-color: #f8f9fa; color: #333; border-radius: 12px;">
                         <tr>
-                            <th class="text-center" style="font-weight: bold;">Order ID</th>
-                            <th class="text-center" style="font-weight: bold;">Total Amount</th>
-                            <th class="text-center" style="font-weight: bold;">Payment Status</th>
-                            <th class="text-center" style="font-weight: bold;">Delivery Status</th>
-                            <th class="text-center" style="font-weight: bold;">Created At</th>
-                            <th class="text-center" style="font-weight: bold;">Address</th>
-                            <th class="text-center" style="font-weight: bold;">Phone</th>
-                            <th class="text-center" style="font-weight: bold;">Action</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Order Item ID</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Quantity</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Price</th>
+                            <th class="text-center" style="width: 15%; font-weight: bold;">Total Price</th>
+                            <th class="text-center" style="width: 10%; font-weight: bold;">Size</th>
+                            <th class="text-center" style="width: 20%; font-weight: bold;">Image</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        <?php foreach ($listbook as $value): ?>
+                        <?php if (!empty($listbook)): ?>
+                            <?php foreach ($listbook as $item): ?>
+                                <tr>
+                                    <td class="text-center align-middle"><?php echo $item->order_item_id; ?></td>
+                                    <td class="text-center align-middle"><?php echo $item->quantity; ?></td>
+                                    <td class="text-center align-middle">$<?php echo number_format($item->order_item_price, 2); ?></td>
+                                    <td class="text-center align-middle">$<?php echo number_format($item->total_item_price, 2); ?></td>
+                                    <td class="text-center align-middle"><?php echo $item->size; ?></td>
+                                    <td class="text-center align-middle">
+                                        <img src="<?php echo $item->product_img; ?>" alt="Product Image" style="width: 50px; height: 50px; border-radius: 8px; border: 1px solid #ccc;">
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
                             <tr>
-                                <td class="text-center align-middle"><?php echo $value->order_id; ?></td>
-                                <td class="text-center align-middle">$<?php echo number_format($value->total_amount, 2); ?></td>
-                                <td class="text-center align-middle"><?php echo $value->payment_status; ?></td>
-                                <td class="text-center align-middle"><?php echo $value->delivery_status; ?></td>
-                                <td class="text-center align-middle"><?php echo $value->created_at; ?></td>
-                                <td class="text-center align-middle"><?php echo $value->address; ?></td>
-                                <td class="text-center align-middle">0<?php echo $value->phone; ?></td>
-                                <td class="text-center align-middle">
-                                    <a href="?act=chitietpro&pid=<?php echo $value->order_id; ?>" class="btn btn-dark btn-sm">Xem chi tiết</a>
-                                </td>
+                                <td class="text-center align-middle" colspan="6">No items found for this order.</td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
+
 
 
             </form>

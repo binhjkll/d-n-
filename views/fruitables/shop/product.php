@@ -1,12 +1,5 @@
 <?php
-$displayedProducts = []; 
-
 foreach ($listpro as $value) {
-    if (in_array($value->product_id, $displayedProducts)) {
-        continue; 
-    }
-
-    $displayedProducts[] = $value->product_id; 
 ?>
     <div class="col-md-6 col-lg-6 col-xl-4">
         <div class="rounded position-relative fruite-item">

@@ -152,7 +152,7 @@
     <script>
       alert('<?php echo $error_message; ?>')
     </script>
-    
+
   </div>
 <?php endif; ?>
 
@@ -177,25 +177,88 @@
   <!-- Form -->
   <div class="form-container" id="form-container">
     <h2>Đăng ký</h2>
-    <form action="" method="post" id="login-form">
+    <form action="" method="post" id="registrationForm">
       <div class="form-group">
         <label for="name">Tên tài khoản</label>
-        <input type="text" name="username">
+        <input type="text" name="username" id="username">
+        <span id="usernameError" style="color: red;"></span>
       </div>
       <div class="form-group">
         <label for="password">Mật khẩu</label>
-        <input type="password" name="password">
+        <input type="password" name="password" id="password">
+        <span id="passwordError" style="color: red;"></span>
       </div>
       <div class="form-group">
-        <label for="password">Email</label>
-        <input type="email" name="email">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email">
+        <span id="emailError" style="color: red;"></span>
       </div>
       <div class="form-group">
-        <label for="password">Số điện thoại</label>
-        <input type="text" name="phone">
+        <label for="phone">Số điện thoại</label>
+        <input type="text" name="phone" id="phone">
+        <span id="phoneError" style="color: red;"></span>
+      </div>
+      <div class="form-group">
+        <label for="address">Địa chỉ</label>
+        <input type="text" name="address" id="address" placeholder="Có thể để trống">
+        <span id="addressError" style="color: red;"></span>
       </div>
       <button type="submit" name="btn_submit">Đăng ký</button>
     </form>
+
+    <script>
+      document.getElementById("registrationForm").addEventListener("submit", function(event) {
+        let isValid = true;
+
+        // Xóa thông báo lỗi cũ
+        document.getElementById("usernameError").textContent = "";
+        document.getElementById("passwordError").textContent = "";
+        document.getElementById("emailError").textContent = "";
+        document.getElementById("phoneError").textContent = "";
+        document.getElementById("addressError").textContent = "";
+
+        // Kiểm tra tên tài khoản
+        if (document.getElementById("username").value === "") {
+          document.getElementById("usernameError").textContent = "Tên tài khoản không được để trống.";
+          isValid = false;
+        }
+
+        // Kiểm tra mật khẩu
+        if (document.getElementById("password").value === "") {
+          document.getElementById("passwordError").textContent = "Mật khẩu không được để trống.";
+          isValid = false;
+        }
+
+        // Kiểm tra email
+        let email = document.getElementById("email").value;
+        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+          document.getElementById("emailError").textContent = "Email không hợp lệ.";
+          isValid = false;
+        }
+
+        // Kiểm tra số điện thoại
+        let phone = document.getElementById("phone").value;
+        let phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(phone)) {
+          document.getElementById("phoneError").textContent = "Số điện thoại không hợp lệ. (10 chữ số)";
+          isValid = false;
+        }
+
+        // Kiểm tra địa chỉ (có thể để trống)
+        let address = document.getElementById("address").value;
+        if (address.length > 0 && address.length < 5) {
+          document.getElementById("addressError").textContent = "Địa chỉ quá ngắn.";
+          isValid = false;
+        }
+
+        // Nếu có lỗi, ngừng gửi form
+        if (!isValid) {
+          event.preventDefault();
+        }
+      });
+    </script>
+
 
     <div class="switch">
       <p>Đã có tài khoản? <a href="?act=login">Đăng nhập</a></p>

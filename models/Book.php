@@ -241,6 +241,18 @@ class Book
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
+
+    public function doimatkhau($username, $email, $password)
+    {
+        // Câu lệnh SQL để cập nhật mật khẩu
+        $sql = "UPDATE `users` SET `password` = ? WHERE `username` = ? AND `email` = ?";
+
+        // Chuẩn bị và thực thi câu lệnh SQL
+        $this->connect->setQuery($sql);
+        return $this->connect->execute([$password, $username, $email]);
+    }
+
+
     // Hàm thêm sản phẩm, trả về product_id vừa tạo
     public function add($name, $description, $category_id)
     {
@@ -396,16 +408,47 @@ class Book
         return $this->connect->loadData();
     }
 
-    public function addReview($product_id, $user_id, $rating, $comment_text)
-    {
-        $sql = "INSERT INTO `reviews` (product_id, user_id, rating, comment, created_at) VALUES (?, ?, ?, ?, NOW())";
-        try {
-            $this->connect->setQuery($sql);
-            return $this->connect->loadData([$product_id, $user_id, $rating, $comment_text]);
-        } catch (Exception $e) {
-            error_log("SQL Error: " . $e->getMessage());
-            return false;
-        }
+    // public function addReview($product_id, $user_id, $rating, $comment_text)
+    // {
+    //     $sql = "INSERT INTO `reviews` (product_id, user_id, rating, comment, created_at) VALUES (?, ?, ?, ?, NOW())";
+    //     try {
+    //         $this->connect->setQuery($sql);
+    //         return $this->connect->loadData([$product_id, $user_id, $rating, $comment_text]);
+    //     } catch (Exception $e) {
+    //         error_log("SQL Error: " . $e->getMessage());
+    //         return false;
+    //     }
+    // }
+
+    public function insert_binhluan($review_id, $product_id, $user_id, $comment, $created_at ){
+        $sql = "INSERT INTO `reviews` VALUES (?,?,?,?,?)";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$review_id, $product_id, $user_id, $comment, $created_at]);
+    }
+    public function binhluan_theo_idsp($product_id){
+        $sql = "SELECT * FROM `reviews` where product_id = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$product_id]);
+    }
+    public function all_binhluan(){
+        $sql = "SELECT * FROM `reviews`";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData();
+    }
+    public function getIdbl($review_id){
+        $sql = "SELECT * FROM `reviews` WHERE review_id = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$review_id],false);
+    }
+    public function users(){
+        $sql = "SELECT * FROM `users`";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData();
+    }
+    public function deleteBluan($review_id){
+        $sql = "DELETE FROM `reviews` WHERE review_id = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$review_id],false);
     }
 
     public function checkout($order_id, $user_id, $product_id, $quantity, $added_at, $discount_id)
@@ -457,7 +500,7 @@ class Book
     public function addOrder($user_id, $total_amount, $payment_status, $delivery_status, $created_at, $phone, $address)
     {
         $sql = "INSERT INTO `orders` (user_id, total_amount, payment_status, delivery_status, created_at,phone, address)
-            VALUES (?, ?, ?, ?, ?,?,?)";
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $this->connect->setQuery($sql);
         $this->connect->loadData([$user_id, $total_amount, $payment_status, $delivery_status, $created_at, $phone, $address]);
@@ -467,15 +510,15 @@ class Book
     }
 
     // Thêm chi tiết đơn hàng vào bảng `order_items`
-    public function addOrderItems($order_id, $variant_id, $quantity, $price)
+    public function addOrderItems($order_id, $variant_id, $quantity,$price, $size)
     {
         // SQL để chèn dữ liệu vào bảng `order_items`
-        $sql = "INSERT INTO `order_items` (order_id, variant_id, quantity, price)
-        VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO `order_items` (order_id, variant_id, quantity, price,size)
+        VALUES (?, ?, ?, ?, ?)";
 
         // Thực thi câu truy vấn chèn dữ liệu
         $this->connect->setQuery($sql);
-        $this->connect->loadData([$order_id, $variant_id, $quantity, $price]);
+        $this->connect->loadData([$order_id, $variant_id, $quantity, $price, $size]);
 
         return true;
     }
@@ -485,6 +528,78 @@ class Book
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
+    public function getorders($user_id)
+    {
+        $sql = "SELECT * FROM `orders` WHERE `user_id` = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$user_id]);
+    }
+    public function getOrderItemsWithVariants($orderId)
+    {
+        $sql = "
+        SELECT 
+            order_items.order_item_id,
+            order_items.order_id,
+            order_items.size,
+            order_items.variant_id,
+            order_items.quantity,
+            order_items.price AS order_item_price,
+            (order_items.quantity * order_items.price) AS total_item_price,
+            product_variants.product_id,
+            product_variants.price AS variant_price,
+            product_variants.stock_quantity,
+            product_variants.product_img
+        FROM 
+            order_items
+        JOIN 
+            product_variants 
+        ON 
+            order_items.variant_id = product_variants.variant_id
+        WHERE 
+            order_items.order_id = ?
+    ";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$orderId]); // Trả về danh sách các mục hàng kèm thông tin biến thể
+    }
+
+
+        // public function getOrdersWithItems($userId)
+    // {
+    //     $sql = "
+    //     SELECT 
+    //         orders.order_id,
+    //         orders.user_id,
+    //         orders.total_amount,
+    //         orders.payment_status,
+    //         orders.delivery_status,
+    //         orders.created_at,
+    //         orders.address,
+    //         orders.phone,
+    //         order_items.order_item_id,
+    //         order_items.variant_id,
+    //         order_items.quantity,
+    //         order_items.price,
+    //         (order_items.quantity * order_items.price) AS total_item_price
+    //     FROM 
+    //         orders
+    //     LEFT JOIN 
+    //         order_items 
+    //     ON 
+    //         orders.order_id = order_items.order_id
+    //     WHERE 
+    //         orders.user_id = ?
+    // ";
+    //     $this->connect->setQuery($sql);
+    //     return $this->connect->loadData([$userId]); // Load toàn bộ dữ liệu
+    // }
+    public function getordersitem($order_id)
+    {
+        $sql = "SELECT * FROM `order_items` WHERE `order_id ` = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$order_id]);
+    }
+
+
     // public function updateorder($delivery_status)
     // {
     //     $sql = "UPDATE `orders` SET `delivery_status`=? WHERE `order_id`=?";
@@ -497,41 +612,125 @@ class Book
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
+    public function getProductsPaginated($start, $limit)
+{
+    $start = intval($start);
+    $limit = intval($limit);
 
-    public function bannerShow(){
-        $sql = "SELECT * FROM `product_variants`";
-        $this->connect->setQuery($sql);
-        return $this->connect->loadData();
-    }
+    $sql = "SELECT 
+                p.product_id,
+                p.name AS name,
+                p.description,
+                c.name AS category_name,
+                pv.variant_id,
+                pv.price,
+                pv.stock_quantity,
+                pv.product_img
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            JOIN product_variants AS pv ON p.product_id = pv.product_id
+            WHERE pv.variant_id = (
+                SELECT MIN(variant_id) 
+                FROM product_variants 
+                WHERE product_id = p.product_id
+            )
+            LIMIT $start, $limit";
 
-    public function banner_manager(){
-        $sql = "SELECT * FROM `banners`";
-        $this->connect->setQuery($sql);
-        return $this->connect->loadData();
-    }
+    $this->connect->setQuery($sql);
+    return $this->connect->loadData();
+}
 
-    public function add_banner($banner_id,$name, $link, $Show_is, $image) {
-        $sql = "INSERT INTO `banners` VALUES (?,?, ?, ?, ?)";
-        $this->connect->setQuery($sql); // Chuẩn bị câu lệnh SQL
-        return $this->connect->loadData([$banner_id,$name, $link,  $Show_is, $image]); // Thực thi với tham số
-    }
+public function countProducts()
+{
+    $sql = "SELECT COUNT(DISTINCT product_id) AS total_products FROM products";
+    $this->connect->setQuery($sql);
+    $result = $this->connect->loadData();
+    return $result[0]->total_products ?? 0;
+}
 
-    public function update_banner($banner_id)
-    {
-        $sql = "UPDATE `categories` SET `link`=?,`name`=?,`Show_Is`=?,`image`=? WHERE `banner_id`=?";
-        $this->connect->setQuery($sql);
-        return $this->connect->execute([$name, $category_id], false);
-    }
-    
-    public function getIdBanner($banner_id){
-        $sql = "SELECT * FROM `banners` WHERE banner_id = ?";
-        $this->connect->setQuery($sql);
-        return $this->connect->loadData([$banner_id], false);
-    }
-    
-    public function delete_banner($banner_id){
-        $sql = "DELETE FROM `banners` WHERE banner_id=?";
-        $this->connect->setQuery($sql);
-        return $this->connect->loadData([$banner_id], false);
-    }
+public function searchProductsPaginated($keyword, $start, $limit)
+{
+    $keyword = "%" . $keyword . "%";
+    $start = intval($start);
+    $limit = intval($limit);
+
+    $sql = "SELECT 
+                p.product_id,
+                p.name AS name,
+                p.description,
+                c.name AS category_name,
+                pv.variant_id,
+                pv.price,
+                pv.stock_quantity,
+                pv.product_img
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            JOIN product_variants AS pv ON p.product_id = pv.product_id
+            WHERE (p.name LIKE '$keyword' OR p.description LIKE '$keyword') 
+            AND pv.variant_id = (
+                SELECT MIN(variant_id) 
+                FROM product_variants 
+                WHERE product_id = p.product_id
+            )
+            LIMIT $start, $limit";
+
+    $this->connect->setQuery($sql);
+    return $this->connect->loadData();
+}
+
+public function countSearchResults($keyword)
+{
+    $keyword = "%" . $keyword . "%";
+
+    $sql = "SELECT COUNT(DISTINCT p.product_id) AS total_products
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            WHERE p.name LIKE '$keyword' OR p.description LIKE '$keyword'";
+
+    $this->connect->setQuery($sql);
+    $result = $this->connect->loadData();
+    return $result[0]->total_products ?? 0;
+}
+
+public function getProductsByCategoryPaginated($category_id, $start, $limit)
+{
+    $start = intval($start);
+    $limit = intval($limit);
+
+    $sql = "SELECT 
+                p.product_id,
+                p.name AS name,
+                p.description,
+                c.name AS category_name,
+                pv.variant_id,
+                pv.price,
+                pv.stock_quantity,
+                pv.product_img
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            JOIN product_variants AS pv ON p.product_id = pv.product_id
+            WHERE c.category_id = $category_id
+            AND pv.variant_id = (
+                SELECT MIN(variant_id) 
+                FROM product_variants 
+                WHERE product_id = p.product_id
+            )
+            LIMIT $start, $limit";
+
+    $this->connect->setQuery($sql);
+    return $this->connect->loadData();
+}
+
+public function countProductsByCategory($category_id)
+{
+    $sql = "SELECT COUNT(DISTINCT p.product_id) AS total_products
+            FROM products AS p
+            JOIN categories AS c ON p.category_id = c.category_id
+            WHERE c.category_id = $category_id";
+
+    $this->connect->setQuery($sql);
+    $result = $this->connect->loadData();
+    return $result[0]->total_products ?? 0;
+}
+
 }

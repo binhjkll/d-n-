@@ -3,7 +3,7 @@ session_start(); // Bắt đầu session để kiểm tra thông tin đăng nh�
 
 class Bookcc
 {
-    
+
 
     public function danhmuc()
     {
@@ -18,28 +18,36 @@ class Bookcc
         $mBook = new Book();
         $shophtml = $mBook->getDM();
 
+        $currentPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $itemsPerPage = 9; // Số sản phẩm trên mỗi trang
+        $start = ($currentPage - 1) * $itemsPerPage;
+
         if (isset($_GET['keyword']) && !empty(trim($_GET['keyword']))) {
             // Kiểm tra từ khóa tìm kiếm
-            $keyword = trim($_GET['keyword']); // Lấy từ khóa tìm kiếm
-            $listpro = $mBook->searchProducts($keyword); // Gọi hàm tìm kiếm sản phẩm
+            $keyword = trim($_GET['keyword']);
+            $listpro = $mBook->searchProductsPaginated($keyword, $start, $itemsPerPage); // Lấy từ khóa tìm kiếm
+            $totalProducts = $mBook->countSearchResults($keyword);
         } elseif (isset($_GET['category_id'])) {
             // Lấy sản phẩm theo danh mục
             $category_id = intval($_GET['category_id']); // Lấy ID danh mục
-            $listpro = $mBook->getProductsByCategory($category_id); // Gọi hàm lấy sản phẩm theo danh mục
+            $listpro = $mBook->getProductsByCategoryPaginated($category_id, $start, $itemsPerPage);
+            $totalProducts = $mBook->countProductsByCategory($category_id);
         } else {
             // Nếu không có tìm kiếm hoặc danh mục, lấy tất cả sản phẩm
-            $listpro = $mBook->getall();
+            $listpro = $mBook->getProductsPaginated($start, $itemsPerPage);
+            $totalProducts = $mBook->countProducts();
         }
-        // Loại bỏ các sản phẩm trùng product_id
-        $uniqueProducts = [];
-        foreach ($listpro as $product) {
-            if (!isset($uniqueProducts[$product->product_id])) {
-                $uniqueProducts[$product->product_id] = $product;
+        $listpro = array_filter($listpro, function ($product) use (&$uniqueProducts) {
+            static $seen = [];
+            if (in_array($product->product_id, $seen)) {
+                return false;
             }
-        }
+            $seen[] = $product->product_id;
+            return true;
+        });
 
-        // Truyền danh sách sản phẩm không trùng lặp sang view
-        $listpro = array_values($uniqueProducts);
+        $totalPages = ceil($totalProducts / $itemsPerPage);
+
 
         // Load view hiển thị sản phẩm
         require_once "views/fruitables/shop/shop.php";
@@ -86,6 +94,22 @@ class Bookcc
             echo "Sản phẩm không tồn tại.";
             exit;
         }
+
+        if(isset($_POST["gui"])){
+            $comment = $_POST["noidung"] ;
+            $product_id = $_POST["product_id"];
+            $user_id = $_POST["user_id"];
+            $created_at = date("Y-m-d");
+            $mBook = new Book();
+            $mBook -> insert_binhluan(null, $product_id, $user_id, $comment, $created_at );
+            
+        }
+
+        $mBook = new Book();
+        $listbluan = $mBook ->  binhluan_theo_idsp($_GET['id']);
+
+        $user = $mBook -> users();
+
         // Nếu variant_id được truyền, lấy thông tin variant tương ứng
         if ($variantId > 0) {
             foreach ($product['variants'] as $variant) {
@@ -222,6 +246,7 @@ class Bookcc
             $password = $_POST['password'];
             $email = $_POST['email'];
             $phone = $_POST['phone'];
+            $address = $_POST['address'];
 
             $mBook = new Book();
 
@@ -277,6 +302,39 @@ class Bookcc
             unset($_SESSION["username"]);
         }
         header('location: ?act=login');
+    }
+    public function quenmk(){
+
+        $mBook = new Book();
+        $login = $mBook->login();
+        if (isset($_POST["btn_submit"])) {
+            $username = $_POST["username"];
+            $email = $_POST["email"];
+            $password = $_POST["password"];
+
+            $isUserFound = false; // Biến cờ để kiểm tra người dùng hợp lệ
+
+            // Duyệt qua danh sách người dùng (giả sử $login chứa danh sách người dùng từ database)
+            foreach ($login as $value) {
+                if ($username == $value->username && $email == $value->email) {
+                    $isUserFound = true;
+
+                    // Gọi hàm cập nhật mật khẩu
+                    $aa=$mBook->doimatkhau($username, $email, $password);
+                    break;
+                }
+            }
+
+            if ($isUserFound) {
+                echo "<script>alert('Đổi mật khẩu thành công!');</script>";
+                header('location:?act=login');
+                exit;
+            } else {
+                echo "<script>alert('Tên tài khoản hoặc email không đúng!');</script>";
+            }
+        }
+        include_once "views/admin/quenmk.php";
+
     }
 
 
@@ -495,42 +553,24 @@ class Bookcc
         }
     }
 
-
-    public function binhluan()
-    {
-        // Kiểm tra dữ liệu từ form và session
-        if (!isset($_POST['product_id'], $_POST['comment_text'], $_POST['rating'], $_SESSION['user_id'])) {
-            echo "Dữ liệu không hợp lệ hoặc bạn chưa đăng nhập!";
-            return;
-        }
-
+    public function binhluan(){
         $mBook = new Book();
+        $list = $mBook->all_binhluan();
+        require_once "../d-n-/views/admin/binhluan.php";
+    }
 
-        // Nhận dữ liệu từ form
-        $product_id = (int)$_POST['product_id']; // ID sản phẩm
-        $comment_text = trim($_POST['comment_text']); // Nội dung bình luận
-        $rating = (int)$_POST['rating']; // Đánh giá (rating)
-        $user_id = (int)$_SESSION['user_id']; // Lấy user_id từ session (người dùng đã đăng nhập)
+    public function deleteBinhluan(){
+        if(isset($_GET['review_id'])){
+            $review_id = $_GET['review_id'];
+            $mBook = new Book();
+            $deleteBL = $mBook->deleteBluan($review_id);
 
-        // Kiểm tra dữ liệu đầu vào
-        if (empty($comment_text) || strlen($comment_text) < 3) {
-            echo "Bình luận phải có ít nhất 3 ký tự!";
-            return;
-        }
-        if ($rating <= 0 || $rating > 5) {
-            echo "Vui lòng nhập đánh giá hợp lệ (1 đến 5 sao)!";
-            return;
-        }
 
-        // Thêm bình luận vào CSDL
-        if ($mBook->addReview($product_id, $user_id, $rating, $comment_text)) {
-            header("Location: product.php?id=$product_id"); // Chuyển hướng về trang chi tiết sản phẩm
-            exit();
-        } else {
-            error_log("Lỗi khi thêm bình luận: product_id=$product_id, user_id=$user_id, rating=$rating");
-            echo "Lỗi khi thêm bình luận!";
+
+            if(!$deleteBL){
+                header("Location: ?act=binhluan");
+            }
         }
-        include_once "views/admin/binhluan.php";
     }
 
 
@@ -563,7 +603,6 @@ class Bookcc
         $cc = $mBook->getcid($cart_item_id);
 
         if (isset($_POST['btn_submit'])) {
-            session_start();
             if (isset($_SESSION['user_id'])) {  // Kiểm tra xem user_id có tồn tại trong session không
 
                 // Lấy dữ liệu từ form và session
@@ -577,6 +616,7 @@ class Bookcc
                 $price = $_POST['price'];
                 $phone = $_POST['phone'];
                 $address = $_POST['address'];
+                $size = $_POST['size'];
 
                 // Tạo một đối tượng của lớp Book
                 $mBook = new Book();
@@ -590,10 +630,11 @@ class Bookcc
                     $created_at,
                     $phone,
                     $address
+
                 );
 
                 // Thêm các mục trong đơn hàng (order items)
-                $mBook->addOrderItems($order_id, $variant_id, $quantity, $price);
+                $mBook->addOrderItems($order_id, $variant_id, $quantity, $price, $size);
 
                 $cartItemId = isset($_GET['cart_item_id']) ? intval($_GET['cart_item_id']) : 0;
                 if ($cartItemId > 0) {
@@ -612,52 +653,57 @@ class Bookcc
         // Hiển thị view (nếu cần)
         include_once "views/fruitables/shop/order.php";
     }
-   
+
     public function quanlyorder()
     {
         $mBook = new Book();
         $listbook = $mBook->getorder();
         include_once "views/admin/quanlyorder.php";
     }
-    // public function updateorder(){
-    //     if (isset($_GET['oid'])) {
-    //         $oid = $_GET['oid'];
-    //         $mBook = new Book();
-    //         $idBook = $mBook->getid($oid);
 
-    //     $listbook = $mBook->updateorder($delivery_status);
-    //     include_once "views/admin/quanlyorder.php";
-    //     }
-    // }
-    public function user()
+    public function userpro()
     {
+        $user_id = $_SESSION['user_id'];
         $mBook = new Book();
-        $listbook = $mBook->getuser();
+        $listbook = $mBook->getorders($user_id);
+
+        // $listbook = $mBook->getOrdersWithItems($userId);
         include_once "views/fruitables/user.php";
     }
+    public function chitietpro()
+    {
+        $orderId = $_GET['pid'];
+        $mBook = new Book(); // Giả sử "Book" là model bạn đã định nghĩa
+        $listbook = $mBook->getOrderItemsWithVariants($orderId); // Gọi hàm model mới
+        include_once "views/fruitables/chitietpro.php"; // Gửi dữ liệu sang view
+    }
+
     public function ordersall()
     {
-
         $userId = $_SESSION['user_id']; // Lấy user_id từ session
         $mBook = new Book();
         $cartItems = $mBook->getCartItems($userId);
+        date_default_timezone_set('Asia/Bangkok');
+
         if (isset($_POST['btn_submit'])) {
-            session_start();
             if (isset($_SESSION['user_id'])) {
+                // echo '<pre>';
+                // print_r($_POST);
+                // echo '</pre>';
+                // die();
+
                 // Lấy dữ liệu từ form
                 $user_id = $_SESSION['user_id'];
                 $total_amount = $_POST['total_amount'];
-                $payment_status = $_POST['payment_status'];
+                $payment_status = $_POST['payment_status'] ?? 'thanh toán khi nhận hàng';
                 $delivery_status = $_POST['delivery_status'];
                 $created_at = date('Y-m-d H:i:s');
-                $variant_ids = $_POST['variant_id']; // Lấy mảng variant_id
-                $quantities = $_POST['quantity'];   // Lấy mảng quantity
-                $prices = $_POST['price'];          // Lấy mảng price
+                $variant_ids = $_POST['variant_id'];
+                $quantities = $_POST['quantity'];
+                $prices = $_POST['price'];
                 $phone = $_POST['phone'];
                 $address = $_POST['address'];
-
-                // Tạo đối tượng Book
-                $mBook = new Book();
+                $sizes = $_POST['size']; // Mảng size theo variant_id
 
                 // Thêm đơn hàng và lấy order_id
                 $order_id = $mBook->addOrder(
@@ -672,16 +718,19 @@ class Bookcc
 
                 // Thêm từng sản phẩm vào bảng order_items
                 for ($i = 0; $i < count($variant_ids); $i++) {
+                    $variant_id = $variant_ids[$i];
+                    $selected_size = isset($sizes[$variant_id]) ? $sizes[$variant_id] : 'S'; // Mặc định 'S'
+
                     $mBook->addOrderItems(
                         $order_id,
-                        $variant_ids[$i], // Lấy từng variant_id
-                        $quantities[$i],  // Lấy từng quantity
-                        $prices[$i]       // Lấy từng price
+                        $variant_id,
+                        $quantities[$i],
+                        $prices[$i],
+                        $selected_size
                     );
                 }
 
                 // Xóa giỏ hàng
-                $userId = $_SESSION['user_id'];
                 $mBook->clearCart($userId);
 
                 // Chuyển hướng về trang chủ
@@ -691,115 +740,6 @@ class Bookcc
             }
         }
 
-
-
-        // include_once __DIR__ . "/../views/fruitables/shop/cart.php";
         include_once __DIR__ . "/../views/fruitables/shop/orderall.php";
     }
-
-    public function bannerShow()
-    {
-        $mBook = new Book();
-        $banners = $mBook->bannerShow();
-        include_once "views/fruitables/shop/trangchu.php";
-    }
-
-
-    public function banner_manager()
-    {
-        $mBook = new Book();
-        $banner_manager = $mBook->banner_manager();
-        include_once "views/admin/banner_manager.php";
-    }
-        public function add_banner() {
-            if (isset($_POST['btn_submit'])) {
-                $name = $_POST['name'] ;
-                $link = $_POST['link'] ;
-                $Show_is = isset($_POST['Show_is']) ? 1 : 0; // Giá trị mặc định là 0 nếu không chọn
-                // $image = null;
-    
-                // Xử lý upload hình ảnh
-                $target_dir = "images_banner/";
-                // lay ten anh
-                $name_img =time().$_FILES['image']['name'];
-                // ghep dia chi thi muc anh với tên ảnh
-                $image = $target_dir.$name_img;
-                move_uploaded_file($_FILES['image']['tmp_name'], $image);
-                // Gọi model để thêm banner
-                $mBook = new Book();
-                $add_banner = $mBook->add_banner(null,$link, $name, $Show_is, $image);
-    
-                if (!$add_banner) {
-                    header('Location: index.php?act=banner_manager'); // Chuyển hướng sau khi thêm thành công
-                    exit;
-                }
-            }
-    
-            // Hiển thị form thêm banner
-            include_once "views/admin/add_banner.php";
-        }
-
-        public function update_banner(){
-            if (isset($_GET['id'])) {
-                $banner_id = $_GET['id'];
-                $mBook = new Book();
-                $idBanner = $mBook->getIdBanner($banner_id);
-            
-                if (!$idBanner) {
-                    echo "Không tìm thấy banner.";
-                    exit;
-                }
-            
-                if (isset($_POST['btn-submit'])) {
-                    $name = $_POST['name'] ?? $idBanner['name'];
-                    $link = $_POST['link'] ?? $idBanner['link'];
-                    $Show_is = isset($_POST['Show_is']) ? 1 : 0;
-                    $image = $idBanner['image'];
-            
-                    // Xử lý upload ảnh
-                    if (!empty($_FILES['image']['name'])) {
-                        $target_dir = "uploads/banners/";
-                        $file_name = time() . '_' . basename($_FILES['image']['name']);
-                        $image = $target_dir . $file_name;
-            
-                        if (move_uploaded_file($_FILES['image']['tmp_name'], $image)) {
-                            echo "Ảnh đã được tải lên.";
-                        } else {
-                            echo "Lỗi khi tải ảnh.";
-                            exit;
-                        }
-                    }
-            
-                    // Cập nhật banner
-                    $updateBanner = $mBook->update_banner( $name, $link, $Show_is, $image,$banner_id);
-            
-                    if ($updateBanner) {
-                        header('Location: index.php?act=banner_manager');
-                        exit;
-                    } else {
-                        echo "Cập nhật thất bại.";
-                    }
-                }
-            } else {
-                echo "ID không hợp lệ.";
-                exit;
-            }
-            
-            include_once "views/admin/update_banner.php";
-        }
-
-        public function delete_banner(){
-            echo "ID nhận được: " . $_GET['banner_id'];
-            if (isset($_GET['banner_id'])) {
-                $mBook = new Book();
-                $deleteBanner = $mBook->delete_banner($_GET['banner_id']);
-                if (!$deleteBanner) {
-                    header('Location: index.php?act=banner_manager'); // Chuyển hướng sau khi thêm thành công
-                    exit;
-                }
-            }
-        }
-    }
-    
-
-
+}

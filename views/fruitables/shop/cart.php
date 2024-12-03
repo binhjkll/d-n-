@@ -28,7 +28,13 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
+<style>
+    table td, table th {
+    text-align: center;
+    vertical-align: middle;  /* Đảm bảo nội dung được căn giữa theo chiều dọc */
+}
 
+</style>
 <body>
 
     <!-- Spinner Start -->
@@ -69,7 +75,7 @@
     <div class="container-fluid page-header py-5">
         <h1 class="text-center text-white display-6">Cart</h1>
         <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="?act=trangchu">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
             <li class="breadcrumb-item active text-white">Cart</li>
         </ol>

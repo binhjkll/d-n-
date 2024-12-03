@@ -213,18 +213,25 @@ if (isset($_POST["btn_submit"])) {
     <h2>Đăng nhập</h2>
     <form action="" method="post" id="login-form">
       <div class="form-group">
-        <label for="name">Tên tài khoản</label>
-        <input type="text" name="username">
+        <label for="username">Tên tài khoản</label>
+        <input type="text" name="username" id="username" required>
+        <div id="username-error" style="color: red;"></div> <!-- Lỗi cho username -->
       </div>
       <div class="form-group">
         <label for="password">Mật khẩu</label>
-        <input type="password" name="password">
+        <input type="password" name="password" id="password" required>
+        <div id="password-error" style="color: red;"></div> <!-- Lỗi cho password -->
       </div>
       <button type="submit" name="btn_submit">Đăng nhập</button>
     </form>
 
+
     <div class="switch">
       <p>Chưa có tài khoản? <a href="?act=register">Đăng ký</a></p>
+    </div>
+
+    <div class="switch">
+      <p><a href="?act=quenmk">Quên mật khẩu?</a></p>
     </div>
   </div>
 
