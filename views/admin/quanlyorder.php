@@ -99,6 +99,7 @@
                                                 <th>created_at</th>
                                                 <th>address</th>
                                                 <th>phone</th>
+                                                <th>email</th>
 
                                             </tr>
                                         </thead>
@@ -107,12 +108,13 @@
                                                 <tr>
                                                     <td class="text-center"><?php echo $value->order_id; ?></td>
                                                     <td class="text-center"><?php echo $value->user_id; ?></td>
-                                                    <td><?php echo $value->total_amount; ?></td>
+                                                    <td>$<?php echo $value->total_amount; ?></td>
                                                     <td><?php echo $value->payment_status; ?></td>
                                                     <td>
                                                         <form method="POST">
-                                                            <select name="delivery_status" onchange="this.form.submit()">
-                                                                <option value="Đã huỷ" <?php echo $value->delivery_status == 'Đã huỷ' ? 'selected' : ''; ?>>Đã huỷ </option>
+                                                            <select name="delivery_status" onchange="this.form.submit()"
+                                                                <?php echo ($value->delivery_status == 'Đã huỷ' || $value->delivery_status == 'Đã giao') ? 'disabled' : ''; ?>>
+                                                                <option value="Đã huỷ" <?php echo $value->delivery_status == 'Đã huỷ' ? 'selected' : ''; ?>>Đã huỷ</option>
                                                                 <option value="Đang chuẩn bị" <?php echo $value->delivery_status == 'Đang chuẩn bị' ? 'selected' : ''; ?>>Đang chuẩn bị</option>
                                                                 <option value="Đang giao" <?php echo $value->delivery_status == 'Đang giao' ? 'selected' : ''; ?>>Đang giao</option>
                                                                 <option value="Đã giao" <?php echo $value->delivery_status == 'Đã giao' ? 'selected' : ''; ?>>Đã giao</option>
@@ -120,10 +122,13 @@
                                                             <input type="hidden" name="order_id" value="<?php echo $value->order_id; ?>">
                                                         </form>
 
+
+
                                                     </td>
                                                     <td class="text-center"><?php echo $value->created_at; ?></td>
                                                     <td><?php echo $value->address; ?></td>
                                                     <td class="text-center"><?php echo $value->phone; ?></td>
+                                                    <td class="text-center"><?php echo $value->email; ?></td>
                                                     <td class="text-center align-middle">
                                                         <a href="?act=chitietorder&pid=<?php echo $value->order_id; ?>" class="btn btn-dark btn-sm">Xem chi tiết</a>
                                                     </td>

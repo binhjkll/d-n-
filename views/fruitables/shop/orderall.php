@@ -133,6 +133,11 @@
                 <div class="row g-5">
                     <div class="col-md-12 col-lg-6 col-xl-5">
                         <div class="form-item">
+                            <label class="form-label my-3">Người nhận<sup>*</sup></label>
+                            <input type="text" name="name" class="form-control" id="username" value="<?php echo $username ?>">
+                            <span id="name-error" style="color: red;"></span> <!-- Hiển thị lỗi tên -->
+                        </div>
+                        <div class="form-item">
                             <label class="form-label my-3">Số điện thoại<sup>*</sup></label>
                             <input type="text" name="phone" class="form-control" id="phone" value="<?php echo $phone ?>">
                             <span id="phone-error" style="color: red;"></span> <!-- Hiển thị lỗi số điện thoại -->
@@ -141,6 +146,11 @@
                             <label class="form-label my-3">Địa chỉ <sup>*</sup></label>
                             <input type="text" name="address" class="form-control" id="address" value="<?php echo $address ?>">
                             <span id="address-error" style="color: red;"></span> <!-- Hiển thị lỗi địa chỉ -->
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Email <sup>*</sup></label>
+                            <input type="text" name="email" class="form-control" id="email" value="<?php echo $email ?>">
+                            <span id="email-error" style="color: red;"></span> <!-- Hiển thị lỗi email -->
                         </div>
                     </div>
 
@@ -226,6 +236,8 @@
 
                     </div>
                 </div>
+                <input type="hidden" name="cancel_reason" placeholder="cancel_reason">
+
             </form>
 
             <script>
@@ -236,6 +248,24 @@
                     document.getElementById("phone-error").innerText = "";
                     document.getElementById("address-error").innerText = "";
                     document.getElementById("payment-status-error").innerText = "";
+                    document.getElementById("name-error").innerText = "";
+                    document.getElementById("email-error").innerText = "";
+
+                    // Validate name
+                    let username = document.getElementById("username").value;
+                    let nameRegex = /^[A-Za-z\sÀ-ỹ]+$/; // Cho phép chữ cái, khoảng trắng, và dấu tiếng Việt
+                    if (!username || !nameRegex.test(username)) {
+                        document.getElementById("name-error").innerText = "Vui lòng nhập tên hợp lệ (chỉ gồm chữ cái và khoảng trắng).";
+                        isValid = false;
+                    }
+
+                    // Validate email
+                    let email = document.getElementById("email").value;
+                    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Kiểm tra định dạng email cơ bản
+                    if (!email || !emailRegex.test(email)) {
+                        document.getElementById("email-error").innerText = "Vui lòng nhập địa chỉ email hợp lệ.";
+                        isValid = false;
+                    }
 
                     // Validate phone
                     let phone = document.getElementById("phone").value;

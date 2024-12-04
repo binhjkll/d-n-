@@ -17,11 +17,12 @@
 </style>
 
 <?php
-session_start();
+// session_start();
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
     $phone = $_SESSION['phone'];  // Lấy thông tin người dùng từ session
     $address = $_SESSION['address'];
+    $email = $_SESSION['email'];
     // $ngaymua= $_SESSION['ngaymua']; // Lấy thông tin người dùng từ session
 }
 ?>

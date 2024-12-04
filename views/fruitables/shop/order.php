@@ -132,6 +132,11 @@
             <form action="" method="post" onsubmit="return validateForm()">
                 <div class="row g-5">
                     <div class="col-md-12 col-lg-8 col-xl-5">
+                        <div class="form-item">
+                            <label class="form-label my-3">Người nhận<sup>*</sup></label>
+                            <input type="text" name="name" class="form-control" id="name" value="<?php echo $username ?>">
+                            <span id="name-error" style="color: red;"></span> <!-- Display name error -->
+                        </div>
                         <!-- Số điện thoại -->
                         <div class="form-item">
                             <label class="form-label my-3">Số điện thoại<sup>*</sup></label>
@@ -144,6 +149,11 @@
                             <label class="form-label my-3">Địa chỉ <sup>*</sup></label>
                             <input type="text" name="address" class="form-control" id="address" value="<?php echo $address ?>">
                             <span id="address-error" style="color: red;"></span> <!-- Hiển thị lỗi địa chỉ -->
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Email <sup>*</sup></label>
+                            <input type="text" name="email" class="form-control" id="email" value="<?php echo $email ?>">
+                            <span id="email-error" style="color: red;"></span> <!-- Display email error -->
                         </div>
                     </div>
 
@@ -222,6 +232,8 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="cancel_reason" placeholder="cancel_reason">
+
             </form>
 
             <script>
@@ -233,10 +245,12 @@
                     document.getElementById("address-error").innerText = "";
                     document.getElementById("size-error").innerText = "";
                     document.getElementById("payment-status-error").innerText = "";
+                    document.getElementById("name-error").innerText = "";
+                    document.getElementById("email-error").innerText = "";
 
                     // Validate phone
                     let phone = document.getElementById("phone").value;
-                    let phoneRegex = /^[0-9]{10}$/; // Kiểm tra số điện thoại 10 chữ số
+                    let phoneRegex = /^[0-9]{10}$/; // 10-digit phone number
                     if (!phone || !phoneRegex.test(phone)) {
                         document.getElementById("phone-error").innerText = "Vui lòng nhập số điện thoại hợp lệ.";
                         isValid = false;
@@ -245,14 +259,14 @@
                     // Validate address
                     let address = document.getElementById("address").value;
                     if (!address) {
-                        document.getElementById("address-error").innerText = "Vui lòng nhập địa chỉ.";
+                        document.getElementById("address-error").innerText = "Không được để trống.";
                         isValid = false;
                     }
 
                     // Validate size selection
                     let size = document.querySelector('input[name="size"]:checked');
                     if (!size) {
-                        document.getElementById("size-error").innerText = "***";
+                        document.getElementById("size-error").innerText = "Vui lòng chọn kích cỡ.";
                         isValid = false;
                     }
 
@@ -263,9 +277,26 @@
                         isValid = false;
                     }
 
+                    // Validate name
+                    let name = document.getElementById("name").value;
+                    let nameRegex = /^[A-Za-z\sÀ-ỹ]+$/; // Allow letters, spaces, and Vietnamese diacritics
+                    if (!name || !nameRegex.test(name)) {
+                        document.getElementById("name-error").innerText = "Vui lòng nhập tên hợp lệ (chỉ bao gồm chữ cái và khoảng trắng).";
+                        isValid = false;
+                    }
+
+                    // Validate email
+                    let email = document.getElementById("email").value;
+                    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation
+                    if (!email || !emailRegex.test(email)) {
+                        document.getElementById("email-error").innerText = "Vui lòng nhập địa chỉ email hợp lệ.";
+                        isValid = false;
+                    }
+
                     return isValid;
                 }
             </script>
+
 
 
 

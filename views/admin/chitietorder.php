@@ -81,13 +81,46 @@
         </div>
 
         <!-- Nội dung -->
+
         <div class="content mt-3">
+
+
+
             <div class="animated fadeIn">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body card-block">
 
+
+
+                                <?php foreach ($la as $aa) { ?>
+
+                                    <?php if ($aa->delivery_status == 'Đã huỷ'): ?>
+                                        <table class="table table-bordered text-center rounded"
+                                            style="border-collapse: collapse; margin: 20px 0; width: 20%; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                                            <thead style="background-color: #f1f1f1;">
+                                                <tr>
+                                                    <th style="padding: 8px; font-size: 18px; font-weight: bold; color: red; text-align: left;">
+                                                        Lý do huỷ
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="padding: 15px; font-size: 16px; color: #555; text-align: left;">
+                                                        <?php
+                                                        echo $aa->cancel_reason;
+
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    <?php endif; ?>
+
+                                <?php } ?>
                                 <form action="" method="post">
                                     <table class="table table-striped table-bordered text-center rounded" style="overflow: hidden;">
                                         <thead class="thead-dark" style="background-color: #f8f9fa; color: #333; border-radius: 12px;">
@@ -98,10 +131,13 @@
                                                 <th class="text-center" style="width: 15%; font-weight: bold;">Total Price</th>
                                                 <th class="text-center" style="width: 10%; font-weight: bold;">Size</th>
                                                 <th class="text-center" style="width: 20%; font-weight: bold;">Image</th>
+
                                             </tr>
                                         </thead>
 
                                         <tbody>
+
+
                                             <?php if (!empty($listbook)): ?>
                                                 <?php foreach ($listbook as $item): ?>
                                                     <tr>
@@ -121,7 +157,9 @@
                                                 </tr>
                                             <?php endif; ?>
                                         </tbody>
+
                                     </table>
+                                    <br>
 
 
 

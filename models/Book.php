@@ -420,35 +420,41 @@ class Book
     //     }
     // }
 
-    public function insert_binhluan($review_id, $product_id, $user_id, $comment, $created_at ){
+    public function insert_binhluan($review_id, $product_id, $user_id, $comment, $created_at)
+    {
         $sql = "INSERT INTO `reviews` VALUES (?,?,?,?,?)";
         $this->connect->setQuery($sql);
         return $this->connect->loadData([$review_id, $product_id, $user_id, $comment, $created_at]);
     }
-    public function binhluan_theo_idsp($product_id){
+    public function binhluan_theo_idsp($product_id)
+    {
         $sql = "SELECT * FROM `reviews` where product_id = ?";
         $this->connect->setQuery($sql);
         return $this->connect->loadData([$product_id]);
     }
-    public function all_binhluan(){
+    public function all_binhluan()
+    {
         $sql = "SELECT * FROM `reviews`";
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
-    public function getIdbl($review_id){
+    public function getIdbl($review_id)
+    {
         $sql = "SELECT * FROM `reviews` WHERE review_id = ?";
         $this->connect->setQuery($sql);
-        return $this->connect->loadData([$review_id],false);
+        return $this->connect->loadData([$review_id], false);
     }
-    public function users(){
+    public function users()
+    {
         $sql = "SELECT * FROM `users`";
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
-    public function deleteBluan($review_id){
+    public function deleteBluan($review_id)
+    {
         $sql = "DELETE FROM `reviews` WHERE review_id = ?";
         $this->connect->setQuery($sql);
-        return $this->connect->loadData([$review_id],false);
+        return $this->connect->loadData([$review_id], false);
     }
 
     public function checkout($order_id, $user_id, $product_id, $quantity, $added_at, $discount_id)
@@ -497,13 +503,13 @@ class Book
     //         }
     //         return true; // Trả về true nếu thêm tất cả biến thể thành công
     //     }
-    public function addOrder($user_id, $total_amount, $payment_status, $delivery_status, $created_at, $phone, $address)
+    public function addOrder($user_id, $total_amount, $payment_status, $delivery_status, $created_at, $phone, $address, $email, $name, $cancel_reason)
     {
-        $sql = "INSERT INTO `orders` (user_id, total_amount, payment_status, delivery_status, created_at,phone, address)
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO `orders` (user_id, total_amount, payment_status, delivery_status, created_at,phone, address, email,name,cancel_reason)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
         $this->connect->setQuery($sql);
-        $this->connect->loadData([$user_id, $total_amount, $payment_status, $delivery_status, $created_at, $phone, $address]);
+        $this->connect->loadData([$user_id, $total_amount, $payment_status, $delivery_status, $created_at, $phone, $address, $email, $name, $cancel_reason]);
 
         // Lấy order_id của đơn hàng vừa thêm
         return $this->connect->lastInsertId(); // Trả về order_id
@@ -524,24 +530,42 @@ class Book
     }
     public function getorder()
     {
-        $sql = "SELECT * FROM `orders`";
+        $sql = "SELECT * FROM `orders` ORDER BY order_id DESC";
         $this->connect->setQuery($sql);
         return $this->connect->loadData();
     }
+    public function getorderss($order_id)
+    {
+        $sql = "SELECT * FROM `orders` WHERE order_id = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData([$order_id]);
+    }
+
     public function updateDeliveryStatus($order_id, $delivery_status)
     {
         $sql = "UPDATE orders SET delivery_status = ? WHERE order_id = ?";
         $this->connect->setQuery($sql);
         return $this->connect->execute([$delivery_status, $order_id]);
     }
+    public function processCancelOrder($orderId, $cancelReason)
+    {
+        // Cập nhật cơ sở dữ liệu để huỷ đơn hàng
+        $sql = "UPDATE orders SET delivery_status = 'Đã huỷ', cancel_reason = ? WHERE order_id = ?";
+        $this->connect->setQuery($sql);
+        return $this->connect->execute([$cancelReason, $orderId]);
+    }
+
+
+
     public function getorders($user_id)
     {
-        $sql = "SELECT * FROM orders WHERE user_id = ?";
+        $sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY order_id DESC";
         $this->connect->setQuery($sql);
         return $this->connect->loadData([$user_id]); // Truyền user_id để tránh SQL Injection
     }
 
-  
+
+
 
 
     public function getOrderItemsWithVariants($orderId)
@@ -573,35 +597,8 @@ class Book
     }
 
 
-    // public function getOrdersWithItems($userId)
-    // {
-    //     $sql = "
-    //     SELECT 
-    //         orders.order_id,
-    //         orders.user_id,
-    //         orders.total_amount,
-    //         orders.payment_status,
-    //         orders.delivery_status,
-    //         orders.created_at,
-    //         orders.address,
-    //         orders.phone,
-    //         order_items.order_item_id,
-    //         order_items.variant_id,
-    //         order_items.quantity,
-    //         order_items.price,
-    //         (order_items.quantity * order_items.price) AS total_item_price
-    //     FROM 
-    //         orders
-    //     LEFT JOIN 
-    //         order_items 
-    //     ON 
-    //         orders.order_id = order_items.order_id
-    //     WHERE 
-    //         orders.user_id = ?
-    // ";
-    //     $this->connect->setQuery($sql);
-    //     return $this->connect->loadData([$userId]); // Load toàn bộ dữ liệu
-    // }
+
+
     public function getordersitem($order_id)
     {
         $sql = "SELECT * FROM `order_items` WHERE `order_id ` = ?";

@@ -134,9 +134,6 @@
     </div>
     <!-- Hero End -->
 
-<<<<<<< HEAD
-                            <!-- Bestsaler Product Start -->
-=======
 
     <!-- Featurs Section Start -->
     <div class="container-fluid featurs py-5">
@@ -349,7 +346,6 @@
 
 
     <!-- Bestsaler Product Start -->
->>>>>>> ee2dc2d652a9ddbf370918d152b5ce8f1842dd46
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="text-center mx-auto mb-5" style="max-width: 700px;">

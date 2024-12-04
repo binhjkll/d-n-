@@ -179,29 +179,28 @@
     <h2>Đăng ký</h2>
     <form action="" method="post" id="registrationForm">
       <div class="form-group">
-        <label for="name">Tên tài khoản</label>
+        <label for="name">Tên tài khoản (*)</label>
         <input type="text" name="username" id="username">
         <span id="usernameError" style="color: red;"></span>
       </div>
       <div class="form-group">
-        <label for="password">Mật khẩu</label>
+        <label for="password">Mật khẩu (*)</label>
         <input type="password" name="password" id="password">
         <span id="passwordError" style="color: red;"></span>
       </div>
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">Email (*)</label>
         <input type="email" name="email" id="email">
         <span id="emailError" style="color: red;"></span>
       </div>
       <div class="form-group">
-        <label for="phone">Số điện thoại</label>
+        <label for="phone">Số điện thoại (*)</label>
         <input type="text" name="phone" id="phone">
         <span id="phoneError" style="color: red;"></span>
       </div>
       <div class="form-group">
         <label for="address">Địa chỉ</label>
         <input type="text" name="address" id="address" placeholder="Có thể để trống">
-        <span id="addressError" style="color: red;"></span>
       </div>
       <button type="submit" name="btn_submit">Đăng ký</button>
     </form>

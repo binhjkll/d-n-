@@ -1,41 +1,9 @@
-<<<<<<< HEAD
 <style>
     .navbar-nav li a {
         color: #333;
         background-color: transparent;
         transition: all 0.3s ease;
     }
-=======
-        <!-- Left Panel -->
-        <aside id="left-panel" class="left-panel">
-            <nav class="navbar navbar-expand-sm navbar-default">
-                <div id="main-menu" class="main-menu collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li>
-                            <a href="?act=list"><i class="menu-icon fa fa-laptop"></i>Quản lý sản phẩm</a>
-                        </li>
-                        <li>
-                            <a href="?act=danhmuc"><i class="menu-icon fa fa-cube"></i>Quản lý danh mục</a>
-                        </li>
-                        <li>
-                        </li>
-                        <li>
-                            <a href="?act=listuser"><i class="menu-icon fa fa-users"></i>Quản lý người dùng</a>
-                        </li>
-                        <li>
-                            <a href="?act=quanlyorder"><i class="menu-icon fa fa-truck"></i>Quản lý đơn hàng</a>
-                        </li>
-                        <li>
-                            <a href="?act=binhluan"><i class="menu-icon fa fa-comments"></i>Quản lý bình luận</a>
-                        </li>
-                        <li>
-                            <a href="?act=banner_manager"><i class="menu-icon fa fa-cube"></i>Quản lý banner</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </aside>
->>>>>>> 0eaa651cb4380c0d2a7fae9ac8a67251b663ea01
 
     .navbar-nav li.active a {
         color: #fff;
