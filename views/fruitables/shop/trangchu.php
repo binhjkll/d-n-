@@ -27,6 +27,27 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <style>
+.carousel-inner {
+    max-width: 300px; /* 4cm ~ 200px (1cm ≈ 50px trên màn hình tiêu chuẩn) */
+    max-height: 300px;
+    margin: 0 auto; /* Căn giữa carousel */
+}
+.custom-carousel .carousel-item {
+    transition: transform 1s ease-in-out;
+}
+.carousel-item img {
+    width: 100%; /* Đảm bảo ảnh vừa khung */
+    height: 100%; /* Đảm bảo ảnh vừa khung */
+    object-fit: cover; /* Đảm bảo ảnh không bị méo, cắt nếu cần */
+    border-radius: 5px; /* Bo góc nhẹ nếu muốn */
+}
+
+.bg-black {
+    background-color: #000000;
+}
+    </style>
 </head>
 
 <body style="background-color: white;">
@@ -80,29 +101,32 @@
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-5">
-                    <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                        <div class="carousel-inner" role="listbox">
-                            <div class="carousel-item active rounded">
-                                <img src="img/images-2.jpg" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                                <a href="#" class="btn px-4 py-2 text-white rounded">Áo phao</a>
-                            </div>
-                            <div class="carousel-item rounded">
-                                <img src="img/images.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                                <a href="#" class="btn px-4 py-2 text-white rounded">Áo Hoodie</a>
-                            </div>
-                            <div class="carousel-item rounded">
-                                <img src="img/baner-1.png" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                                <a href="#" class="btn px-4 py-2 text-white rounded">Áo Hoodie</a>
-                            </div>
+    <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
+        <div class="carousel-inner" role="listbox">
+            <?php foreach ($banners as $index => $banner): ?>
+                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                    <img src="<?php echo $banner->product_img; ?>" class="d-block w-100" alt="Slide Image">
+                    <div class="carousel-caption d-none d-md-block">
+                        
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+  <<script>
+   setInterval(nextSlide, 1000);
+  </script>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                        
                     </div>
                 </div>
             </div>
@@ -110,6 +134,9 @@
     </div>
     <!-- Hero End -->
 
+<<<<<<< HEAD
+                            <!-- Bestsaler Product Start -->
+=======
 
     <!-- Featurs Section Start -->
     <div class="container-fluid featurs py-5">
@@ -322,12 +349,32 @@
 
 
     <!-- Bestsaler Product Start -->
+>>>>>>> ee2dc2d652a9ddbf370918d152b5ce8f1842dd46
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="text-center mx-auto mb-5" style="max-width: 700px;">
                 <h1 class="display-4">Bestseller Products</h1>
                 <p>Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
             </div>
+
+            <<script>
+            fetch('/api/getFeaturedProducts.php')
+  .then(response => response.json())
+  .then(data => {
+    const productContainer = document.getElementById('product-container');
+    data.forEach(product => {
+      const productCard = `
+        <div class="product-card">
+          <img src="${product.image_url}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>${product.price} VND</p>
+          <a href="/product/${product.product_id}">View Details</a>
+        </div>`;
+      productContainer.innerHTML += productCard;
+    });
+  })
+  .catch(error => console.error('Error fetching products:', error));
+            </script>
             <div class="row g-4">
                 <div class="col-lg-6 col-xl-4">
                     <div class="p-4 rounded bg-light">
@@ -529,6 +576,218 @@
     </div>
     <!-- Bestsaler Product End -->
 
+    <!-- Featurs Section Start -->
+    <div class="container-fluid featurs py-5">
+        <div class="container py-5">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="featurs-item text-center rounded bg-light p-4">
+                        <div class="featurs-icon btn-square rounded-circle bg-black mb-5 mx-auto">
+                            <i class="fas fa-car-side fa-3x text-white"></i>
+                        </div>
+                        <div class="featurs-content text-center">
+                            <h5 style="color:black ">Free shipping</h5>
+                            <p class="mb-0" style="color:black ">Freeship đơn trên 200.000đ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="featurs-item text-center rounded bg-light p-4">
+                        <div class="featurs-icon btn-square rounded-circle bg-black mb-5 mx-auto">
+                            <i class="fas fa-user-shield fa-3x text-white"></i>
+                        </div>
+                        <div class="featurs-content text-center">
+                            <h5 style="color:black ">Bảo mật thanh toán</h5>
+                            <p class="mb-0" style="color:black ">100% Thanh toán bảo mật </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="featurs-item text-center rounded bg-light p-4">
+                        <div class="featurs-icon btn-square rounded-circle bg-black mb-5 mx-auto">
+                            <i class="fas fa-exchange-alt fa-3x text-white"></i>
+                        </div>
+                        <div class="featurs-content text-center">
+                            <h5 style="color:black ">30 ngày đổi trả</h5>
+                            <p class="mb-0" style="color:black ">30 ngày đổi trả</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="featurs-item text-center rounded bg-light p-4">
+                        <div class="featurs-icon btn-square rounded-circle bg-black mb-5 mx-auto">
+                            <i class="fa fa-phone-alt fa-3x text-white"></i>
+                        </div>
+                        <div class="featurs-content text-center">
+                            <h5 style="color:black ">Hỗ trợ 24/7</h5>
+                            <p class="mb-0" style="color:black ">Hỗ trợ mọi lúc</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Featurs Section End -->
+
+
+    <!-- Fruits Shop Start-->
+
+    <!-- <div class="container-fluid fruite py-5">
+        <div class="container py-5">
+            <div class="tab-class text-center">
+                <div class="row g-4">
+                    <div class="col-lg-8 text-end">
+
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane fade show p-0 active">
+                        <div class="row g-4">
+                            <div class="col-lg-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Fruits Shop End-->
+
+
+    <!-- Featurs Start -->
+    <!-- <div class="container-fluid service py-5">
+        <div class="container py-5">
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                    <a href="#">
+                        <div class="service-item bg-secondary rounded border border-secondary">
+                            <img src="img/featur-1.jpg" class="img-fluid rounded-top w-100" alt="">
+                            <div class="px-4 rounded-bottom">
+                                <div class="service-content bg-primary text-center p-4 rounded">
+                                    <h5 class="text-white">Fresh Apples</h5>
+                                    <h3 class="mb-0">20% OFF</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <a href="#">
+                        <div class="service-item bg-dark rounded border border-dark">
+                            <img src="img/featur-2.jpg" class="img-fluid rounded-top w-100" alt="">
+                            <div class="px-4 rounded-bottom">
+                                <div class="service-content bg-light text-center p-4 rounded">
+                                    <h5 class="text-primary">Tasty Fruits</h5>
+                                    <h3 class="mb-0">Free delivery</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <a href="#">
+                        <div class="service-item bg-primary rounded border border-primary">
+                            <img src="img/featur-3.jpg" class="img-fluid rounded-top w-100" alt="">
+                            <div class="px-4 rounded-bottom">
+                                <div class="service-content bg-secondary text-center p-4 rounded">
+                                    <h5 class="text-white">Exotic Vegitable</h5>
+                                    <h3 class="mb-0">Discount 30$</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Featurs End -->
+
+
+    <!-- Vesitable Shop Start-->
+    <div class="container-fluid vesitable py-5">
+        <div class="container py-5">
+            <h1 class="mb-0">Gợi Ý</h1>
+            <div class="owl-carousel vegetable-carousel justify-content-center">
+
+                <?php if (!empty($latestProducts) && is_array($latestProducts)) { ?>
+                    <?php
+                    $displayedProducts = []; // Mảng lưu trữ các product_id đã hiển thị
+                    foreach ($latestProducts as $value) {
+                        if (in_array($value->product_id, $displayedProducts)) {
+                            continue; // Bỏ qua sản phẩm trùng lặp
+                        }
+
+                        $displayedProducts[] = $value->product_id; // Lưu product_id vào mảng
+                    ?>
+                        <div class="border border-primary rounded position-relative vesitable-item">
+                            <div class="fruite-img">
+                                <a href="index.php?act=productDetail&id=<?php echo $value->product_id; ?>">
+                                    <img src="<?php echo $value->product_img; ?>" class="img-fluid w-100 rounded-top" alt="#">
+                                </a>
+                            </div>
+                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">
+                                <?php echo $value->category_name; ?>
+                            </div>
+                            <div class="p-4 rounded-bottom">
+                                <a href="index.php?act=productDetail&id=<?php echo $value->product_id; ?>">
+                                    <h4><?php echo $value->name; ?></h4>
+                                </a>
+
+                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                    <p class="text-dark fs-5 fw-bold mb-0">
+                                        <?php echo number_format($value->price); ?> VND
+                                    </p>
+                                    <br>
+                                    <a href="index.php?act=productDetail&id=<?php echo $value->product_id; ?>"
+                                        class="btn border border-secondary rounded-pill px-3 text-primary">
+                                        Xem chi tiết
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                <?php } else { ?>
+                    <p>Không có sản phẩm nào để hiển thị.</p>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <!-- Vesitable Shop End -->
+
+
+    <!-- Banner Section Start-->
+    <div class="container-fluid banner bg-secondary my-5">
+        <div class="container py-5">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6">
+                    <div class="py-4">
+                        <h1 class="display-3 text-white">Fresh Exotic Fruits</h1>
+                        <p class="fw-normal display-3 text-dark mb-4">in Our Store</p>
+                        <p class="mb-4 text-dark">The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic words etc.</p>
+                        <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">BUY</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="position-relative">
+                        <img src="img/baner-1.png" class="img-fluid w-100 rounded" alt="">
+                        <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute" style="width: 140px; height: 140px; top: 0; left: 0;">
+                            <h1 style="font-size: 100px;">1</h1>
+                            <div class="d-flex flex-column">
+                                <span class="h2 mb-0">50$</span>
+                                <span class="h4 text-muted mb-0">kg</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Banner Section End -->
+
+
+    
+
 
     <!-- Fact Start -->
     <div class="container-fluid py-5">
@@ -686,15 +945,6 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-        </div>
-        <!-- Banner Section End -->
-
-
-        <!-- Bestsaler Product Start -->
-        
-        <!-- Bestsaler Product End -->
-=======
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <div class="footer-item">
@@ -740,7 +990,6 @@
         </div>
     </div>
     <!-- Footer End -->
->>>>>>> ada0f35724c2b364a46c23dd1ea761ffed318bef
 
     <!-- Copyright Start -->
     <div class="container-fluid copyright bg-dark py-4">

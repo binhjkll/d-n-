@@ -53,6 +53,7 @@ switch ($bb) {
         break;
     case 'trangchu':
         $aa->trangchu();
+        $aa->bannerShow();
         break;
     case 'productDetail':
         $aa->productDetail();
@@ -95,6 +96,19 @@ switch ($bb) {
     case 'userpro':
         $aa->userpro();
         break;
+    // case 'test':
+    //     $aa->bannerShow();
+    //     break;
+    case 'banner_manager':
+        $aa->banner_manager();
+    break;
+    case 'add_banner':
+        $aa->add_banner();
+    break;
+    case 'update_banner':
+        $aa->update_banner();
+    break;
+    
     case 'chitietpro':
         $aa->chitietpro();
         break;

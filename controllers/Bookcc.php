@@ -56,6 +56,8 @@ class Bookcc
     public function trangchu()
     {
         $mBook = new Book();
+        
+        $banners = $mBook->bannerShow();
         $shophtml = $mBook->getDM();
         $latestProducts = $mBook->getRandomProducts(6);
 
@@ -552,6 +554,8 @@ class Bookcc
         }
     }
 
+
+    // bình luận
     public function binhluan(){
         $mBook = new Book();
         $list = $mBook->all_binhluan();
@@ -571,6 +575,7 @@ class Bookcc
             }
         }
     }
+    // end bình luận
 
 
 
