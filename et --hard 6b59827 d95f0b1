@@ -1,0 +1,296 @@
+[33mcommit d299b545627665db463ab5e187ce776e6756404a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Merge: 6b59827 d95f0b1
+Author: thanhtu0910 <tuantu091005@gmail.com>
+Date:   Wed Dec 4 22:32:56 2024 +0700
+
+    check
+
+[33mcommit 6b5982748b93be4d6c99c0ca66b6dce7df43dc0f[m
+Merge: 28fd362 82018a9
+Author: thanhtu0910 <tuantu091005@gmail.com>
+Date:   Wed Dec 4 21:14:02 2024 +0700
+
+    up giao diện
+
+[33mcommit d95f0b1aec322a75021a92322fb5b29446b26e30[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Wed Dec 4 13:18:47 2024 +0700
+
+    toàn bộ thanh toán
+
+[33mcommit 28fd3626412d0b5af888116532f785286b936b1f[m
+Author: thanhtu0910 <tuantu091005@gmail.com>
+Date:   Tue Dec 3 19:50:50 2024 +0700
+
+    banner show
+
+[33mcommit 82018a91c507f2eb0d3a6c7fa504f9957ed202a0[m
+Merge: 50c1d5d 0eaa651
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Tue Dec 3 18:43:41 2024 +0700
+
+    trang thai don hang
+
+[33mcommit 50c1d5dd1fcd968bb348143a3fbcb84be478241e[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Tue Dec 3 18:42:55 2024 +0700
+
+    trang thai don hang
+
+[33mcommit 0eaa651cb4380c0d2a7fae9ac8a67251b663ea01[m
+Merge: 3fd0daa ee2dc2d
+Author: thanhtu0910 <tuantu091005@gmail.com>
+Date:   Tue Dec 3 17:58:15 2024 +0700
+
+    pull 2
+
+[33mcommit 3fd0daa2351d6344de5ce72772e23c887baaef8a[m
+Author: thanhtu0910 <tuantu091005@gmail.com>
+Date:   Tue Dec 3 17:52:02 2024 +0700
+
+    quan ly banner
+
+[33mcommit ee2dc2d652a9ddbf370918d152b5ce8f1842dd46[m
+Merge: bd75233 3a4669d
+Author: caohongson-code <sonchph49830@gmail.com>
+Date:   Tue Dec 3 11:33:31 2024 +0700
+
+    push code binh luan
+
+[33mcommit bd75233569eec2c325e0f6f7f5cc6c2d4e584302[m
+Merge: fc0e1b7 8ba4d31
+Author: caohongson-code <sonchph49830@gmail.com>
+Date:   Tue Dec 3 11:27:17 2024 +0700
+
+    pull code
+
+[33mcommit 3a4669d9656810dfcefd53d787143b33f04873e1[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Mon Dec 2 06:31:13 2024 +0700
+
+    quen mật khẩu
+
+[33mcommit 939f071bf936a8fea51a46cd5d95b24e92f157b1[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Mon Dec 2 02:46:56 2024 +0700
+
+    validate thanh toán
+
+[33mcommit 721735ecaec710b6d9d88a93737dae48e87e8e9c[m
+Merge: 2c79a94 fd4f88d
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Mon Dec 2 01:27:51 2024 +0700
+
+    đơn hàng trong user thêm size
+
+[33mcommit 2c79a94570163b1213547de305e9d5d90287fd92[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Mon Dec 2 01:25:03 2024 +0700
+
+    thêm phần đơn hàng trong user
+
+[33mcommit fd4f88da745c132857329e891d180361442b56c9[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Sat Nov 30 20:10:41 2024 +0700
+
+    Phân trang sản phẩm
+
+[33mcommit 05cfab41ac947e0d0069497abf2e3e4bd6972fcb[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Fri Nov 29 20:14:49 2024 +0700
+
+    thanh toán
+
+[33mcommit b5b10559f3d980d21223323b1613c07e9b701539[m
+Merge: df1dec7 59a75bb
+Author: thanhtu0910 <tuantu091005@gmail.com>
+Date:   Wed Nov 27 19:27:04 2024 +0700
+
+    Merge branch 'master' of https://github.com/binhjkll/d-n-
+
+[33mcommit df1dec78181173929fd1587d1f0e80aeaefb0cf7[m
+Author: thanhtu0910 <tuantu091005@gmail.com>
+Date:   Wed Nov 27 19:26:39 2024 +0700
+
+    nhan thongtin cart
+
+[33mcommit 59a75bb3198bdc90dbff1566976ace19c197877a[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Tue Nov 26 18:45:54 2024 +0700
+
+    làm variant trong chi tiết
+
+[33mcommit fc0e1b7960504173f23e02924a7384ec6284cd25[m
+Author: caohongson-code <sonchph49830@gmail.com>
+Date:   Tue Nov 26 17:21:19 2024 +0700
+
+    keo ve
+
+[33mcommit 8ba4d3175fceca8fb27c2e8e52bdbfee4048950f[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Tue Nov 26 07:13:14 2024 +0700
+
+    Them sl trong giỏ hàng và tổng tiền tất cả sản phẩm
+
+[33mcommit 7e5c92d935ddc88da07b999b84dbcdafaed18066[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Mon Nov 25 14:35:27 2024 +0700
+
+    mua hang theo user id
+
+[33mcommit 34d185a3dc18dcdb5b5a3756daa3bcda13fc1363[m
+Merge: 205acfd ada0f35
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Mon Nov 25 13:52:14 2024 +0700
+
+    phai dang nhap moi them vao giohang
+
+[33mcommit 205acfd9a9e0db8f53d575894d9142994a6559d3[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Mon Nov 25 13:51:04 2024 +0700
+
+    lay gio hang phai dang nhap
+
+[33mcommit ada0f35724c2b364a46c23dd1ea761ffed318bef[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Sun Nov 24 20:10:55 2024 +0700
+
+    sua hover
+
+[33mcommit 40fb161c7139a17f3d209b9c57c6169f93e01995[m
+Merge: 37638e6 a4766af
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Sun Nov 24 19:47:06 2024 +0700
+
+    cmt de pull
+
+[33mcommit 37638e680530cc32defa670ecb3a692889911a2a[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Sun Nov 24 19:45:42 2024 +0700
+
+    ....
+
+[33mcommit a4766af0dfdf285065df6d17afdb10099d7ee873[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Sun Nov 24 19:30:29 2024 +0700
+
+    do san pham random ra trangchu
+
+[33mcommit 8ed425e3d12ad8c6161da609d0f3032cec9d6c9d[m
+Merge: 2fa9373 7d9a205
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Sun Nov 24 06:09:24 2024 +0700
+
+    chinh lai header
+
+[33mcommit 2fa9373b36fa1834dd5facf6b373061877830579[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Sun Nov 24 06:00:04 2024 +0700
+
+    hihi
+
+[33mcommit 7d9a2054503765e941488218ca3dfe8690f8a6ae[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Sat Nov 23 20:15:46 2024 +0700
+
+    dang ky dang nhap admin
+
+[33mcommit dcd67ae18d5ca03d2d7103efe85c80567d632862[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Sat Nov 23 13:52:49 2024 +0700
+
+    Phan giohang
+
+[33mcommit 9ffc5bae31ff5a64e60bad3dd6743b38095328db[m
+Merge: c50452f e0dcac8
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Fri Nov 22 18:35:40 2024 +0700
+
+    Merge branch 'master' of https://github.com/binhjkll/d-n-
+
+[33mcommit c50452f4216f4b628d2ac0d89c99bd9777616f3c[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Fri Nov 22 18:35:35 2024 +0700
+
+    pull
+
+[33mcommit e0dcac84be1dbeb5e31c5477cfb4bdd94c24bcfb[m
+Merge: 59d3a67 55a544f
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Fri Nov 22 16:59:04 2024 +0700
+
+    dang ky khong trung mail tai khoan phone
+
+[33mcommit 59d3a6728ee463c5f9746f5ea574ce9beef47b67[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Fri Nov 22 16:27:13 2024 +0700
+
+    nốt đăng ký
+
+[33mcommit 55a544f9843a362fc8a6bd4d112385fdd2cad533[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Fri Nov 22 08:00:06 2024 +0700
+
+    tim kiem file trang chu
+
+[33mcommit 4785d121eec1ae9fa9944d90e7e4a0239a19d260[m
+Merge: eae40ac 9b9a20a
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Fri Nov 22 03:57:24 2024 +0700
+
+    Timkiemsp va timkiemdanhmuc
+
+[33mcommit eae40ac32f193913ac07fabf5f80f57d51cd2f0f[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Fri Nov 22 03:55:43 2024 +0700
+
+    Timkiemsp va danhmuc
+
+[33mcommit 9b9a20afc3ab3688f10026308572a18371508878[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Thu Nov 21 20:18:53 2024 +0700
+
+    sua gọn views
+
+[33mcommit ee6099ff6333e7fc82d3e84b04c6a2da56730cf1[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Thu Nov 21 17:42:06 2024 +0700
+
+    cắt lại html
+
+[33mcommit 1430045b43c3f22ca104c1f62b9677ce0bcfc0b7[m
+Merge: adbd5ea 9233da6
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Thu Nov 21 17:11:26 2024 +0700
+
+    sua loi edit sp
+
+[33mcommit adbd5ea0bc622dafb72b69b1376892458bbe09b6[m
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Thu Nov 21 17:09:21 2024 +0700
+
+    fix loi edit sp
+
+[33mcommit 9233da6e370a0e417a5d8823ce4a68f479015eed[m
+Merge: 6680604 d14c1a7
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Thu Nov 21 10:06:57 2024 +0700
+
+    chi tiet
+
+[33mcommit 6680604dc2c3a3f52b3fdd54b4286b9dd8de1adf[m
+Author: backaaaa <bacdxph49812@gmail.com>
+Date:   Thu Nov 21 10:05:17 2024 +0700
+
+    do du lieu vs chitiet
+
+[33mcommit d14c1a72e7a0e0e15592fc70a7ce42a903d735c1[m
+Merge: f0861a0 9b1ad41
+Author: binhjkll <binh2022004@gmail.com>
+Date:   Thu Nov 21 07:25:17 2024 +0700
+
+    dang nhap
+
+[33mcommit f0861a074fb0440885db75fb187d31055c72d3e8[m
+Author: binhjkll <binh2022004@gmail.com>
+Date

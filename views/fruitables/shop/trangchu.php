@@ -29,9 +29,15 @@
     <link href="css/style.css" rel="stylesheet">
 
     <style>
+     .carousel-inner img {
+    width: 100vw;          /* Chiếm toàn bộ chiều ngang viewport */
+    height: 90vh;          /* Chiều cao 90% viewport */
+    object-fit: cover;     /* Đảm bảo không bị méo ảnh */
+}
+
 .carousel-inner {
-    max-width: 300px; /* 4cm ~ 200px (1cm ≈ 50px trên màn hình tiêu chuẩn) */
-    max-height: 300px;
+    max-width: 900px; /* 4cm ~ 200px (1cm ≈ 50px trên màn hình tiêu chuẩn) */
+    max-height: 500px;
     margin: 0 auto; /* Căn giữa carousel */
 }
 .custom-carousel .carousel-item {
@@ -46,6 +52,19 @@
 
 .bg-black {
     background-color: #000000;
+}
+
+.carousel-inner img {
+    width: 100%;         /* Đảm bảo hình ảnh chiếm toàn bộ khung */
+    height: auto;        /* Chiều cao tự động theo tỷ lệ */
+    object-fit: cover;   /* Cắt và căn chỉnh ảnh phù hợp khung */
+    aspect-ratio: 16/9;  /* Tỷ lệ khung hình 16:9 */
+    border-radius: 10px; /* Bo góc nếu cần */
+}
+
+#bannerCarousel {
+    max-width: 1400px;   /* Giới hạn chiều ngang carousel */
+    margin: auto;        /* Căn giữa carousel */
 }
     </style>
 </head>
@@ -85,209 +104,52 @@
 
 
     <!-- Hero Start -->
-    <div class="container-fluid py-5 mb-5 hero-header">
-        <div class="container py-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-md-12 col-lg-7">
-                    <h4 class="mb-3 text-secondary">Thời trang không chỉ để mặc, mà để thể hiện cá tính!</h4>
-                    <h1 class="mb-5 display-3 text-primary">Phong cách & thoải mái mỗi ngày!</h1>
-                    <div class="position-relative mx-auto">
-                        <!--   timkiem -->
-                        <form action="index.php" method="GET" class="w-100 mx-auto d-flex">
-                            <input type="hidden" name="act" value="shophtml">
-                            <input type="search" name="keyword" class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" placeholder="Search">
-                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-md-12 col-lg-5">
-    <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-        <div class="carousel-inner" role="listbox">
-            <?php foreach ($banners as $index => $banner): ?>
-                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                    <img src="<?php echo $banner->product_img; ?>" class="d-block w-100" alt="Slide Image">
-                    <div class="carousel-caption d-none d-md-block">
-                        
-                    </div>
+    <div class="container-fluid py-5 mb-5 hero-header" style="position: relative;">
+    <div id="bannerCarousel" class="carousel slide w-100" style="max-width: 1400px; margin: auto;" data-bs-ride="carousel">
+        <div class="carousel-inner">
+   
+            <?php foreach ($mg_banners as $index => $banner): ?>
+                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>" style="position: relative;">
+                    <!-- Lớp mờ cho banner -->
+                    <div class="banner-overlay"></div>
+                    <img src="<?php echo htmlspecialchars($banner->image); ?>" class="d-block w-100" alt="Slide Image">
                 </div>
             <?php endforeach; ?>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-</div>
-  <<script>
-   setInterval(nextSlide, 1000);
-  </script>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
+
+    <!-- Form tìm kiếm hiển thị trên banner -->
+    <div class="carousel-caption d-none d-md-block text-start" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; margin-top:100px;">
+        <h1 style="font-size: 2.5rem; color: black; font-weight: bold;">Phong cách & thoải mái mỗi ngày!</h1>
+        <p style="color: black;">Thời trang không chỉ dễ mặc, mà dễ thể hiện cá tính!</p>
+        <!-- Form tìm kiếm ngắn hơn -->
+        <form action="index.php" method="GET" class="d-flex w-100 mt-4">
+            <input type="hidden" name="act" value="shophtml">
+            <!-- Giảm độ rộng của input -->
+            <input type="search" name="keyword" class="form-control border-2 border-light w-50 py-2 px-3 rounded-pill" placeholder="Search">
+            <button type="submit" class="btn btn-dark py-2 px-4 rounded-pill ms-2">Submit Now</button>
+        </form>
     </div>
+</div>
+
+
+
+
+<!-- Product Section -->
+
+
     <!-- Hero End -->
 
 
-    <!-- Featurs Section Start -->
-    <div class="container-fluid featurs py-5">
-        <div class="container py-5">
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="featurs-item text-center rounded bg-light p-4">
-                        <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                            <i class="fas fa-car-side fa-3x text-white"></i>
-                        </div>
-                        <div class="featurs-content text-center">
-                            <h5 style="color:black ">Free shipping</h5>
-                            <p class="mb-0" style="color:black ">Freeship đơn trên 200.000đ</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="featurs-item text-center rounded bg-light p-4">
-                        <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                            <i class="fas fa-user-shield fa-3x text-white"></i>
-                        </div>
-                        <div class="featurs-content text-center">
-                            <h5 style="color:black ">Bảo mật thanh toán</h5>
-                            <p class="mb-0" style="color:black ">100% Thanh toán bảo mật </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="featurs-item text-center rounded bg-light p-4">
-                        <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                            <i class="fas fa-exchange-alt fa-3x text-white"></i>
-                        </div>
-                        <div class="featurs-content text-center">
-                            <h5 style="color:black ">30 ngày đổi trả</h5>
-                            <p class="mb-0" style="color:black ">30 ngày đổi trả</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="featurs-item text-center rounded bg-light p-4">
-                        <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                            <i class="fa fa-phone-alt fa-3x text-white"></i>
-                        </div>
-                        <div class="featurs-content text-center">
-                            <h5 style="color:black ">Hỗ trợ 24/7</h5>
-                            <p class="mb-0" style="color:black ">Hỗ trợ mọi lúc</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Featurs Section End -->
-
-
-    <!-- Fruits Shop Start-->
-
-    <div class="container-fluid fruite py-5">
-        <div class="container py-5">
-            <div class="tab-class text-center">
-                <div class="row g-4">
-                    <div class="col-lg-8 text-end">
-
-                    </div>
-                </div>
-                <div class="tab-content">
-                    <div id="tab-1" class="tab-pane fade show p-0 active">
-                        <div class="row g-4">
-                            <div class="col-lg-12">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fruits Shop End-->
-     
-    <!-- Vesitable Shop Start-->
-    <div class="container-fluid vesitable py-5">
-        <div class="container py-5">
-            <h1 class="mb-0">Gợi Ý</h1>
-            <div class="owl-carousel vegetable-carousel justify-content-center">
-
-                <?php if (!empty($latestProducts) && is_array($latestProducts)) { ?>
-                    <?php
-                    $displayedProducts = []; // Mảng lưu trữ các product_id đã hiển thị
-                    foreach ($latestProducts as $value) {
-                        if (in_array($value->product_id, $displayedProducts)) {
-                            continue; // Bỏ qua sản phẩm trùng lặp
-                        }
-
-                        $displayedProducts[] = $value->product_id; // Lưu product_id vào mảng
-                    ?>
-                        <div class="border border-primary rounded position-relative vesitable-item">
-                            <div class="fruite-img">
-                                <a href="index.php?act=productDetail&id=<?php echo $value->product_id; ?>">
-                                    <img src="<?php echo $value->product_img; ?>" class="img-fluid w-100 rounded-top" alt="#" >
-                                </a>
-                            </div>
-                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">
-                                <?php echo $value->category_name; ?>
-                            </div>
-                            <div class="p-4 rounded-bottom">
-                                <a href="index.php?act=productDetail&id=<?php echo $value->product_id; ?>">
-                                    <h4><?php echo $value->name; ?></h4>
-                                </a>
-
-                                <div class="d-flex justify-content-between flex-lg-wrap">
-                                    <p class="text-dark fs-5 fw-bold mb-0">
-                                        <?php echo number_format($value->price); ?> VND
-                                    </p>
-                                    <br>
-                                    <a href="index.php?act=productDetail&id=<?php echo $value->product_id; ?>"
-                                        class="btn border border-secondary rounded-pill px-3 text-primary">
-                                        Xem chi tiết
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
-                <?php } else { ?>
-                    <p>Không có sản phẩm nào để hiển thị.</p>
-                <?php } ?>
-            </div>
-        </div>
-    </div>
-    <!-- Vesitable Shop End -->
-
-
-    <!-- Banner Section Start-->
-    <div class="container-fluid banner bg-secondary my-5">
-        <div class="container py-5">
-            <div class="row g-4 align-items-center">
-                <div class="col-lg-6">
-                    <div class="py-4">
-                        <h1 class="display-3 text-white">Áo Mùa Đông Phong Cách</h1>
-                        <p class="fw-normal display-3 text-dark mb-4">trong cửa hàng của chúng tôi</p>
-                        <p class="mb-4 text-dark">Hãy khám phá bộ sưu tập áo mùa đông với thiết kế độc đáo, chất liệu giữ ấm hoàn hảo và phong cách thời thượng. Được tạo ra để mang lại sự thoải mái và ấm áp, phù hợp cho mọi phong cách và dịp lễ hội.</p>
-                        <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">Mua ngay</a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="position-relative">
-                        <img src="img/Remove-bg.ai_1733368401143.png" class="img-fluid w-100 rounded" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Banner Section End -->
-
-
+ 
     <!-- Bestsaler Product Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
@@ -319,10 +181,10 @@
                     <div class="p-4 rounded bg-light">
                         <div class="row align-items-center">
                             <div class="col-6">
-                                <img src="img/best-product-1.jpg" class="img-fluid rounded-circle w-100" alt="">
+                                <img src="img/images.jpg" class="img-fluid rounded-circle w-100" alt="">
                             </div>
                             <div class="col-6">
-                                <a href="#" class="h5">Organic Tomato</a>
+                                <a href="#" class="h5"> Hoodie</a>
                                 <div class="d-flex my-3">
                                     <i class="fas fa-star text-primary"></i>
                                     <i class="fas fa-star text-primary"></i>
@@ -340,11 +202,11 @@
                     <div class="p-4 rounded bg-light">
                         <div class="row align-items-center">
                             <div class="col-6">
-                                <img src="img/best-product-2.jpg" class="img-fluid rounded-circle w-100" alt="">
+                                <img src="img/images (1).jpg" class="img-fluid rounded-circle w-100" alt="">
                             </div>
                             <div class="col-6">
                                 <br>
-                                <a href="#" class="h5">Organic Tomato</a>
+                                <a href="#" class="h5"> Puffer jacket</a>
                                 <div class="d-flex my-3">
                                     <i class="fas fa-star text-primary"></i>
                                     <i class="fas fa-star text-primary"></i>
@@ -362,10 +224,10 @@
                     <div class="p-4 rounded bg-light">
                         <div class="row align-items-center">
                             <div class="col-6">
-                                <img src="img/best-product-3.jpg" class="img-fluid rounded-circle w-100" alt="">
+                                <img src="img/z5944041638329_f916e186e2b0c4368dbcc763b7f9356e.jpg" class="img-fluid rounded-circle w-100" alt="">
                             </div>
                             <div class="col-6">
-                                <a href="#" class="h5">Organic Tomato</a>
+                                <a href="#" class="h5">Hoodie </a>
                                 <div class="d-flex my-3">
                                     <i class="fas fa-star text-primary"></i>
                                     <i class="fas fa-star text-primary"></i>
@@ -383,10 +245,10 @@
                     <div class="p-4 rounded bg-light">
                         <div class="row align-items-center">
                             <div class="col-6">
-                                <img src="img/best-product-4.jpg" class="img-fluid rounded-circle w-100" alt="">
+                                <img src="img/Ao-phao.avif" class="img-fluid rounded-circle w-100" alt="">
                             </div>
                             <div class="col-6">
-                                <a href="#" class="h5">Organic Tomato</a>
+                                <a href="#" class="h5">Puffer jacket</a>
                                 <div class="d-flex my-3">
                                     <i class="fas fa-star text-primary"></i>
                                     <i class="fas fa-star text-primary"></i>
@@ -404,10 +266,10 @@
                     <div class="p-4 rounded bg-light">
                         <div class="row align-items-center">
                             <div class="col-6">
-                                <img src="img/best-product-5.jpg" class="img-fluid rounded-circle w-100" alt="">
+                                <img src="img/Len.jpg" class="img-fluid rounded-circle w-100" alt="">
                             </div>
                             <div class="col-6">
-                                <a href="#" class="h5">Organic Tomato</a>
+                                <a href="#" class="h5"> Sweater</a>
                                 <div class="d-flex my-3">
                                     <i class="fas fa-star text-primary"></i>
                                     <i class="fas fa-star text-primary"></i>
@@ -425,10 +287,10 @@
                     <div class="p-4 rounded bg-light">
                         <div class="row align-items-center">
                             <div class="col-6">
-                                <img src="img/best-product-6.jpg" class="img-fluid rounded-circle w-100" alt="">
+                                <img src="img/hoodie.jpg" class="img-fluid rounded-circle w-100" alt="">
                             </div>
                             <div class="col-6">
-                                <a href="#" class="h5">Organic Tomato</a>
+                                <a href="#" class="h5"> Hoodie</a>
                                 <div class="d-flex my-3">
                                     <i class="fas fa-star text-primary"></i>
                                     <i class="fas fa-star text-primary"></i>
@@ -444,9 +306,9 @@
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="text-center">
-                        <img src="img/fruite-item-1.jpg" class="img-fluid rounded" alt="">
+                        <img src="img/mẫu3.jpg" class="img-fluid rounded" alt="">
                         <div class="py-4">
-                            <a href="#" class="h5">Organic Tomato</a>
+                            <a href="#" class="h5">Sweater </a>
                             <div class="d-flex my-3 justify-content-center">
                                 <i class="fas fa-star text-primary"></i>
                                 <i class="fas fa-star text-primary"></i>
@@ -461,9 +323,9 @@
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="text-center">
-                        <img src="img/fruite-item-2.jpg" class="img-fluid rounded" alt="">
+                        <img src="img/mẫu1.jpg" class="img-fluid rounded" alt="">
                         <div class="py-4">
-                            <a href="#" class="h5">Organic Tomato</a>
+                            <a href="#" class="h5">Sweater</a>
                             <div class="d-flex my-3 justify-content-center">
                                 <i class="fas fa-star text-primary"></i>
                                 <i class="fas fa-star text-primary"></i>
@@ -478,9 +340,9 @@
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="text-center">
-                        <img src="img/fruite-item-3.jpg" class="img-fluid rounded" alt="">
+                        <img src="img/mẫu2.jpg" class="img-fluid rounded" alt="">
                         <div class="py-4">
-                            <a href="#" class="h5">Organic Tomato</a>
+                            <a href="#" class="h5">Hoodie</a>
                             <div class="d-flex my-3 justify-content-center">
                                 <i class="fas fa-star text-primary"></i>
                                 <i class="fas fa-star text-primary"></i>
@@ -495,9 +357,9 @@
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="text-center">
-                        <img src="img/fruite-item-4.jpg" class="img-fluid rounded" alt="">
+                        <img src="img/download.jpg" class="img-fluid rounded" alt="">
                         <div class="py-2">
-                            <a href="#" class="h5">Organic Tomato</a>
+                            <a href="#" class="h5">Hoodie </a>
                             <div class="d-flex my-3 justify-content-center">
                                 <i class="fas fa-star text-primary"></i>
                                 <i class="fas fa-star text-primary"></i>
@@ -696,20 +558,27 @@
 
 
     <!-- Banner Section Start-->
-    <div class="container-fluid banner bg-secondary my-5">
+    <div class="container-fluid banner my-5" style="background-color: gray; ">
         <div class="container py-5">
             <div class="row g-4 align-items-center">
                 <div class="col-lg-6">
                     <div class="py-4">
-                        <h1 class="display-3 text-white">Áo Mùa Đông Phong Cách</h1>
-                        <p class="fw-normal display-3 text-dark mb-4">trong cửa hàng của chúng tôi</p>
-                        <p class="mb-4 text-dark">Hãy khám phá bộ sưu tập áo mùa đông với thiết kế độc đáo, chất liệu giữ ấm hoàn hảo và phong cách thời thượng. Được tạo ra để mang lại sự thoải mái và ấm áp, phù hợp cho mọi phong cách và dịp lễ hội.</p>
-                        <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">Mua ngay</a>
+                        <h1 class="display-3 text-white">All clothes trend</h1>
+                        <p class="fw-normal display-3 text-dark mb-4">in Our Store</p>
+                        <p class="mb-4 text-dark">The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic words etc.</p>
+                        <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-light py-3 px-5">BUY</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="position-relative">
-                        <img src="img/Remove-bg.ai_1733368401143.png" class="img-fluid w-100 rounded" alt="">
+                        <img src="img/z5944041638329_f916e186e2b0c4368dbcc763b7f9356e.jpg" class="img-fluid w-100 rounded" alt="">
+                        <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute" style="width: 140px; height: 140px; top: 0; left: 0; color:gray;">
+                            <h1 style="font-size: 100px;">1</h1>
+                            <div class="d-flex flex-column">
+                                <span class="h2 mb-0">50$</span>
+                                <span class="h4 text-muted mb-0">kg</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -54,6 +54,9 @@
                 <li>
                     <a href="?act=binhluan"><i class="menu-icon fa fa-comments"></i>Quản lý bình luận</a>
                 </li>
+                <li>
+                    <a href="?act=banner_manager"><i class="menu-icon fa fa-comments"></i>Quản lý Banner</a>
+                </li>
             </ul>
 
         </div>

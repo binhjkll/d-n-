@@ -116,19 +116,25 @@
                         <td><?php echo $banner_managers->link; ?></td>
                         <td>
                             <div class="btn-group" role="group">
-                                <a href="?act=delete_banner&id=<?php echo $banner_managers->banner_id; ?>" class="btn btn-danger btn-sm">Xóa</a>
-                                <a href="?act=update_banner&id=<?php echo $banner_managers->banner_id; ?>" class="btn btn-primary btn-sm">Sửa</a>
+                            <button onclick="confirmDeleteBook('?act=delete_banner&bid=<?php echo $banner_managers->banner_id; ?>')" class="btn btn-danger btn-sm">Xóa</button>
+                                
                             </div>
                             <div class="form-check mt-2">
-                                <input class="form-check-input" type="checkbox" name="show_is_<?php echo $banner_managers->banner_id; ?>" value="1">
-                                <label class="form-check-label">Show</label>
+                                <input  class="form-check-input"  type="checkbox"  name="show_is_<?php echo $banner_managers->banner_id; ?>" value="1"
+                                <?php echo (isset($banner_managers->show_is) && $banner_managers->show_is == 1) ? 'checked' : ''; ?> >
+                                   <label class="form-check-label">Show</label>
                             </div>
+
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <br>
+        <div class="text-right">
         <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </div>
+
     </form>
 </div>
 
@@ -174,6 +180,15 @@
 </body>
 
 </html>
+<!-- <script>
+    function confirmDeleteBook(deleUrl) {
+        if (confirm('Are you sure you want to delete')) {
+            document.location = deleUrl;
+        }
+    }
+    document.title = 'Admin';
+</script> -->
+
 <script>
     function confirmDeleteBook(deleUrl) {
         if (confirm('Are you sure you want to delete')) {
@@ -181,4 +196,4 @@
         }
     }
     document.title = 'Admin';
-</script>
+</script>   
