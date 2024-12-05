@@ -116,14 +116,8 @@
                         <td><?php echo $banner_managers->link; ?></td>
                         <td>
                             <div class="btn-group" role="group">
-                            <button onclick="confirmDeleteBook('?act=delete_banner&bid=<?php echo $banner_managers->banner_id; ?>')" class="btn btn-danger btn-sm">Xóa</button>
-                                
-                            </div>
-                            <div class="form-check mt-2">
-                                <input  class="form-check-input"  type="checkbox"  name="show_is_<?php echo $banner_managers->banner_id; ?>" value="1"
-                                <?php echo (isset($banner_managers->show_is) && $banner_managers->show_is == 1) ? 'checked' : ''; ?> >
-                                   <label class="form-check-label">Show</label>
-                            </div>
+                            <button onclick="confirmDeleteBook('?act=delete_banner&banner_id=<?php echo $banner_managers->banner_id; ?>')" class="btn btn-danger btn-sm">Xóa</button>                            </div>
+                          
 
                         </td>
                     </tr>

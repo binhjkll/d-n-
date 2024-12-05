@@ -701,16 +701,11 @@ class Book
     }
     
     public function delete_banner($banner_id){
-        $sql = "DELETE FROM `banners` WHERE banner_id = ?";
+        $sql = "DELETE FROM `banners` WHERE banner_id=?";
         $this->connect->setQuery($sql);
         return $this->connect->loadData([$banner_id], false);
 
-        // public function deleteDM($category_id)
-        // {
-        //     $sql = "DELETE FROM `categories` WHERE `category_id` = ?";
-        //     $this->connect->setQuery($sql);
-        //     return $this->connect->execute([$category_id], false);
-        // }
+      
     }
 
     public function update_banner_show_status($banner_id, $show_is_value)

@@ -65,7 +65,7 @@
 
     <body>
 
-
+    <?php require "./views/component/cuthtml.php" ?>
 
 
     <h1>Thêm Banner Mới</h1>
