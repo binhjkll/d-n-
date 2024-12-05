@@ -70,7 +70,8 @@
                             <div class="page-title">
                                 <ol class="breadcrumb text-right">
                                     <li><a href="?act=listbook">Bảng điều khiển</a></li>
-                                    <li class="active">Quản lý đơn hàng</li>
+                                    <li><a href="?act=quanlyorder">Quản lý đơn hàng</a></li>
+                                    <li class="active">Chi tiết đơn hàng</li>
                                 </ol>
                             </div>
                         </div>
@@ -80,63 +81,87 @@
         </div>
 
         <!-- Nội dung -->
+
         <div class="content mt-3">
+
+
+
             <div class="animated fadeIn">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body card-block">
 
+
+
+                                <?php foreach ($la as $aa) { ?>
+
+                                    <?php if ($aa->delivery_status == 'Đã huỷ'): ?>
+                                        <table class="table table-bordered text-center rounded"
+                                            style="border-collapse: collapse; margin: 20px 0; width: 20%; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                                            <thead style="background-color: #f1f1f1;">
+                                                <tr>
+                                                    <th style="padding: 8px; font-size: 18px; font-weight: bold; color: red; text-align: left;">
+                                                        Lý do huỷ
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="padding: 15px; font-size: 16px; color: #555; text-align: left;">
+                                                        <?php
+                                                        echo $aa->cancel_reason;
+
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    <?php endif; ?>
+
+                                <?php } ?>
                                 <form action="" method="post">
-                                    <table class="table table-bordered table-hover table-striped table-sm">
-                                        <thead class="thead-dark text-center">
+                                    <table class="table table-striped table-bordered text-center rounded" style="overflow: hidden;">
+                                        <thead class="thead-dark" style="background-color: #f8f9fa; color: #333; border-radius: 12px;">
                                             <tr>
-                                                <th>order_id </th>
-                                                <th>user_id </th>
-                                                <th>total_amount</th>
-                                                <th>payment_status</th>
-                                                <th>delivery_status</th>
-                                                <th>created_at</th>
-                                                <th>address</th>
-                                                <th>phone</th>
-                                                <th>email</th>
+                                                <th class="text-center" style="width: 15%; font-weight: bold;">Order Item ID</th>
+                                                <th class="text-center" style="width: 15%; font-weight: bold;">Quantity</th>
+                                                <th class="text-center" style="width: 15%; font-weight: bold;">Price</th>
+                                                <th class="text-center" style="width: 15%; font-weight: bold;">Total Price</th>
+                                                <th class="text-center" style="width: 10%; font-weight: bold;">Size</th>
+                                                <th class="text-center" style="width: 20%; font-weight: bold;">Image</th>
 
                                             </tr>
                                         </thead>
+
                                         <tbody>
-                                            <?php foreach ($listbook as $value) { ?>
+
+
+                                            <?php if (!empty($listbook)): ?>
+                                                <?php foreach ($listbook as $item): ?>
+                                                    <tr>
+                                                        <td class="text-center align-middle"><?php echo $item->order_item_id; ?></td>
+                                                        <td class="text-center align-middle"><?php echo $item->quantity; ?></td>
+                                                        <td class="text-center align-middle">$<?php echo number_format($item->order_item_price, 2); ?></td>
+                                                        <td class="text-center align-middle">$<?php echo number_format($item->total_item_price, 2); ?></td>
+                                                        <td class="text-center align-middle"><?php echo $item->size; ?></td>
+                                                        <td class="text-center align-middle">
+                                                            <img src="<?php echo $item->product_img; ?>" alt="Product Image" style="width: 50px; height: 50px; border-radius: 8px; border: 1px solid #ccc;">
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
                                                 <tr>
-                                                    <td class="text-center"><?php echo $value->order_id; ?></td>
-                                                    <td class="text-center"><?php echo $value->user_id; ?></td>
-                                                    <td>$<?php echo $value->total_amount; ?></td>
-                                                    <td><?php echo $value->payment_status; ?></td>
-                                                    <td>
-                                                        <form method="POST">
-                                                            <select name="delivery_status" onchange="this.form.submit()"
-                                                                <?php echo ($value->delivery_status == 'Đã huỷ' || $value->delivery_status == 'Đã giao') ? 'disabled' : ''; ?>>
-                                                                <option value="Đã huỷ" <?php echo $value->delivery_status == 'Đã huỷ' ? 'selected' : ''; ?>>Đã huỷ</option>
-                                                                <option value="Đang chuẩn bị" <?php echo $value->delivery_status == 'Đang chuẩn bị' ? 'selected' : ''; ?>>Đang chuẩn bị</option>
-                                                                <option value="Đang giao" <?php echo $value->delivery_status == 'Đang giao' ? 'selected' : ''; ?>>Đang giao</option>
-                                                                <option value="Đã giao" <?php echo $value->delivery_status == 'Đã giao' ? 'selected' : ''; ?>>Đã giao</option>
-                                                            </select>
-                                                            <input type="hidden" name="order_id" value="<?php echo $value->order_id; ?>">
-                                                        </form>
-
-
-
-                                                    </td>
-                                                    <td class="text-center"><?php echo $value->created_at; ?></td>
-                                                    <td><?php echo $value->address; ?></td>
-                                                    <td class="text-center"><?php echo $value->phone; ?></td>
-                                                    <td class="text-center"><?php echo $value->email; ?></td>
-                                                    <td class="text-center align-middle">
-                                                        <a href="?act=chitietorder&pid=<?php echo $value->order_id; ?>" class="btn btn-dark btn-sm">Xem chi tiết</a>
-                                                    </td>
+                                                    <td class="text-center align-middle" colspan="6">No items found for this order.</td>
                                                 </tr>
-                                            <?php } ?>
+                                            <?php endif; ?>
                                         </tbody>
 
                                     </table>
+                                    <br>
+
+
 
                                 </form>
 

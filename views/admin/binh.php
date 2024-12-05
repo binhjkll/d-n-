@@ -209,28 +209,7 @@
         let r = (Math.random() + 1).toString(36).substring(7);
 
         // HTML cho mỗi biến thể mới, với các input được gán tên hợp lệ cho mảng
-        // let html = `
-        //     <div class="variant" id="variant-${r}" >
-           
-        // <h4><strong>Biến thể </strong></h4>
-        //         <label class="form-control-label">Loại ${aa}:</label>
-
-        //         <div class="form-group">
-        //                                     <label class="form-control-label">Giá</label>
-        //                                         <br>
-        //             <input type="text" name="variant[${r}][price]" placeholder="Nhập giá sản phẩm" required ><br>
-        //                                     <label class="form-control-label">Số lượng</label><br>
-
-        //             <input type="text" name="variant[${r}][stock_quantity]" placeholder="Nhập số lượng" required ><br>
-        //                                     <label class="form-control-label">Hình ảnh</label>
-
-        //             <input type="file" name="variant[${r}][product_img]" placeholder="Ảnh sản phẩm" required class="form-control-file">
-                                             
-                           
-        //         </div>
-        //         <button type="button" onclick="removeVariant('variant-${r}')" class="btn btn-primary btn-sm" >Xóa biến thể</button> 
-        //     </div>
-        // `;
+    
 
         let html = `
                 <div class="card mb-3 variant" id="variant-${r}">

@@ -159,6 +159,7 @@ if (isset($_POST["btn_submit"])) {
   $user_id = null; // Biến để lưu user_id khi đăng nhập thành công
   $phone = null; // Biến để lưu user_id khi đăng nhập thành công
   $address = null; // Biến để lưu user_id khi đăng nhập thành công
+  $email = null; // Biến để lưu user_id khi đăng nhập thành công
 
   foreach ($login as $value) {
     if ($username == $value->username && $password == $value->password) {
@@ -166,6 +167,7 @@ if (isset($_POST["btn_submit"])) {
       $userId = $value->user_id; // Lưu user_id từ database
       $phone = $value->phone; // Lưu user_id từ database
       $address = $value->address; // Lưu user_id từ database
+      $email = $value->email; // Lưu user_id từ database
       if ($value->role == "admin") {
         $_SESSION['username'] = $username;  // Lưu tên người dùng
         $_SESSION['user_id'] = $user_id;     // Lưu user_id vào session
@@ -183,6 +185,7 @@ if (isset($_POST["btn_submit"])) {
     $_SESSION['user_id'] = $userId; // Lưu user_id vào session
     $_SESSION['phone'] = $phone; // Lưu user_id vào session
     $_SESSION['address'] = $address; // Lưu user_id vào session
+    $_SESSION['email'] = $email; // Lưu user_id vào session
     header('location:?act=shophtml');
     exit;
   } else {

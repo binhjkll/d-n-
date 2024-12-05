@@ -53,7 +53,7 @@ switch ($bb) {
         break;
     case 'trangchu':
         $aa->trangchu();
-        $aa->bannerShow();
+        // $aa->bannerShow();
         break;
     case 'productDetail':
         $aa->productDetail();
@@ -76,14 +76,14 @@ switch ($bb) {
     case 'updateCartQuantity':
         $aa->updateCartQuantity();
         break;
-        
+
     case 'binhluan':
         $aa->binhluan();
         break;
     case 'deleteBinhluan':
         $aa->deleteBinhluan();
         break;
-        
+
     case 'orders':
         $aa->orders();
         break;
@@ -96,21 +96,27 @@ switch ($bb) {
     case 'userpro':
         $aa->userpro();
         break;
-    // case 'test':
-    //     $aa->bannerShow();
-    //     break;
-    case 'banner_manager':
-        $aa->banner_manager();
-    break;
-    case 'add_banner':
-        $aa->add_banner();
-    break;
-    case 'update_banner':
-        $aa->update_banner();
-    break;
-    
+        // case 'test':
+        //     $aa->bannerShow();
+        //     break;
+        case 'banner_manager':
+            $aa->banner_manager();
+        break;
+        case 'add_banner':
+            $aa->add_banner();
+        break;
+        // case 'update_banner':
+        //     $aa->update_banner();
+        // break;
+
     case 'chitietpro':
         $aa->chitietpro();
+        break;
+    case 'chitietorder':
+        $aa->chitietorder();
+        break;
+    case 'huyorder':
+        $aa->huyorder();
         break;
 
 

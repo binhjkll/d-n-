@@ -10,11 +10,14 @@
      <input type="text" name="variant_id" placeholder="variant_id" value="<?php echo $bb['variant_id'] ?>">
      <input type="text" name="quantity" placeholder="quantity" value="<?php echo $cc['quantity'] ?>">
      <input type="text" name="price" placeholder="price" value="<?php echo $bb['price'] ?>">
+     <input type="text" name="cancel_reason" placeholder="cancel_reason">
 
      <br>
 
      <input type="text" name="phone" value="<?php echo $phone ?>">
      <input type="text" name="address" value="<?php echo $address ?>">
+     <input type="text" name="email" value="<?php echo $email ?>">
+     <input type="text" name="name" value="<?php echo $username ?>">
      <input type="radio" name="payment_status" value="thanh toán khi nhận hàng">
      <label for="">thanh toán khi nhận hàng</label>
      <input type="radio" name="payment_status" value="thanh toán trực tiếp">
