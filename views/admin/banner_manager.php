@@ -134,6 +134,7 @@
         <div class="text-right">
         <button type="submit" class="btn btn-primary">Cập nhật</button>
     </div>
+
     </form>
 </div>
 
@@ -195,4 +196,4 @@
         }
     }
     document.title = 'Admin';
-</script>
+</script>   

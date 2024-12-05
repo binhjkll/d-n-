@@ -787,15 +787,33 @@ class Bookcc
         {
             if (isset($_GET['bid'])) {
                 $banner_id = $_GET['bid'];
+                
                 $mBook = new Book();
-                $delteBook = $mBook->delete_banner($banner_id);
+                $deleteBanner = $mBook->delete_banner($banner_id);
     
-                if (!$delteBook) {
+                if (!$deleteBanner) {
                     header('location:?act=banner_manager');
                 }
             }
         }
     }
     
+    // if (isset($_GET['category_id'])) {
+    //     $category_id = $_GET['category_id'];
+    //     $mBook = new Book();
+
+    //     // Gọi hàm xóa danh mục
+    //     $result = $mBook->deleteDM($category_id);
+
+    //     // Kiểm tra kết quả và chuyển hướng
+    //     if ($result) {
+    //         header('Location: index.php?act=danhmuc'); // Thành công, quay về danh sách
+    //         exit(); // Đảm bảo dừng thực thi
+    //     } else {
+    //         echo "Lỗi: Không thể xóa danh mục. Vui lòng thử lại!";
+    //     }
+    // } else {
+    //     echo "Lỗi: Không tìm thấy ID danh mục.";
+    // }
 
 

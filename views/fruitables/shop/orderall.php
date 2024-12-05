@@ -28,6 +28,54 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
+<style>
+    /* Sử dụng Bootstrap để thay đổi màu nền và chữ khi hover */
+    /* Nút chính */
+    .btn-aa {
+        background-color: #28a745;
+        /* Màu nền xanh lá */
+        color: white;
+        /* Màu chữ trắng */
+        border: none;
+        /* Không có viền */
+        padding: 12px 24px;
+        /* Khoảng cách bên trong */
+        font-size: 16px;
+        /* Cỡ chữ */
+        font-weight: bold;
+        /* Làm đậm chữ */
+        border-radius: 8px;
+        /* Bo góc */
+        cursor: pointer;
+        /* Đổi con trỏ thành hình tay */
+        transition: all 0.3s ease;
+        /* Hiệu ứng khi di chuột */
+    }
+
+    /* Hiệu ứng khi di chuột vào nút */
+    .btn-aa:hover {
+        background-color: #218838;
+        /* Màu khi di chuột vào */
+        transform: translateY(-3px);
+        /* Đẩy nút lên một chút */
+    }
+
+    /* Hiệu ứng khi nhấn nút */
+    .btn-aa:active {
+        background-color: #1e7e34;
+        /* Màu khi nhấn */
+        transform: translateY(0);
+        /* Về vị trí ban đầu khi nhấn */
+    }
+
+    /* Hiệu ứng focus khi tab vào nút */
+    .btn-aa:focus {
+        outline: none;
+        /* Xóa đường viền focus */
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.5);
+        /* Tạo hiệu ứng viền xanh khi focus */
+    }
+</style>
 
 <body>
 
@@ -81,101 +129,188 @@
     <div class="container-fluid py-5">
         <div class="container py-5">
             <h1 class="mb-4">Billing details</h1>
-            <form action="" method="post">
+            <form action="" method="post" onsubmit="return validateForm()">
                 <div class="row g-5">
-                    <div class="col-md-12 col-lg-6 col-xl-7">
-
+                    <div class="col-md-12 col-lg-6 col-xl-5">
+                        <div class="form-item">
+                            <label class="form-label my-3">Người nhận<sup>*</sup></label>
+                            <input type="text" name="name" class="form-control" id="username" value="<?php echo $username ?>">
+                            <span id="name-error" style="color: red;"></span> <!-- Hiển thị lỗi tên -->
+                        </div>
                         <div class="form-item">
                             <label class="form-label my-3">Số điện thoại<sup>*</sup></label>
-                            <input type="text" name="phone" class="form-control" value="<?php echo $phone ?>">
+                            <input type="text" name="phone" class="form-control" id="phone" value="<?php echo $phone ?>">
+                            <span id="phone-error" style="color: red;"></span> <!-- Hiển thị lỗi số điện thoại -->
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Địa chỉ <sup>*</sup></label>
-                            <input type="text" name="address" class="form-control" value="<?php echo $address ?>">
+                            <input type="text" name="address" class="form-control" id="address" value="<?php echo $address ?>">
+                            <span id="address-error" style="color: red;"></span> <!-- Hiển thị lỗi địa chỉ -->
                         </div>
-
-
+                        <div class="form-item">
+                            <label class="form-label my-3">Email <sup>*</sup></label>
+                            <input type="text" name="email" class="form-control" id="email" value="<?php echo $email ?>">
+                            <span id="email-error" style="color: red;"></span> <!-- Hiển thị lỗi email -->
+                        </div>
                     </div>
-                    <div class="col-md-12 col-lg-6 col-xl-5">
+
+                    <div class="col-md-12 col-lg-6 col-xl-7">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Products</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Total</th>
+                                        <th scope="col">Sản phẩm</th>
+                                        <th scope="col">Tên</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">Tổng cộng</th>
+                                        <th></th>
+                                        <th scope="col">Size</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($cartItems as $item) {
-
-
+                                    <?php
+                                    $orderTotal = 0; // Biến lưu tổng tiền đơn hàng
+                                    foreach ($cartItems as $item):
+                                        $itemTotal = $item->quantity * $item->price; // Tính tổng tiền mỗi sản phẩm
+                                        $orderTotal += $itemTotal; // Cộng vào tổng tiền đơn hàng
                                     ?>
-
                                         <tr>
-                                            <td><img src="<?php echo ($item->product_img); ?>" alt="Product" style="width: 100px;"> </td>
                                             <td>
-                                                <?php echo ($item->product_name); ?>
-                                            </td>
-                                            <td>
-                                                $<?php echo number_format((float)$item->price); ?>
-                                            </td>
-                                            <td>
-                                                <?php echo ($item->quantity); ?>
+                                                <div class=" align-items-center mt-1">
+                                                    <img src="<?php echo ($item->product_img); ?>" alt="Product" style="width: 90px;">
+                                                </div>
 
                                             </td>
-
-
-                                            <td>
-                                                <?php echo ($item->quantity) * ($item->price) ?>
+                                            <td class="py-5"><?php echo ($item->product_name); ?></td>
+                                            <td class="py-5">$<?php echo number_format((float)$item->price); ?></td>
+                                            <td class="py-5"><?php echo ($item->quantity); ?></td>
+                                            <td class="py-5">$<?php echo number_format($itemTotal); ?></td>
+                                            <td></td>
+                                            <td colspan="2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="size[<?php echo $item->variant_id; ?>]" id="size1_<?php echo $item->variant_id; ?>" value="S">
+                                                    <label class="form-check-label" for="size1_<?php echo $item->variant_id; ?>">S</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="size[<?php echo $item->variant_id; ?>]" id="size2_<?php echo $item->variant_id; ?>" value="M">
+                                                    <label class="form-check-label" for="size2_<?php echo $item->variant_id; ?>">M</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="size[<?php echo $item->variant_id; ?>]" id="size3_<?php echo $item->variant_id; ?>" value="XL">
+                                                    <label class="form-check-label" for="size3_<?php echo $item->variant_id; ?>">XL</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="size[<?php echo $item->variant_id; ?>]" id="size4_<?php echo $item->variant_id; ?>" value="XXL">
+                                                    <label class="form-check-label" for="size4_<?php echo $item->variant_id; ?>">XXL</label>
+                                                </div>
+                                                <span id="size-error-<?php echo $item->variant_id; ?>" style="color: red;"></span> <!-- Hiển thị lỗi size -->
                                             </td>
                                         </tr>
+                                        <input type="hidden" name="variant_id[]" value="<?php echo ($item->variant_id); ?>">
+                                        <input type="hidden" name="quantity[]" value="<?php echo ($item->quantity); ?>">
+                                        <input type="hidden" name="price[]" value="<?php echo ($item->price); ?>">
+                                    <?php endforeach; ?>
+                                    <tr>
+                                        <td colspan="4" class="text-center" style="padding-right: 0;"><strong> Tổng tiền đơn hàng:</strong></td>
+                                        <td colspan="3" class="text-start" style="padding-left: 0;">$<?php echo number_format($orderTotal); ?></td>
+                                    </tr>
 
-
-                                        <tr>
-
-                                        </tr>
-
-
-                                        <input type="hidden" name="total_amount" placeholder="total_amount" value="<?php echo ($item->quantity) * ($item->price) ?>">
-                                        <input type="hidden" name="delivery_status" placeholder="delivery_status" value="Đang chuẩn bị">
-                                        <input type="hidden" name="variant_id[]" placeholder="variant_id" value="<?php echo ($item->variant_id); ?>">
-                                        <input type="hidden" name="quantity[]" placeholder="quantity" value="<?php echo ($item->quantity); ?>">
-                                        <input type="hidden" name="price[]" placeholder="price" value="<?php echo ($item->price); ?>">
-
-
-                                    <?php } ?>
-
-
+                                    <input type="hidden" name="delivery_status" value="Đang chuẩn bị">
+                                    <input type="hidden" name="total_amount" value="<?php echo $orderTotal; ?>">
                                 </tbody>
                             </table>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="payment_status" id="payment1" value="thanh toán khi nhận hàng">
-                                <label class="form-check-label" for="payment1">
-                                    Thanh toán khi nhận hàng
-                                </label>
+                                <label class="form-check-label" for="payment1">Thanh toán khi nhận hàng</label>
                             </div>
-
-                            <!-- Radio button 2 -->
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="payment_status" id="payment2" value="thanh toán trực tiếp">
-                                <label class="form-check-label" for="payment2">
-                                    Thanh toán trực tiếp
-                                </label>
+                                <label class="form-check-label" for="payment2">Thanh toán trực tiếp</label>
                             </div>
+                            <span id="payment-status-error" style="color: red;"></span> <!-- Hiển thị lỗi phương thức thanh toán -->
+                        </div>
+                        <div class=" f-4 text-center align-items-center justify-content-center pt-5">
+                            <button type="submit" name="btn_submit" class="btn-aa">Mua</button>
                         </div>
 
-
-                        <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                            <a href="?act=clearCart">
-                                <button name="btn_submit">gui</button>
-                            </a>
-                        </div>
                     </div>
                 </div>
+                <input type="hidden" name="cancel_reason" placeholder="cancel_reason">
+
             </form>
+
+            <script>
+                function validateForm() {
+                    let isValid = true;
+
+                    // Reset previous errors
+                    document.getElementById("phone-error").innerText = "";
+                    document.getElementById("address-error").innerText = "";
+                    document.getElementById("payment-status-error").innerText = "";
+                    document.getElementById("name-error").innerText = "";
+                    document.getElementById("email-error").innerText = "";
+
+                    // Validate name
+                    let username = document.getElementById("username").value;
+                    let nameRegex = /^[A-Za-z\sÀ-ỹ]+$/; // Cho phép chữ cái, khoảng trắng, và dấu tiếng Việt
+                    if (!username || !nameRegex.test(username)) {
+                        document.getElementById("name-error").innerText = "Vui lòng nhập tên hợp lệ (chỉ gồm chữ cái và khoảng trắng).";
+                        isValid = false;
+                    }
+
+                    // Validate email
+                    let email = document.getElementById("email").value;
+                    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Kiểm tra định dạng email cơ bản
+                    if (!email || !emailRegex.test(email)) {
+                        document.getElementById("email-error").innerText = "Vui lòng nhập địa chỉ email hợp lệ.";
+                        isValid = false;
+                    }
+
+                    // Validate phone
+                    let phone = document.getElementById("phone").value;
+                    let phoneRegex = /^[0-9]{10}$/; // Kiểm tra số điện thoại 10 chữ số
+                    if (!phone || !phoneRegex.test(phone)) {
+                        document.getElementById("phone-error").innerText = "Vui lòng nhập số điện thoại hợp lệ.";
+                        isValid = false;
+                    }
+
+                    // Validate address
+                    let address = document.getElementById("address").value;
+                    if (!address) {
+                        document.getElementById("address-error").innerText = "Vui lòng nhập địa chỉ.";
+                        isValid = false;
+                    }
+
+                    // Validate size selection for each product
+                    let sizeErrors = false;
+                    document.querySelectorAll('input[name^="size"]').forEach(function(input) {
+                        let productId = input.name.split('[')[1].split(']')[0];
+                        let selectedSize = document.querySelector(`input[name="size[${productId}]"]:checked`);
+                        if (!selectedSize) {
+                            document.getElementById(`size-error-${productId}`).innerText = "***";
+                            sizeErrors = true;
+                        } else {
+                            document.getElementById(`size-error-${productId}`).innerText = "";
+                        }
+                    });
+
+                    if (sizeErrors) {
+                        isValid = false;
+                    }
+
+                    // Validate payment method selection
+                    let paymentStatus = document.querySelector('input[name="payment_status"]:checked');
+                    if (!paymentStatus) {
+                        document.getElementById("payment-status-error").innerText = "Vui lòng chọn phương thức thanh toán.";
+                        isValid = false;
+                    }
+
+                    return isValid;
+                }
+            </script>
+
+
         </div>
     </div>
     <!-- Checkout Page End -->

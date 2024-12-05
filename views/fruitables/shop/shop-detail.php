@@ -27,6 +27,44 @@
 
         <!-- Template Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
+        <style>
+            table {
+                margin-top: 20px;
+                width: 100%;
+                border-collapse: collapse;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+            }
+
+            table thead tr {
+                background-color: #f4f4f4;
+                font-weight: bold;
+            }
+
+            table th, table td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+            }
+
+            table tbody tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            table tbody tr:hover {
+                background-color: #f1f1f1;
+            }
+
+            form textarea {
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            form button:hover {
+                background-color: #0056b3;
+            }
+
+        </style>
     </head>
 
     <body>
@@ -81,45 +119,51 @@
                 <div class="row g-4 mb-5">
                     <div class="col-lg-8 col-xl-9">
                         <?php include_once "chitiet.php"; ?>
-                            <form action="#">
-                                <h4 class="mb-5 fw-bold">Leave a Reply</h4>
-                                <div class="row g-4">
-                                    <div class="col-lg-6">
-                                        <div class="border-bottom rounded">
-                                            <input type="text" class="form-control border-0 me-4" placeholder="Yur Name *">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="border-bottom rounded">
-                                            <input type="email" class="form-control border-0" placeholder="Your Email *">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="border-bottom rounded my-4">
-                                            <textarea name="" id="" class="form-control border-0" cols="30" rows="8" placeholder="Your Review *" spellcheck="false"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="d-flex justify-content-between py-3 mb-5">
-                                            <div class="d-flex align-items-center">
-                                                <p class="mb-0 me-3">Please rate:</p>
-                                                <div class="d-flex align-items-center" style="font-size: 12px;">
-                                                    <i class="fa fa-star text-muted"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="btn border border-secondary text-primary rounded-pill px-4 py-3"> Post Comment</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+
+                        <h1>Bình luận</h1>
+                        <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;">Tên người dùng</th>
+                                    <th style="width: 60%;">Nội dung bình luận</th>
+                                    <th style="width: 20%;">Ngày bình luận</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($listbluan as $bluan) { ?>
+                                    <?php foreach ($user as $use) { ?>
+                                        <?php if ($bluan->user_id == $use->user_id) { ?>
+                                            <tr>
+                                                <td><?php echo htmlspecialchars($use->username); ?></td>
+                                                <td><?php echo htmlspecialchars($bluan->comment); ?></td>
+                                                <td><?php echo htmlspecialchars($bluan->created_at); ?></td>
+
+                                            </tr>
+                                        <?php } ?>
+                                    <?php } ?>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                      
+
+                            <?php if (isset($_SESSION['username'])) {?>
+                                <h2>Thêm bình luận mới</h2>
+
+                                <form method="post" style="margin-top: 10px;">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
+                                    <input type="hidden" name="user_id" value="<?php echo $_SESSION["user_id"]; ?>">
+                                    <textarea name="noidung" rows="4" style="width: 100%; padding: 10px; margin-bottom: 10px;" placeholder="Nhập bình luận của bạn..." required></textarea>
+                                    <button type="submit" name="gui" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Gửi</button>
+                                </form>
+                            <?php } else {?>
+                                <h3 >Đăng nhập để bình luận</h3>
+                            <?php } ?>
+                           
                     </div>
-                    <div class="col-lg-4 col-xl-3">
-                        <div class="row g-4 fruite">
+                </div>
+                <div class="col-lg-4 col-xl-3">
+                    <div class="row g-4 fruite">
                         <div class="input-group w-100 mx-auto d-flex mb-4">
                           <?php 
                           include_once "timkiem.php"; 
@@ -159,7 +203,7 @@
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                                 <div class="d-flex justify-content-between flex-lg-wrap">
                                     <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"> Add to cart</a>
                                 </div>
                             </div>
                         </div>

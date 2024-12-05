@@ -69,7 +69,7 @@
     <div class="container-fluid page-header py-5">
         <h1 class="text-center text-white display-6">Shop</h1>
         <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="?act=trangchu">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Pages</a></li>
             <li class="breadcrumb-item active text-white">Shop</li>
         </ol>
@@ -77,16 +77,16 @@
     <!-- Single Page Header End -->
 
 
-        <!-- Fruits Shop Start-->
-        <div class="container-fluid fruite py-5">
-            <div class="container py-5">
-                <h1 class="mb-4">Fresh fruits shop</h1>
-                <div class="row g-4">
-                    <div class="col-lg-12">
-                        <div class="row g-4">
+    <!-- Fruits Shop Start-->
+    <div class="container-fluid fruite py-5">
+        <div class="container py-5">
+            <h1 class="mb-4">Fresh fruits shop</h1>
+            <div class="row g-4">
+                <div class="col-lg-12">
+                    <div class="row g-4">
                         <div class="col-xl-3">
-                            <?php 
-                            include_once "timkiem.php";                           
+                            <?php
+                            include_once "timkiem.php";
                             ?>
                         </div>
                             <div class="col-6"></div>
@@ -190,16 +190,29 @@
                                    <?php include_once "product.php"; ?>
  
                                     <div class="col-12">
-                                        <div class="pagination d-flex justify-content-center mt-5">
-                                            <a href="#" class="rounded">&laquo;</a>
-                                            <a href="#" class="active rounded">1</a>
-                                            <a href="#" class="rounded">2</a>
-                                            <a href="#" class="rounded">3</a>
-                                            <a href="#" class="rounded">4</a>
-                                            <a href="#" class="rounded">5</a>
-                                            <a href="#" class="rounded">6</a>
-                                            <a href="#" class="rounded">&raquo;</a>
-                                        </div>
+                                    <div class="pagination d-flex justify-content-center mt-5">                                           
+                                                <?php
+                                                
+                                                function buildPaginationUrl($page, $keyword = null, $category_id = null) {
+                                                    $url = "index.php?act=shophtml&page=$page";
+                                                    if (!empty($keyword)) {
+                                                        $url .= "&keyword=" . urlencode($keyword);
+                                                    }
+                                                    if (!empty($category_id)) {
+                                                        $url .= "&category_id=" . intval($category_id);
+                                                    }
+                                                    return $url;
+                                                }
+
+                                                if ($totalPages > 1) {
+                                                    for ($i = 1; $i <= $totalPages; $i++) {
+                                                        $active = ($i === $currentPage) ? "active" : "";
+                                                        $paginationUrl = buildPaginationUrl($i, $_GET['keyword'] ?? null, $_GET['category_id'] ?? null);
+                                                        echo "<li class='page-item $active'><a class='page-link' href='$paginationUrl'>$i</a></li>";
+                                                    }
+                                                }
+                                                ?>                                                                           
+                                    </div>
                                     </div>
                                 </div>
                                    
@@ -209,19 +222,134 @@
                     <div class="row g-4">
                         <div class="col-lg-3">
                             <div class="row g-4">
-                                <?php include_once "dm.php"; ?>
-                                
-                               
-                                
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4>Danh Mục</h4>
+                                        <ul class="list-unstyled fruite-categorie">
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name">
+                                                    <a href="index.php?act=shophtml"><i class="fas fa-apple-alt me-2"></i>Tất cả</a>
+                                                </div>
+                                            </li>
+                                            <?php
+                                            include_once "dm.php";
+                                            ?>
+                                        </ul>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-12">
+                                    <h4 class="mb-3">Featured products</h4>
+                                    <div class="d-flex align-items-center justify-content-start">
+                                        <div class="rounded me-4" style="width: 100px; height: 100px;">
+                                            <img src="img/featur-1.jpg" class="img-fluid rounded" alt="">
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-2">Big Banana</h6>
+                                            <div class="d-flex mb-2">
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                            <div class="d-flex mb-2">
+                                                <h5 class="fw-bold me-2">2.99 $</h5>
+                                                <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-start">
+                                        <div class="rounded me-4" style="width: 100px; height: 100px;">
+                                            <img src="img/featur-2.jpg" class="img-fluid rounded" alt="">
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-2">Big Banana</h6>
+                                            <div class="d-flex mb-2">
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                            <div class="d-flex mb-2">
+                                                <h5 class="fw-bold me-2">2.99 $</h5>
+                                                <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-start">
+                                        <div class="rounded me-4" style="width: 100px; height: 100px;">
+                                            <img src="img/featur-3.jpg" class="img-fluid rounded" alt="">
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-2">Big Banana</h6>
+                                            <div class="d-flex mb-2">
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star text-secondary"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                            <div class="d-flex mb-2">
+                                                <h5 class="fw-bold me-2">2.99 $</h5>
+                                                <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center my-4">
+                                        <a href="#" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew More</a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="position-relative">
+                                        <img src="img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
+                                        <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
+                                            <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-9">
-                            <?php include_once "product.php"; ?>
+
+                            <div class="row g-4 justify-content-center">
+                                <?php include_once "product.php"; ?>
+
+                                <div class="col-12">
+                                    <div class="pagination d-flex justify-content-center mt-5">
+                                        <a href="#" class="rounded">&laquo;</a>
+                                        <a href="#" class="active rounded">1</a>
+                                        <a href="#" class="rounded">2</a>
+                                        <a href="#" class="rounded">3</a>
+                                        <a href="#" class="rounded">4</a>
+                                        <a href="#" class="rounded">5</a>
+                                        <a href="#" class="rounded">6</a>
+                                        <a href="#" class="rounded">&raquo;</a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-3">
+                        <div class="row g-4">
+                            <?php include_once "dm.php"; ?>
+
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <?php include_once "product.php"; ?>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- Fruits Shop End-->
 
