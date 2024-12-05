@@ -590,10 +590,10 @@ class Bookcc
        
 
         // public function delete_banner(){
-        //     echo "ID nhận được: " . $_GET['banner_id'];
-        //     if (isset($_GET['banner_id'])) {
+        //     echo "ID nhận được: " . $_GET['bid'];
+        //     if (isset($_GET['bid'])) {
         //         $mBook = new Book();
-        //         $deleteBanner = $mBook->delete_banner($_GET['banner_id']);
+        //         $deleteBanner = $mBook->delete_banner($_GET['bid']);
         //         if (!$deleteBanner) {
         //             header('Location: index.php?act=banner_manager'); // Chuyển hướng sau khi xóathành công
         //             exit;
@@ -603,9 +603,8 @@ class Bookcc
 
         public function delete_banner()
         {
-            if (isset($_GET['bid'])) {
-                $banner_id = $_GET['bid'];
-                
+            if (isset($_GET['banner_id'])) {
+                $banner_id = $_GET['banner_id'];
                 $mBook = new Book();
                 $deleteBanner = $mBook->delete_banner($banner_id);
     
@@ -614,6 +613,23 @@ class Bookcc
                 }
             }
         }
+
+    //     public function deletebook()
+    // {
+    //     if (isset($_GET['id'])) {
+    //         // $product_id = $_GET['product_id'];
+    //         // $variant_id = $_GET['variant_id'];
+    //         $product_id = $_GET['id'];
+    //         $variant_id = $_GET['vid'];
+    //         $mBook = new Book();
+    //         $delteBook = $mBook->deletev($variant_id);
+    //         $delteBook = $mBook->delete($product_id);
+
+    //         if (!$delteBook) {
+    //             header('location:index.php');
+    //         }
+    //     }
+    // }
     
     
     // if (isset($_GET['category_id'])) {
