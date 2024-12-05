@@ -48,7 +48,7 @@ class Bookcc
     public function trangchu()
     {
         $mBook = new Book();
-        
+        $mg_banners = $mBook->banner_Show();
         $banners = $mBook->bannerShow();
         $shophtml = $mBook->getDM();
         $latestProducts = $mBook->getRandomProducts(6);
@@ -704,15 +704,41 @@ class Bookcc
         include_once "views/fruitables/shop/trangchu.php";
     }
 
+    public function banner_Show()
+    {
+        $mBook = new Book();
+        $mg_banners = $mBook->bannerShow();
+    }
 
     public function banner_manager()
     {
         $mBook = new Book();
+
+        // Kiểm tra nếu có yêu cầu cập nhật trạng thái Show/Hide
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $show_is_data = $_POST['show_is'] ?? []; // Mảng lưu trạng thái show_is của từng banner
+    
+            // Duyệt qua tất cả banner trong danh sách
+            foreach ($show_is_data as $banner_id => $show_is_value) {
+                // Cập nhật trạng thái show_is của banner
+                $mBook->update_banner_show_status($banner_id, $show_is_value);
+            }
+    
+            // Sau khi cập nhật, chuyển hướng lại trang banner_manager
+            header('Location: index.php?act=banner_manager');
+            exit;
+        }
+    
+        // Lấy danh sách banner từ model
         $banner_manager = $mBook->banner_manager();
+    
+        // Hiển thị giao diện quản lý banner
         include_once "views/admin/banner_manager.php";
     }
+    
         public function add_banner() {
             if (isset($_POST['btn_submit'])) {
+                
                 $name = $_POST['name'] ;
                 $link = $_POST['link'] ;
                 $Show_is = isset($_POST['Show_is']) ? 1 : 0; // Giá trị mặc định là 0 nếu không chọn
@@ -727,75 +753,45 @@ class Bookcc
                 move_uploaded_file($_FILES['image']['tmp_name'], $image);
                 // Gọi model để thêm banner
                 $mBook = new Book();
-                $add_banner = $mBook->add_banner(null,$link, $name, $Show_is, $image);
+                // var_dump($link, $name, $Show_is, $image);
+                // die();
+                $add_banner = $mBook->add_banner(null,$name, $link, $Show_is, $image);
     
                 if (!$add_banner) {
                     header('Location: index.php?act=banner_manager'); // Chuyển hướng sau khi thêm thành công
                     exit;
                 }
             }
+            // var_dump("pass", $_POST['btn_submit']);
+            //     die();
     
             // Hiển thị form thêm banner
             include_once "views/admin/add_banner.php";
         }
 
-        public function update_banner(){
-            if (isset($_GET['id'])) {
-                $banner_id = $_GET['id'];
-                $mBook = new Book();
-                $idBanner = $mBook->getIdBanner($banner_id);
-            
-                if (!$idBanner) {
-                    echo "Không tìm thấy banner.";
-                    exit;
-                }
-            
-                if (isset($_POST['btn-submit'])) {
-                    $name = $_POST['name'] ?? $idBanner['name'];
-                    $link = $_POST['link'] ?? $idBanner['link'];
-                    $Show_is = isset($_POST['Show_is']) ? 1 : 0;
-                    $image = $idBanner['image'];
-            
-                    // Xử lý upload ảnh
-                    if (!empty($_FILES['image']['name'])) {
-                        $target_dir = "uploads/banners/";
-                        $file_name = time() . '_' . basename($_FILES['image']['name']);
-                        $image = $target_dir . $file_name;
-            
-                        if (move_uploaded_file($_FILES['image']['tmp_name'], $image)) {
-                            echo "Ảnh đã được tải lên.";
-                        } else {
-                            echo "Lỗi khi tải ảnh.";
-                            exit;
-                        }
-                    }
-            
-                    // Cập nhật banner
-                    $updateBanner = $mBook->update_banner( $name, $link, $Show_is, $image,$banner_id);
-            
-                    if ($updateBanner) {
-                        header('Location: index.php?act=banner_manager');
-                        exit;
-                    } else {
-                        echo "Cập nhật thất bại.";
-                    }
-                }
-            } else {
-                echo "ID không hợp lệ.";
-                exit;
-            }
-            
-            include_once "views/admin/update_banner.php";
-        }
+       
 
-        public function delete_banner(){
-            echo "ID nhận được: " . $_GET['banner_id'];
-            if (isset($_GET['banner_id'])) {
+        // public function delete_banner(){
+        //     echo "ID nhận được: " . $_GET['banner_id'];
+        //     if (isset($_GET['banner_id'])) {
+        //         $mBook = new Book();
+        //         $deleteBanner = $mBook->delete_banner($_GET['banner_id']);
+        //         if (!$deleteBanner) {
+        //             header('Location: index.php?act=banner_manager'); // Chuyển hướng sau khi xóathành công
+        //             exit;
+        //         }
+        //     }
+        // }
+
+        public function delete_banner()
+        {
+            if (isset($_GET['bid'])) {
+                $banner_id = $_GET['bid'];
                 $mBook = new Book();
-                $deleteBanner = $mBook->delete_banner($_GET['banner_id']);
-                if (!$deleteBanner) {
-                    header('Location: index.php?act=banner_manager'); // Chuyển hướng sau khi thêm thành công
-                    exit;
+                $delteBook = $mBook->delete_banner($banner_id);
+    
+                if (!$delteBook) {
+                    header('location:?act=banner_manager');
                 }
             }
         }

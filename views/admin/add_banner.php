@@ -64,20 +64,20 @@
 
 
     <body>
-    <?php require "./views/component/cuthtml.php" ?>
+
 
 
 
     <h1>Thêm Banner Mới</h1>
     <form method="POST" action="" enctype="multipart/form-data">
         <label for="name">Tên Banner:</label>
-        <input type="text" id="name" name="name" required><br><br>
+        <input type="text" id="name" name="name" ><br><br>
 
         <label for="link">Đường Dẫn (URL):</label>
-        <input type="text" id="link" name="link" required><br><br>
+        <input type="text" id="link" name="link" ><br><br>
 
         <label for="image">Hình Ảnh:</label>
-        <input type="file" id="image" name="image" accept="image/*" required><br><br>
+        <input type="file" id="image" name="image" accept="image/*" ><br><br>
 
         <label for="show_is">Hiển Thị:</label>
         <input type="checkbox" id="Show_is" name="Show_is" value="1" checked><br><br>

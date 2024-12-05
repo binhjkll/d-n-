@@ -504,6 +504,12 @@ class Book
         return $this->connect->loadData();
     }
 
+    public function banner_Show(){
+        $sql = "SELECT * FROM `banners`";
+        $this->connect->setQuery($sql);
+        return $this->connect->loadData();
+    }
+
     public function banner_manager(){
         $sql = "SELECT * FROM `banners`";
         $this->connect->setQuery($sql);
@@ -511,16 +517,27 @@ class Book
     }
 
     public function add_banner($banner_id,$name, $link, $Show_is, $image) {
-        $sql = "INSERT INTO `banners` VALUES (?,?, ?, ?, ?)";
-        $this->connect->setQuery($sql); // Chuẩn bị câu lệnh SQL
+        $insertSql = "INSERT INTO banners (name, link, Show_Is, image) VALUES (?, ?, ?, ?)";
+            $this->connect->setQuery($insertSql);
+            $this->connect->execute([$name, $link, $Show_is, $image]);
+
         return $this->connect->loadData([$banner_id,$name, $link,  $Show_is, $image]); // Thực thi với tham số
     }
 
-    public function update_banner($banner_id)
+    public function update_banner($name, $link, $Show_is, $image,$banner_id)
     {
-        $sql = "UPDATE `categories` SET `link`=?,`name`=?,`Show_Is`=?,`image`=? WHERE `banner_id`=?";
-        $this->connect->setQuery($sql);
-        return $this->connect->execute([$name, $category_id], false);
+        $updateSql = "UPDATE `categories` SET `name`=?,`link`=?,`Show_Is`=?,`image`=? WHERE `banner_id`=?";
+
+        $this->connect->setQuery($updateSql);
+        return $this->connect->loadData([$name, $link,  $Show_is, $image, $banner_id], false);
+
+        // $updateSql = "UPDATE `products` 
+        //               SET `name` = ?, `description` = ?, `category_id` = ? 
+        //               WHERE `product_id` = ?";
+        //     $this->connect->setQuery($updateSql);
+        //     $result = $this->connect->loadData([$name, $description, $category_id, $product_id]);
+        //     if ($result) {
+        //         return $product_id;
     }
     
     public function getIdBanner($banner_id){
@@ -530,8 +547,19 @@ class Book
     }
     
     public function delete_banner($banner_id){
-        $sql = "DELETE FROM `banners` WHERE banner_id=?";
+        $sql = "DELETE FROM `banners` WHERE `banner_id`=?";
         $this->connect->setQuery($sql);
-        return $this->connect->loadData([$banner_id], false);
+        return $this->connect->execute([$banner_id], false);
+
+      
+    }
+
+    public function update_banner_show_status($banner_id, $show_is_value)
+    {
+        // Chuẩn bị câu lệnh SQL để cập nhật trạng thái show_is
+        $this->sql = "UPDATE banners SET show_is = ? WHERE banner_id = ?";
+    
+        // Gọi hàm execute và truyền các tham số
+        return $this->execute(array($show_is_value, $banner_id));
     }
 }
