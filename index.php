@@ -134,6 +134,6 @@ switch ($bb) {
 
 
     default:
-        $aa->listbook();
+        $aa->trangchu();
         break;
 }
