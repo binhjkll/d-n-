@@ -28,25 +28,13 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php foreach ($product['variants'] as $variant) { ?>
                 <a href="index.php?act=productDetail&id=<?php echo $product['product_id']; ?>&variant_id=<?php echo $variant['variant_id']; ?>"
                     class="btn btn-outline-primary me-2 <?php echo ($product['selected_variant']['variant_id'] == $variant['variant_id']) ? 'active' : ''; ?>">
-                    Variant <?php echo $variant['variant_id']; ?>
+
                 </a>
             <?php } ?>
         </div>
         <p class="mb-4" style="color:black">Số lượng trong kho: <?php echo htmlspecialchars($product['selected_variant']['stock_quantity']); ?></p>
         <!-- <p class="mb-4" style="color:black">Susp endisse ultricies nisi vel quam suscipit. Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish</p> -->
-        <div class="input-group quantity mb-5" style="width: 100px;">
-            <div class="input-group-btn">
-                <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-            <input type="text" class="form-control form-control-sm text-center border-0" value="1">
-            <div class="input-group-btn">
-                <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                    <i class="fa fa-plus"></i>
-                </button>
-            </div>
-        </div>
+
         <?php
         // Kiểm tra người dùng đã đăng nhập hay chưa
         $isLoggedIn = isset($_SESSION['username']);

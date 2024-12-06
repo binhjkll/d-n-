@@ -171,7 +171,7 @@ if (isset($_POST["btn_submit"])) {
       if ($value->role == "admin") {
         $_SESSION['username'] = $username;  // Lưu tên người dùng
         $_SESSION['user_id'] = $user_id;     // Lưu user_id vào session
-        header('location:?act=listbook');
+        header('location:?act=list');
         exit;
       }
 
@@ -186,7 +186,7 @@ if (isset($_POST["btn_submit"])) {
     $_SESSION['phone'] = $phone; // Lưu user_id vào session
     $_SESSION['address'] = $address; // Lưu user_id vào session
     $_SESSION['email'] = $email; // Lưu user_id vào session
-    header('location:?act=shophtml');
+    header('location:?act=trangchu');
     exit;
   } else {
     echo "<script>alert('Tài khoản hoặc mật khẩu của bạn sai!')</script>";
