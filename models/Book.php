@@ -547,6 +547,7 @@ class Book
         $this->connect->setQuery($sql);
         return $this->connect->execute([$delivery_status, $order_id]);
     }
+    
     public function processCancelOrder($orderId, $cancelReason)
     {
         // Cập nhật cơ sở dữ liệu để huỷ đơn hàng

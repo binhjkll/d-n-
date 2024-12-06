@@ -405,28 +405,49 @@ class Bookcc
     public function huyorder()
     {
         if (isset($_POST['btn_submit'])) {
-            // Kiểm tra và lấy dữ liệu từ form
 
-            // echo '<pre>';
-            // print_r($_POST);
-            // echo '</pre>';
-            // die();
-            $orderId = $_POST['order_id'];
-            $cancelReason = $_POST['cancel_reason'];
-            $otherReason = isset($_POST['other_reason']) ? $_POST['other_reason'] : null;
+            $mBook = new Book();
 
-            // Gộp lý do nếu người dùng nhập "Lý do khác"
-            $finalReason = $cancelReason === 'Lý do khác' ? $otherReason : $cancelReason;
+            // Lấy order_id từ danh sách đơn hàng
+           
+                $order_id = $_POST['order_id'];
+            
 
-            // Gọi model để xử lý huỷ đơn hàng
-            $mBook = new Book(); // Model xử lý
-            $mBook->processCancelOrder($orderId, $finalReason);  // Gọi phương thức xử lý huỷ đơn
+            // Lấy chi tiết đơn hàng
+            $aa = $mBook->getorderss($order_id);
 
-            // Chuyển hướng sau khi huỷ
-            header('Location: ?act=userpro');
-            // exit;
+            // Kiểm tra trạng thái giao hàng
+            foreach ($aa as $orders) {
+                if ($orders->delivery_status === 'Đã giao') {
+                    // Hiển thị thông báo nếu đơn hàng đã giao
+                    echo "<script>
+                alert('Đơn hàng đã được giao, không thể hủy!');
+                window.location.href = '?act=userpro'; // Chuyển hướng sau khi bấm OK
+                            </script>";
+                    die; // Dừng xử lý
+                    
+                } else {
+                    $orderId = $_POST['order_id'];
+                    $cancelReason = $_POST['cancel_reason'];
+                    $otherReason = isset($_POST['other_reason']) ? $_POST['other_reason'] : null;
+
+                    // Gộp lý do nếu người dùng nhập "Lý do khác"
+                    $finalReason = $cancelReason === 'Lý do khác' ? $otherReason : $cancelReason;
+
+                    // Gọi model để xử lý hủy đơn hàng
+                    $mBook->processCancelOrder($orderId, $finalReason);
+
+                    // Chuyển hướng sau khi hủy
+                    header('Location: ?act=userpro');
+                    exit;
+                }
+            }
+
+            // Nếu tất cả các đơn hàng đều chưa giao, tiếp tục xử lý hủy
+
         }
     }
+
 
 
 
