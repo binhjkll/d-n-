@@ -55,9 +55,12 @@ class Bookcc
                 // Gọi hàm thêm biến thể
                 $book->addvariants($product_id, $variants);
 
-                // Chuyển hướng sau khi thêm thành công
-                header('Location: index.php');
-                exit;
+                // Hiển thị thông báo thêm thành công
+                echo "<script>
+                alert('Thêm sản phẩm thành công!');
+                window.location.href = '?act=list';
+                </script>";
+                exit; // Dừng thực thi
             }
         }
 
@@ -70,22 +73,30 @@ class Bookcc
     }
 
 
+
     public function editbook()
     {
         // Lấy product_id và variant_id từ URL
-        $product_id = $_GET['id'];
-        $variant_id = $_GET['vid'];
+        $product_id = $_GET['id'] ?? null;
+        $variant_id = $_GET['vid'] ?? null;
+
+        if (!$product_id || !$variant_id) {
+            echo "Không tìm thấy sản phẩm hoặc biến thể.";
+            return;
+        }
 
         // Lấy thông tin sản phẩm và biến thể từ CSDL
         $mBook = new Book();
-        $idBook = $mBook->getid($product_id); // Lấy thông tin sản phẩm
-        $iddBook = $mBook->getvid($variant_id); // Lấy thông tin biến thể
-        $ccc = $mBook->categories(); // Lấy danh sách danh mục
+        $idBook = $mBook->getid($product_id); // Thông tin sản phẩm
+        $iddBook = $mBook->getvid($variant_id); // Thông tin biến thể
+        $ccc = $mBook->categories(); // Danh sách danh mục
 
-        // Kiểm tra xem thông tin sản phẩm và biến thể có hợp lệ không
-        if (!$idBook || !$iddBook) {
+        // Kiểm tra dữ liệu hợp lệ
+        if (
+            !$idBook || !$iddBook
+        ) {
             echo "Không tìm thấy sản phẩm hoặc biến thể với ID: $product_id và $variant_id.";
-            return; // Dừng thực thi nếu không có thông tin hợp lệ
+            return;
         }
 
         if (isset($_POST['btn_submit'])) {
@@ -133,10 +144,17 @@ class Bookcc
 
             // Kiểm tra kết quả cập nhật
             if (!$updateVariant && !$updateProduct) {
-                header('Location: index.php');
+                echo "<script>
+                alert('Sửa sản phẩm thành công!');
+                window.location.href = '?act=list';
+                </script>";
                 exit;
             } else {
-                echo "Đã xảy ra lỗi khi cập nhật sản phẩm.";
+                echo "<script>
+                alert('Đã xảy ra lỗi khi cập nhật sản phẩm.');
+                window.history.back();
+                </script>";
+                exit;
             }
         }
 
@@ -164,7 +182,7 @@ class Bookcc
             $delteBook = $mBook->delete($product_id);
 
             if (!$delteBook) {
-                header('location:index.php');
+                header('location:?act=list');
             }
         }
     }
@@ -287,25 +305,19 @@ class Bookcc
     public function orders()
     {
         date_default_timezone_set('Asia/Bangkok');
-        $product_id = $_GET['id'];
-        $variant_id = $_GET['vid'];
-        $cart_item_id = $_GET['cid'];
+        $product_id = $_GET['id'] ?? null;
+        $variant_id = $_GET['vid'] ?? null;
+        $cart_item_id = $_GET['cid'] ?? null;
 
         $mBook = new Book();
         $aa = $mBook->getid($product_id);
         $bb = $mBook->getvid($variant_id);
-
         $cc = $mBook->getcid($cart_item_id);
 
-
         if (isset($_POST['btn_submit'])) {
-            if (isset($_SESSION['user_id'])) {  // Kiểm tra xem user_id có tồn tại trong session không
-                // echo '<pre>';
-                // print_r($_POST);
-                // echo '</pre>';
-                // die();
+            if (isset($_SESSION['user_id'])) { // Kiểm tra xem user_id có tồn tại trong session không
                 // Lấy dữ liệu từ form và session
-                $user_id = $_SESSION['user_id'];  // Lấy user_id từ session
+                $user_id = $_SESSION['user_id'];
                 $total_amount = $_POST['total_amount'];
                 $payment_status = $_POST['payment_status'];
                 $delivery_status = $_POST['delivery_status'];
@@ -319,7 +331,6 @@ class Bookcc
                 $email = $_POST['email'];
                 $name = $_POST['name'];
                 $cancel_reason = $_POST['cancel_reason'];
-
 
                 // Tạo một đối tượng của lớp Book
                 $mBook = new Book();
@@ -336,24 +347,26 @@ class Bookcc
                     $email,
                     $name,
                     $cancel_reason
-
-
-
                 );
 
                 // Thêm các mục trong đơn hàng (order items)
                 $mBook->addOrderItems($order_id, $variant_id, $quantity, $price, $size);
 
+                // Xóa mục giỏ hàng nếu có
                 $cartItemId = isset($_GET['cart_item_id']) ? intval($_GET['cart_item_id']) : 0;
                 if ($cartItemId > 0) {
-                    $mBook = new Book();
                     $mBook->removeCartItem($cartItemId);
                 }
-                // Hiển thị thông báo thành công
-                header('Location: ?act=trangchu');
-            } else {
-                var_dump($_SESSION);  // In ra nội dung session để kiểm tra
 
+                // Hiển thị thông báo thành công và chuyển hướng
+                echo "<script>
+                alert('Mua hàng thành công!');
+                window.location.href = '?act=trangchu';
+                </script>";
+                exit;
+            } else {
+                // In ra nội dung session để kiểm tra nếu user chưa đăng nhập
+                var_dump($_SESSION);
                 echo "User is not logged in.";
             }
         }
@@ -378,9 +391,12 @@ class Bookcc
             // Cập nhật trạng thái giao hàng
             $mBook->updateDeliveryStatus($order_id, $delivery_status);
 
-            // Tải lại trang để hiển thị danh sách mới
-            header("Location:?act=quanlyorder ");
+            echo "<script>
+                alert('Đã thay đổi trạng thái đơn hàng!');
+                window.location.href = '?act=quanlyorder';
+                </script>";
             exit;
+            // Tải lại trang để hiển thị danh sách mới
         }
 
         // Hiển thị danh sách đơn hàng trong view
@@ -440,6 +456,7 @@ class Bookcc
                     $mBook->processCancelOrder($orderId, $finalReason);
 
                     // Chuyển hướng sau khi hủy
+                    
                     header('Location: ?act=userpro');
                     exit;
                 }
@@ -810,8 +827,12 @@ class Bookcc
 
         $mBook->addToCart($userId, $productId, $quantity, $variantId);
         if (isset($_GET['redirect']) && $_GET['redirect'] === 'cart') {
-            header("Location: index.php?act=cart");
+            echo "<script>
+                alert('Thêm sản phẩm thành công!');
+                window.location.href = '?act=cart';
+                </script>";
             exit;
+           
         } else {
             header("Location: index.php?act=cart");
             exit;
@@ -890,7 +911,11 @@ class Bookcc
 
             $mBook = new Book();
             $addDM = $mBook->addDM(null, $name);
-            header('Location: index.php?act=danhmuc');
+
+            echo "<script>
+                alert('Thêm danh mục thành công!');
+                window.location.href = '?act=danhmuc';
+                </script>";
             exit();
         }
         include_once "views/admin/add-category.php";
@@ -919,11 +944,17 @@ class Bookcc
                     // Thực hiện cập nhật danh mục
                     $editDM = $mBook->editDM($name, $_GET['category_id']);
                     if ($editDM) {
-                        // Chuyển hướng nếu cập nhật thành công
-                        header('Location: index.php?act=danhmuc');
+                        echo "<script>
+                            alert('Sửa danh mục thành công!');
+                            window.location.href = '?act=danhmuc';
+                            </script>";
                         exit();
                     } else {
-                        $error = "Cập nhật danh mục thất bại!";
+                        echo "<script>
+                            alert('Sửa danh mục thất bại!');
+                            window.location.href = '?act=danhmuc';
+                            </script>";
+                        exit();
                     }
                 }
             }

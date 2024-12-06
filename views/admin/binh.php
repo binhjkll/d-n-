@@ -40,6 +40,7 @@
         .table td {
             text-align: center;
         }
+
         .variant .card {
             border: 1px solid #007bff;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -47,7 +48,7 @@
 
         .variant .btn-danger {
             margin-top: 10px;
-        } 
+        }
     </style>
 </head>
 
@@ -109,7 +110,7 @@
                                         </div> -->
                                     <div class="form-group">
                                         <label class="form-control-label">Mô tả</label>
-                                        <textarea name="description" id="description" placeholder="Nhập mô tả sản phẩm" class="form-control"></textarea>
+                                        <textarea name="description" id="description" placeholder="Nhập mô tả sản phẩm" class="form-control" required></textarea>
                                     </div>
 
 
@@ -209,7 +210,7 @@
         let r = (Math.random() + 1).toString(36).substring(7);
 
         // HTML cho mỗi biến thể mới, với các input được gán tên hợp lệ cho mảng
-    
+
 
         let html = `
                 <div class="card mb-3 variant" id="variant-${r}">
