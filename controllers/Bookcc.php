@@ -603,18 +603,23 @@ class Bookcc
         //     }
         // }
 
-        public function delete_banner()
+
+        public function deleteBanner()
         {
+            echo $_GET['banner_id'];
             if (isset($_GET['banner_id'])) {
+                
                 $banner_id = $_GET['banner_id'];
+                
                 $mBook = new Book();
                 $deleteBanner = $mBook->delete_banner($banner_id);
-    
+                
                 if (!$deleteBanner) {
                     header('location:?act=banner_manager');
                 }
             }
         }
+
 
     //     public function deletebook()
     // {

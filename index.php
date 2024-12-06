@@ -105,8 +105,8 @@ switch ($bb) {
     case 'add_banner':
         $aa->add_banner();
     break;
-    case 'delete_banner':
-        $aa->delete_banner();
+    case 'deleteBanner':
+        $aa->deleteBanner();
     break;
     
         // case 'test':

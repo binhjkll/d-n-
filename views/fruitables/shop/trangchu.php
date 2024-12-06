@@ -107,7 +107,6 @@
     <div class="container-fluid py-5 mb-5 hero-header" style="position: relative;">
     <div id="bannerCarousel" class="carousel slide w-100" style="max-width: 1400px; margin: auto;" data-bs-ride="carousel">
         <div class="carousel-inner">
-   
             <?php foreach ($mg_banners as $index => $banner): ?>
                 <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>" style="position: relative;">
                     <!-- Lớp mờ cho banner -->

@@ -26,6 +26,32 @@
     <link href="https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/jqvmap@1.5.1/dist/jqvmap.min.css" rel="stylesheet">
     <style>
+        .btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* Phong cách cơ bản cho các nút */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Nút xóa (màu đỏ) */
+.btn-delete {
+    background-color: #e74c3c; /* Đỏ */
+}
+
+.btn-delete:hover {
+    background-color: #c0392b; /* Đỏ đậm hơn khi hover */
+}
         .table {
             text-align: center;
             margin: auto;
@@ -55,7 +81,7 @@
 </head>
 
 <body>
-
+<?php require "./views/component/cuthtml.php" ?>
     <!doctype html>
 
     <html class="no-js" lang="">
@@ -64,7 +90,7 @@
 
 
     <body>
-    <?php require "./views/component/cuthtml.php" ?>
+
 
         <!-- /#header -->
         <!-- Breadcrumbs-->
@@ -114,10 +140,15 @@
                         <td><img src="<?php echo $banner_managers->image; ?>" alt="Banner Image" style="width: 100px; height: auto;"></td>
                         <td><?php echo $banner_managers->name; ?></td>
                         <td><?php echo $banner_managers->link; ?></td>
+
                         <td>
-                            <div class="btn-group" role="group">
-                            <button onclick="confirmDeleteBook('?act=delete_banner&banner_id=<?php echo $banner_managers->banner_id; ?>')" class="btn btn-danger btn-sm">Xóa</button>                            </div>
-                          
+                        <div class="btn-group" role="group">
+    <a href="?act=deleteBanner&banner_id=<?php echo $banner_managers->banner_id; ?>" 
+       class="btn btn-delete" 
+       onclick="return confirm('Bạn có chắc muốn xóa banner này?');">
+        Xóa
+    </a>
+</div>
 
                         </td>
                     </tr>
@@ -174,16 +205,15 @@
 </body>
 
 </html>
-<!-- <script>
+<script>
     function confirmDeleteBook(deleUrl) {
         if (confirm('Are you sure you want to delete')) {
             document.location = deleUrl;
         }
     }
     document.title = 'Admin';
-</script> -->
-
-<script>
+</script> 
+<!-- <script>
     function confirmDeleteBook(deleUrl) {
         if (confirm('Are you sure you want to delete')) {
             document.location = deleUrl;

@@ -708,14 +708,14 @@ class Book
       
     }
 
-    public function update_banner_show_status($banner_id, $show_is_value)
-    {
-        // Chuẩn bị câu lệnh SQL để cập nhật trạng thái show_is
-        $this->sql = "UPDATE banners SET show_is = ? WHERE banner_id = ?";
+    // public function update_banner_show_status($banner_id, $show_is_value)
+    // {
+    //     // Chuẩn bị câu lệnh SQL để cập nhật trạng thái show_is
+    //     $this->sql = "UPDATE banners SET show_is = ? WHERE banner_id = ?";
     
-        // Gọi hàm execute và truyền các tham số
-        return $this->execute(array($show_is_value, $banner_id));
-    }
+    //     // Gọi hàm execute và truyền các tham số
+    //     return $this->execute(array($show_is_value, $banner_id));
+    // }
     public function searchProductsPaginated($keyword, $start, $limit)
     {
         $keyword = "%" . $keyword . "%";
