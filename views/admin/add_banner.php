@@ -63,27 +63,67 @@
 
 
 
-    <body>
+
 
     <?php require "./views/component/cuthtml.php" ?>
 
+  
+    <div class="container mt-4">
+    <!-- Breadcrumbs -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="mb-0 text-primary">Bảng điều khiển</h5>
+                </div>
+                <div class="col-md-6 text-right">
+                    <ol class="breadcrumb bg-transparent p-0 mb-0">
+                        <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none">Bảng điều khiển</a></li>
+                        <li class="breadcrumb-item"><a href="index.php?page_layout=danhmuc" class="text-decoration-none">Banner</a></li>
+                        <li class="breadcrumb-item active">Thêm Banner</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h1>Thêm Banner Mới</h1>
-    <form method="POST" action="" enctype="multipart/form-data">
-        <label for="name">Tên Banner:</label>
-        <input type="text" id="name" name="name" ><br><br>
+    <!-- Nội dung Form -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Thêm Banner Mới</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="" enctype="multipart/form-data">
+                <!-- Tên Banner -->
+                <div class="form-group">
+                    <label for="name" class="font-weight-bold">Tên Banner:</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên banner">
+                </div>
+                <!-- Đường Dẫn -->
+                <div class="form-group">
+                    <label for="link" class="font-weight-bold">Đường Dẫn (URL):</label>
+                    <input type="text" class="form-control" id="link" name="link" placeholder="Nhập đường dẫn">
+                </div>
+                <!-- Hình Ảnh -->
+                <div class="form-group">
+                    <label for="image" class="font-weight-bold">Hình Ảnh:</label>
+                    <input type="file" class="form-control-file border p-2" id="image" name="image" accept="image/*">
+                </div>
+                <!-- Hiển Thị -->
+                
+                <!-- Nút Submit -->
+                <button type="submit" name="btn_submit" class="btn btn-success btn-block">Thêm Banner</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-        <label for="link">Đường Dẫn (URL):</label>
-        <input type="text" id="link" name="link" ><br><br>
 
-        <label for="image">Hình Ảnh:</label>
-        <input type="file" id="image" name="image" accept="image/*" ><br><br>
 
-        <label for="show_is">Hiển Thị:</label>
-        <input type="checkbox" id="Show_is" name="Show_is" value="1" checked><br><br>
 
-        <button type="submit" name="btn_submit">Thêm Banner</button>
-    </form>
+
+
+    
     <div class="clearfix"></div>
         <!-- Footer -->
         <footer class="site-footer">
